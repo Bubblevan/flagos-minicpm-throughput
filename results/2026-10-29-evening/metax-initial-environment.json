@@ -1,0 +1,35 @@
+{
+  "hostname": "61953c496939",
+  "versions": {
+    "torch": "2.8.0+metax3.7.0.7",
+    "vllm": "0.24.0+empty",
+    "vllm-plugin-fl": "0.3.0rc1.post1+g13eb9be69",
+    "flag-gems": "5.3.5",
+    "triton": "3.0.0+metax3.7.0.7",
+    "flagtree": null,
+    "evalscope": "1.11.1"
+  },
+  "repositories": {
+    "vllm-plugin-FL": {
+      "head": "13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0",
+      "changes": ""
+    },
+    "FlagGems": {
+      "head": "a7620cc191a0b42e040194622c5758b22a7a25dc",
+      "changes": ""
+    }
+  },
+  "model": {
+    "architectures": [
+      "LlamaForCausalLM"
+    ],
+    "hidden_size": 2048,
+    "num_attention_heads": 16,
+    "num_key_value_heads": 2,
+    "head_dim": 128,
+    "num_hidden_layers": 42,
+    "torch_dtype": "bfloat16"
+  },
+  "port9031_active": false,
+  "artifacts_persistent_root": "/data/tokenforge-artifacts"
+}

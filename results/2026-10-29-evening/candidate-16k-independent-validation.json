@@ -1,0 +1,43 @@
+{
+  "all_six_workloads_complete": true,
+  "official_score": false,
+  "checks": [
+    {
+      "file": "native_16k-warmup.json",
+      "requests": 8,
+      "complete_tokens": true,
+      "sha256": "caed88d5e01345bafda9cbd19c8ad8549dcb53937352763d85ee0016c9685169"
+    },
+    {
+      "file": "native_16k-measure_a.json",
+      "requests": 8,
+      "complete_tokens": true,
+      "sha256": "ee1da8b8002be3cc8d102da1d8755e1650ff0bd06c38801f01245618784bfbce"
+    },
+    {
+      "file": "native_16k-measure_b.json",
+      "requests": 8,
+      "complete_tokens": true,
+      "sha256": "1dba37955f6484f9eb619724b6d241d5d2b20e458cd64fe76d20b6a9f6dc5033"
+    },
+    {
+      "file": "query_tiling_16k-warmup.json",
+      "requests": 8,
+      "complete_tokens": true,
+      "sha256": "1b5d77c8252b4e527a4e751df3e97f659c7483a4c31b0cf5ef1603b93e0c1e0c"
+    },
+    {
+      "file": "query_tiling_16k-measure_a.json",
+      "requests": 8,
+      "complete_tokens": true,
+      "sha256": "656b54daf3bee1fd82ba413a4906fb96b97dc4d351a36ed051ba780e648e6177"
+    },
+    {
+      "file": "query_tiling_16k-measure_b.json",
+      "requests": 8,
+      "complete_tokens": true,
+      "sha256": "99b968896cc1964a4633c604d40b0e1d08e49cb2368886369409857045c66989"
+    }
+  ],
+  "candidate_relative_to_native": 0.8943604056235277
+}

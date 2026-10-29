@@ -7,11 +7,11 @@ from pathlib import Path
 from validate_accuracy_artifacts import audit
 
 
-def finalize(raw, summary, accuracy_dir, environment):
+def finalize(raw, summary, accuracy_dir, environment, references=None):
     rows = list(csv.DictReader(raw.open(encoding='utf-8-sig')))
     summaries = list(csv.DictReader(summary.open(encoding='utf-8-sig')))
     assert len(rows) == 8 and len(summaries) == 2, 'All eight runs are required'
-    references = {4096: (2028.01, 11573.53, 256), 16384: (915.15, 599262.03, 128)}
+    references = references or {4096: (2028.01, 11573.53, 256), 16384: (915.15, 599262.03, 128)}
     cases = []
     for length, (ref_tps, ref_ttft, count) in references.items():
         group = [r for r in rows if int(r['Prefill']) == length]

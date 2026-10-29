@@ -1,0 +1,44 @@
+{
+  "results": [
+    {
+      "source": "native_16k",
+      "measurements": [
+        {
+          "phase": "measure_a",
+          "seconds": 124.10342941433191,
+          "total_tokens_per_second": 1064.4024957520237,
+          "mean_ttft_seconds": 67.08076020755107
+        },
+        {
+          "phase": "measure_b",
+          "seconds": 124.08867109613493,
+          "total_tokens_per_second": 1064.529089022652,
+          "mean_ttft_seconds": 67.04817447502865
+        }
+      ],
+      "mean_total_tokens_per_second": 1064.4657923873378
+    },
+    {
+      "source": "query_tiling_16k",
+      "measurements": [
+        {
+          "phase": "measure_a",
+          "seconds": 65.50400895671919,
+          "total_tokens_per_second": 2016.6093969497422,
+          "mean_ttft_seconds": 33.66880662518088
+        },
+        {
+          "phase": "measure_b",
+          "seconds": 65.51229601306841,
+          "total_tokens_per_second": 2016.3543035287523,
+          "mean_ttft_seconds": 33.65482698066626
+        }
+      ],
+      "mean_total_tokens_per_second": 2016.4818502392473
+    }
+  ],
+  "official_score": false,
+  "comparison_complete": true,
+  "limitations": "Sequential comparison with separate initially fresh caches; one warmup and two measurements each. Time/order effects remain possible.",
+  "candidate_relative_to_native": 0.8943604056235277
+}
