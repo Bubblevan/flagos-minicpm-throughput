@@ -1,0 +1,83 @@
+{
+  "cases": [
+    {
+      "input_len": 4096,
+      "rounds": 4,
+      "successful_requests_each": 256,
+      "discard_first": true,
+      "total_tokens_per_second": 4945.363333333334,
+      "mean_ttft_ms": 3255.5733333333333,
+      "throughput_reference": 5089.645,
+      "ttft_reference": 3199.435,
+      "throughput_pass": false,
+      "ttft_pass": false
+    },
+    {
+      "input_len": 16384,
+      "rounds": 4,
+      "successful_requests_each": 128,
+      "discard_first": true,
+      "total_tokens_per_second": 6979.663333333334,
+      "mean_ttft_ms": 27379.36333333333,
+      "throughput_reference": 7029.675,
+      "ttft_reference": 27197.135,
+      "throughput_pass": true,
+      "ttft_pass": true
+    }
+  ],
+  "accuracy": 0.9619047619047619,
+  "accuracy_reported": 0.9619,
+  "accuracy_audit": {
+    "run_dir": "C:\\Users\\bubblevan\\Documents\\Codex\\2026-10-28\\ssh-lab-inst-01m60anbe6kzqns943vqf8qffc-ssh-flagos\\outputs\\live_metax_20261029\\level3\\20261029_203019",
+    "prediction_rows": 105,
+    "review_rows": 105,
+    "indices_complete_unique": true,
+    "prediction_error_indices": [],
+    "empty_final_output_indices": [],
+    "finish_reasons": {
+      "stop": 104,
+      "max_tokens": 1
+    },
+    "review_statuses": {
+      "success": 105
+    },
+    "correct": 101,
+    "incorrect_indices": [
+      18,
+      87,
+      101,
+      83
+    ],
+    "score_recomputed": 0.9619047619047619,
+    "score_reported": 0.9619,
+    "execution_summary": {
+      "requested": 105,
+      "succeeded": 105,
+      "errored": 0,
+      "incomplete": false,
+      "subsets": {
+        "Level 3": {
+          "requested": 105,
+          "succeeded": 105,
+          "errored": 0
+        }
+      }
+    },
+    "integrity_pass": true,
+    "accuracy_pass": true
+  },
+  "accuracy_pass": true,
+  "performance_pass": false,
+  "source_tree": "ddf3c7566aac7d23385a1b10c7c258091ef1d3a7",
+  "source_commit_equivalent_tree": "a7620cc191a0b42e040194622c5758b22a7a25dc",
+  "source_git_head_is_not_target_commit": false,
+  "optimization_implemented": false,
+  "raw_csv": "C:\\Users\\bubblevan\\Documents\\Codex\\2026-10-28\\ssh-lab-inst-01m60anbe6kzqns943vqf8qffc-ssh-flagos\\outputs\\live_metax_20261029\\benchmark_results\\raw_runs_20261029_194138.csv",
+  "raw_sha256": "7830773b9b107d80252c909b32c0553859c545eada72a73a4b584d9c4135b9e9",
+  "original_summary_csv": "C:\\Users\\bubblevan\\Documents\\Codex\\2026-10-28\\ssh-lab-inst-01m60anbe6kzqns943vqf8qffc-ssh-flagos\\outputs\\live_metax_20261029\\benchmark_results\\summary_20261029_194138.csv",
+  "independent_validation": true,
+  "workloads_complete": true,
+  "explanation": "Independent audit of this controller-selected run only; no model invocation or cross-session substitution.",
+  "platform": "metax",
+  "source_git_head": "a7620cc191a0b42e040194622c5758b22a7a25dc"
+}

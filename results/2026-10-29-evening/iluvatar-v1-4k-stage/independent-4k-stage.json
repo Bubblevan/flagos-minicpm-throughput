@@ -1,0 +1,19 @@
+{
+  "platform": "iluvatar",
+  "stage_only": true,
+  "complete_session": false,
+  "optimization_implemented": true,
+  "four_rounds_success": true,
+  "tokens_complete": true,
+  "discard_first": true,
+  "total_tokens_per_second": 1909.7700000000002,
+  "mean_ttft_ms": 9616.503333333332,
+  "throughput_reference": 2028.01,
+  "ttft_reference": 11573.53,
+  "throughput_pass": false,
+  "ttft_pass": true,
+  "throughput_vs_day_percent": 1.8980576567027008,
+  "ttft_vs_day_percent": -22.026686515739126,
+  "source_raw_sha256": "395e96aba9d73c910ced2feb601064f7991ac50fd1cad5db5fbeba576fd54a85",
+  "comparison_scope": "Observed means versus separate day session; not a simultaneous causal control. 16K and candidate accuracy remain pending."
+}

@@ -1,0 +1,28 @@
+{
+  "source_root": "/workspace/FlagGems",
+  "target_tree": "ddf3c7566aac7d23385a1b10c7c258091ef1d3a7",
+  "target_commit": "a7620cc191a0b42e040194622c5758b22a7a25dc",
+  "plugin_commit": "13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0",
+  "controller_repository_commit": "c57badb63d0da8f46b38294bb046c24df5a07457",
+  "environment": {
+    "VLLM_PLUGINS": "fl",
+    "VLLM_CACHE_ROOT": "/data/tokenforge-caches/metax_baseline_20261029/vllm",
+    "TRITON_CACHE_DIR": "/data/tokenforge-caches/metax_baseline_20261029/triton",
+    "TORCHINDUCTOR_CACHE_DIR": "/data/tokenforge-caches/metax_baseline_20261029/inductor"
+  },
+  "argv": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "optimization_implemented": false,
+  "platform": "metax_c500_64gb"
+}

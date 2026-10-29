@@ -1,0 +1,17 @@
+{
+  "reviewed_at": "2026-10-29T13:26:24.282330+00:00",
+  "model_processes_absent": true,
+  "checked_pids": [
+    1648,
+    1660
+  ],
+  "health_port_9031": "connection_refused",
+  "provider_instance_running": true,
+  "provider_state_observed": "2026-10-29T21:24:00+08:00",
+  "finished_naturally": 104,
+  "reached_max_tokens": 1,
+  "max_tokens_index": 83,
+  "all_105_finished_with_stop": false,
+  "accuracy_threshold_pass": true,
+  "note": "105 prediction/review records are present. One generation reached the fixed token cap; do not claim all 105 stopped naturally. Provider power has not been changed."
+}

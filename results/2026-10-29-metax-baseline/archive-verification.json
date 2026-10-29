@@ -1,0 +1,16 @@
+{
+  "archive": "FlagOS-MetaX-baseline-20261029.zip",
+  "sha256": "7df2cde9cd2830e5f22c3a8613ab7277b6b72eddee5e927ff065be0d42cbb352",
+  "size_bytes": 1227277,
+  "entries": 34,
+  "crc_pass": true,
+  "credential_scan_patterns": [
+    "private_key",
+    "github_token",
+    "authorization",
+    "credential_url",
+    "cookie_header"
+  ],
+  "high_confidence_credential_matches": 0,
+  "scan_is_not_proof_of_no_secrets": true
+}
