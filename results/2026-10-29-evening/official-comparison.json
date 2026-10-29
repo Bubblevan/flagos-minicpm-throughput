@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-29T18:35:09.362589+08:00",
+  "official_html_identical": true,
+  "old_html_sha256": "c34341df3bc526c1abc51bc004768083f474ce99a9a4982c6cf699a62c89229c",
+  "new_html_sha256": "c34341df3bc526c1abc51bc004768083f474ce99a9a4982c6cf699a62c89229c",
+  "images": [
+    {
+      "label": "iluvatar",
+      "url": "https://flagos.ks3-cn-beijing.ksyuncs.com/images/QlVfSLuI/image.png",
+      "identical_to_daytime": true,
+      "sha256": "f9e5514103e98da39444f995754edc104b9968ffc0a74276350ec5cdc80c0275"
+    },
+    {
+      "label": "metax",
+      "url": "https://flagos.ks3-cn-beijing.ksyuncs.com/images/1a2hydOd/image.png",
+      "identical_to_daytime": true,
+      "sha256": "d7b0005c6cd4184633349a1754ec240ef363eafc83063e231924f479b8fb4cc4"
+    }
+  ],
+  "lab_messages_status": "login_required_in_separate_management_page; existing_IDE_not_reloaded"
+}

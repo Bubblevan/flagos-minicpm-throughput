@@ -1,7 +1,7 @@
-"""Bounded diagnostics; generated timings are NOT competition scores.
+"""Shared bounded diagnostic workload; timings are NOT competition scores.
 
-No model, dataset or installed source is modified. The server has an extra
-profiler option only for this diagnostic run and is stopped on completion.
+The source comparison uses the fixed server arguments without a profiler.
+No model, dataset or original installed source is modified.
 """
 import asyncio
 import datetime as dt

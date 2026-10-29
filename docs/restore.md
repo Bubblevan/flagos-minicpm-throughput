@@ -8,3 +8,11 @@
 6. 独立审计已保存数据：解压后在解压根目录运行 tools/finalize_saved_result.py，传入raw、summary、accuracy-run-dir、environment及out参数。审计不调用模型；具体目录参见zip manifest。
 
 本仓库不存SSH私钥、账号凭证或登录Cookie。恢复连接使用用户另行提供的认证；不复制原机器认证文件。
+
+快速核验归档与重算成绩（只需Python标准库，不调用模型）：
+
+```bash
+python tools/audit_archive.py
+```
+
+完整性审计成功时命令exit0；其中performance_pass=false表示保存的真实性能未过阈值，不是归档损坏。

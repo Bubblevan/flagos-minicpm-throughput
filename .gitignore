@@ -17,6 +17,7 @@ datasets/
 cache/
 caches/
 live_outputs/
+.audit-*/
 *.safetensors
 *.bin
 *.pt
