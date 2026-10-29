@@ -1,0 +1,25 @@
+{
+  "results": [
+    {
+      "source": "query_tiling_candidate",
+      "measurements": [
+        {
+          "phase": "measure_a",
+          "seconds": 81.66382045578212,
+          "total_tokens_per_second": 3410.6658058057965,
+          "mean_ttft_seconds": 28.140278727070836
+        },
+        {
+          "phase": "measure_b",
+          "seconds": 81.69382757600397,
+          "total_tokens_per_second": 3409.4130274514446,
+          "mean_ttft_seconds": 28.107697317245766
+        }
+      ],
+      "mean_total_tokens_per_second": 3410.0394166286205
+    }
+  ],
+  "official_score": false,
+  "comparison_complete": true,
+  "limitations": "Sequential comparison with separate initially fresh caches; one warmup and two measurements each. Time/order effects remain possible."
+}

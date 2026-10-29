@@ -1,0 +1,63 @@
+{
+  "at": "2026-10-29T10:51:15.953859+00:00",
+  "all_nine_workloads_complete": true,
+  "official_score": false,
+  "checks": [
+    {
+      "file": "required_tag_a1-warmup.json",
+      "requests": 64,
+      "tokens_complete": true,
+      "sha256": "4bf6031a3c5418a84e828a7aeae564729d83c28eb7efc877ee498b93af4fd13e"
+    },
+    {
+      "file": "required_tag_a1-measure_a.json",
+      "requests": 64,
+      "tokens_complete": true,
+      "sha256": "216e56421c327e12554f2ebddc80822f375af21267d8a65d565888152f014873"
+    },
+    {
+      "file": "required_tag_a1-measure_b.json",
+      "requests": 64,
+      "tokens_complete": true,
+      "sha256": "be2d220c980372af5d647cd4b3060ad6cd6a6971cc7cfa81417c9540f87dbecf"
+    },
+    {
+      "file": "preinstalled_b-warmup.json",
+      "requests": 64,
+      "tokens_complete": true,
+      "sha256": "543d6ad388b212989425839db8a638a01cbd9163dc77a700f663286199c1b3d5"
+    },
+    {
+      "file": "preinstalled_b-measure_a.json",
+      "requests": 64,
+      "tokens_complete": true,
+      "sha256": "55126fbd9f51f802a2a260b2e52c71bebf9c1db341d8130dead062d9ebcf7314"
+    },
+    {
+      "file": "preinstalled_b-measure_b.json",
+      "requests": 64,
+      "tokens_complete": true,
+      "sha256": "3222d06b2d723a182415e6ce2f2285dbbfcb1289a0a965d12c417c64ab0fdb35"
+    },
+    {
+      "file": "required_tag_a2-warmup.json",
+      "requests": 64,
+      "tokens_complete": true,
+      "sha256": "4dfe7954cfb25ededd16a743b27d891e153304ad51c6e197965d4ac5dc8cc48d"
+    },
+    {
+      "file": "required_tag_a2-measure_a.json",
+      "requests": 64,
+      "tokens_complete": true,
+      "sha256": "8b726d44a85b83396c036fdd90e1a977789b96034f98e308e2f67df93893bca7"
+    },
+    {
+      "file": "required_tag_a2-measure_b.json",
+      "requests": 64,
+      "tokens_complete": true,
+      "sha256": "381080991c749143e0068d105f9c6f163865e4ddd505419f264f78e279e9242a"
+    }
+  ],
+  "required_tag_vs_preinstalled_percent": -0.006738564555974769,
+  "a2_vs_a1_drift_percent": 0.035477726266242016
+}

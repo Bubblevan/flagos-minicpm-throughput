@@ -11,11 +11,17 @@ from finalize_saved_result import finalize
 def main():
     project = Path(__file__).resolve().parents[1]
     artifact_dir = project / 'artifacts'
-    expected, name = (artifact_dir / 'SHA256SUMS').read_text().strip().split()
-    archive = artifact_dir / name
-    actual = hashlib.sha256(archive.read_bytes()).hexdigest()
-    if actual != expected:
-        raise ValueError('Archive SHA256 does not match the preserved snapshot')
+    verified = {}
+    for line in (artifact_dir / 'SHA256SUMS').read_text().splitlines():
+        expected, name = line.split()
+        artifact = (artifact_dir / name).resolve()
+        if artifact.parent != artifact_dir.resolve():
+            raise ValueError('Checksum entry escapes the artifact directory')
+        actual = hashlib.sha256(artifact.read_bytes()).hexdigest()
+        if actual != expected:
+            raise ValueError(f'Archive SHA256 mismatch: {name}')
+        verified[name] = actual
+    archive = artifact_dir / 'FlagOS-baseline-reproduction-20261029.zip'
     # Keep temporary extraction in the writable project on restricted hosts.
     with tempfile.TemporaryDirectory(prefix='.audit-', dir=project) as directory:
         root = Path(directory)
@@ -36,7 +42,7 @@ def main():
             live / 'repro_20261029_1218/aligned-runtime-environment.json',
         )
     print(json.dumps(dict(
-        archive_sha256=actual,
+        verified_archives=verified,
         workloads_complete=result['workloads_complete'],
         accuracy=result['accuracy'],
         accuracy_pass=result['accuracy_pass'],

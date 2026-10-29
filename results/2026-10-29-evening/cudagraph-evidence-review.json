@@ -1,0 +1,24 @@
+{
+  "actual_capture_log": [
+    "Capturing CUDA graphs (decode, FULL): 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 35/35 [01:10<00:00,  1.27it/s]",
+    "Capturing CUDA graphs (decode, FULL): 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 35/35 [01:10<00:00,  2.02s/it]"
+  ],
+  "traces": [
+    {
+      "file": "rank0.1793248019396117597.pt.trace.json.gz",
+      "graph_events": {
+        "Pregraph bytecode": 8,
+        "## Call CompiledFxGraph fttwszlkoxm7a6jznh4ly6r7h3t3zfzitptgxscl7glhpi6jptci ##": 8,
+        "## Call CompiledFxGraph f4kdg5yoyfgzr32ipw6gzndkpm7dtfwtn2uqdbymzl7hl7nfjuqn ##": 328,
+        "## Call CompiledFxGraph fbrz5aptgrh7rqivszdjqv6mvnej5o277om2ulsfpheamcouha5g ##": 8
+      }
+    },
+    {
+      "file": "rank0.1793248077363816801.pt.trace.json.gz",
+      "graph_events": {
+        "cudaGraphLaunch": 8
+      }
+    }
+  ],
+  "limitation": "Traces are from the earlier diagnostic run; capture completion log is the formal daytime server. Inner decode graph kernels were not captured."
+}

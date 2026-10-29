@@ -1,0 +1,367 @@
+{
+  "official_score": false,
+  "started_at": 1793271790.8395414,
+  "cases": [
+    {
+      "lengths": [
+        [
+          1024,
+          4096
+        ]
+      ],
+      "heads": 16,
+      "head_dim": 128,
+      "bitwise_equal": true,
+      "max_abs_difference": 0.0,
+      "optimized_launches": 1,
+      "fallback_launches": 0
+    },
+    {
+      "lengths": [
+        [
+          2048,
+          16384
+        ]
+      ],
+      "heads": 16,
+      "head_dim": 128,
+      "bitwise_equal": true,
+      "max_abs_difference": 0.0,
+      "optimized_launches": 1,
+      "fallback_launches": 0
+    },
+    {
+      "lengths": [
+        [
+          257,
+          513
+        ]
+      ],
+      "heads": 16,
+      "head_dim": 128,
+      "bitwise_equal": true,
+      "max_abs_difference": 0.0,
+      "optimized_launches": 1,
+      "fallback_launches": 0
+    },
+    {
+      "lengths": [
+        [
+          128,
+          2053
+        ]
+      ],
+      "heads": 16,
+      "head_dim": 128,
+      "bitwise_equal": true,
+      "max_abs_difference": 0.0,
+      "optimized_launches": 1,
+      "fallback_launches": 0
+    },
+    {
+      "lengths": [
+        [
+          65,
+          521
+        ],
+        [
+          129,
+          2051
+        ],
+        [
+          17,
+          191
+        ]
+      ],
+      "heads": 16,
+      "head_dim": 128,
+      "bitwise_equal": true,
+      "max_abs_difference": 0.0,
+      "optimized_launches": 1,
+      "fallback_launches": 0
+    },
+    {
+      "lengths": [
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ],
+        [
+          1,
+          512
+        ]
+      ],
+      "heads": 16,
+      "head_dim": 128,
+      "bitwise_equal": true,
+      "max_abs_difference": 0.0,
+      "optimized_launches": 0,
+      "fallback_launches": 1
+    },
+    {
+      "lengths": [
+        [
+          71,
+          251
+        ]
+      ],
+      "heads": 8,
+      "head_dim": 64,
+      "bitwise_equal": true,
+      "max_abs_difference": 0.0,
+      "optimized_launches": 0,
+      "fallback_launches": 1
+    }
+  ],
+  "complete": true,
+  "all_bitwise_equal": true,
+  "scope": "Differential native equivalence; independent float32 reference discrepancy on irregular shapes remains under investigation."
+}

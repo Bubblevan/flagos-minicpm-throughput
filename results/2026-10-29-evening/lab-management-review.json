@@ -1,0 +1,27 @@
+{
+  "checked_at": "2026-10-29T18:57:12.610573+08:00",
+  "source": "https://flagos.io/OnlineLab",
+  "reservation_start": "2026-10-29T18:00:00+08:00",
+  "reservation_end": "2026-10-30T00:00:00+08:00",
+  "environment_release_display": "2026-11-21T00:00:00+08:00",
+  "hardware": {
+    "gpu": "BI-V150 x1",
+    "cpu_cores": 6,
+    "memory_gb": 20,
+    "system_disk_gb": 50
+  },
+  "notice": {
+    "url": "https://flagos.io/MessageDetail?id=8",
+    "sender": "FlagOS 开放计算大赛组委会",
+    "sent_at": "2026-09-11 20:35",
+    "title": "【赛道二赛题已公布】赛题正式公布，算力申请 9 月 14 日开启",
+    "summary": "Fixed hardware, MiniCPM5-2B, precision-preserving throughput optimization; compute applications September14 to November10; links to the same official task page.",
+    "contains_new_baseline_values": false,
+    "contains_gpu_clock_or_image_revision": false
+  },
+  "other_visible_recent_messages": [
+    "2026 AI Open Computing conference invitation",
+    "September2 website maintenance notice"
+  ],
+  "limitations": "Read the current notification preview and full Track2 notice; not proof that no other historical notice exists."
+}

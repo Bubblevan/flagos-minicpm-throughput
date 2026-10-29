@@ -1,0 +1,64 @@
+{
+  "results": [
+    {
+      "source": "required_tag_a1",
+      "measurements": [
+        {
+          "phase": "measure_a",
+          "seconds": 95.73057282436639,
+          "total_tokens_per_second": 2909.4989383486277,
+          "mean_ttft_seconds": 39.01673804036545
+        },
+        {
+          "phase": "measure_b",
+          "seconds": 95.72006743680686,
+          "total_tokens_per_second": 2909.818259205475,
+          "mean_ttft_seconds": 38.9484255495845
+        }
+      ],
+      "mean_total_tokens_per_second": 2909.6585987770513
+    },
+    {
+      "source": "preinstalled_b",
+      "measurements": [
+        {
+          "phase": "measure_a",
+          "seconds": 95.69805455487221,
+          "total_tokens_per_second": 2910.487588232999,
+          "mean_ttft_seconds": 38.99802605919831
+        },
+        {
+          "phase": "measure_b",
+          "seconds": 95.7057315572165,
+          "total_tokens_per_second": 2910.254124472007,
+          "mean_ttft_seconds": 38.93264264433674
+        }
+      ],
+      "mean_total_tokens_per_second": 2910.370856352503
+    },
+    {
+      "source": "required_tag_a2",
+      "measurements": [
+        {
+          "phase": "measure_a",
+          "seconds": 95.68598905997351,
+          "total_tokens_per_second": 2910.854585256216,
+          "mean_ttft_seconds": 38.97710591931536
+        },
+        {
+          "phase": "measure_b",
+          "seconds": 95.69675298500806,
+          "total_tokens_per_second": 2910.5271737237986,
+          "mean_ttft_seconds": 38.94128576685762
+        }
+      ],
+      "mean_total_tokens_per_second": 2910.6908794900073
+    }
+  ],
+  "official_score": false,
+  "comparison_complete": true,
+  "limitations": "Sequential comparison with separate initially fresh caches; one warmup and two measurements each. Time/order effects remain possible.",
+  "required_tag_relative_to_preinstalled": -6.738564555974769e-05,
+  "a2_relative_to_a1_drift": 0.00035477726266242016,
+  "condition_order": "required_tag_a1, preinstalled_b, required_tag_a2"
+}
