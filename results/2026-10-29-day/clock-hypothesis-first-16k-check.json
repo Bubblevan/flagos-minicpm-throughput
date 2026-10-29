@@ -1,0 +1,12 @@
+{
+  "held_out_observation": "First 16K run completed after the 14:09 clock hypothesis was saved; discarded for final competition average.",
+  "observed_tps": 858.31,
+  "observed_ttft_ms": 639568.74,
+  "hypothetical_scaled_reference_tps": 857.953125,
+  "relative_difference": 0.0004159609535776543,
+  "official_active_clock_verified": false,
+  "hypothetical_scaled_reference_ttft_ms": 639212.832,
+  "relative_ttft_difference": 0.0005567910751829164,
+  "checked_at": "2026-10-29T14:47:48.5509496+08:00",
+  "causality_confirmed": false
+}

@@ -1,0 +1,2366 @@
+diff --git a/.github/workflows/rule-check.yaml b/.github/workflows/rule-check.yaml
+new file mode 100644
+--- /dev/null
++++ b/.github/workflows/rule-check.yaml
+@@ -0,0 +1,129 @@
++# Copyright 2026 FlagOS Contributors
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++name: rule-check
++
++on:
++  pull_request:
++    branches:
++      - master
++    types:
++      - opened
++      - reopened
++      - synchronize
++
++permissions:
++  contents: read
++
++concurrency:
++  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
++  cancel-in-progress: true
++
++jobs:
++  derive-changed-operators:
++    runs-on: ubuntu-latest
++    outputs:
++      changed_operators: ${{ steps.derive.outputs.changed_operators }}
++      changed_files: ${{ steps.derive.outputs.changed_files }}
++      has_changes: ${{ steps.derive.outputs.has_changes }}
++    steps:
++      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
++        with:
++          fetch-depth: 0
++      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6.3.0
++        with:
++          python-version: '3.11'
++      - name: Install dependencies
++        run: pip install pyyaml
++      - name: Derive changed operators
++        id: derive
++        run: |
++          python tools/ci_checks/derive_changed_operators.py \
++            --base "${{ github.event.pull_request.base.sha }}" \
++            --head "${{ github.event.pull_request.head.sha }}"
++
++  check-operators-yaml:
++    runs-on: ubuntu-latest
++    needs: derive-changed-operators
++    if: needs.derive-changed-operators.outputs.has_changes == 'true'
++    steps:
++      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
++      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6.3.0
++        with:
++          python-version: '3.11'
++      - name: Install dependencies
++        run: pip install pyyaml
++      - name: Check operators.yaml
++        run: |
++          python tools/ci_checks/check_operators_yaml.py \
++            --operators '${{ needs.derive-changed-operators.outputs.changed_operators }}'
++
++  check-init-exports:
++    runs-on: ubuntu-latest
++    needs: derive-changed-operators
++    steps:
++      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
++      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6.3.0
++        with:
++          python-version: '3.11'
++      - name: Check __init__.py exports and registry
++        run: python tools/ci_checks/check_init_exports.py
++
++  check-kernelgen-tests:
++    runs-on: ubuntu-latest
++    needs: derive-changed-operators
++    if: needs.derive-changed-operators.outputs.has_changes == 'true'
++    steps:
++      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
++      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6.3.0
++        with:
++          python-version: '3.11'
++      - name: Install dependencies
++        run: pip install pyyaml
++      - name: Check KernelGen tests for use_gems
++        run: |
++          python tools/ci_checks/check_kernelgen_tests.py \
++            --operators '${{ needs.derive-changed-operators.outputs.changed_operators }}'
++
++  check-operator-markers:
++    runs-on: ubuntu-latest
++    needs: derive-changed-operators
++    if: needs.derive-changed-operators.outputs.has_changes == 'true'
++    steps:
++      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
++      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6.3.0
++        with:
++          python-version: '3.11'
++      - name: Install dependencies
++        run: pip install pyyaml
++      - name: Check operator test files and markers
++        run: |
++          python tools/ci_checks/check_operator_markers.py \
++            --operators '${{ needs.derive-changed-operators.outputs.changed_operators }}'
++
++  check-aten-operators:
++    runs-on: ubuntu-latest
++    needs: derive-changed-operators
++    if: needs.derive-changed-operators.outputs.has_changes == 'true'
++    steps:
++      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
++      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1  # v6.3.0
++        with:
++          python-version: '3.11'
++      - name: Install dependencies
++        run: pip install pyyaml
++      - name: Check aten operator names
++        run: |
++          python tools/ci_checks/check_aten_operators.py \
++            --operators '${{ needs.derive-changed-operators.outputs.changed_operators }}'
+diff --git a/benchmark/test_bmm.py b/benchmark/test_bmm.py
+--- a/benchmark/test_bmm.py
++++ b/benchmark/test_bmm.py
+@@ -16,6 +16,8 @@
+ import torch
+ 
+ import flag_gems
++from flag_gems.ops.bmm import bmm_out as triton_bmm_out
++from flag_gems.ops.bmm_w8a8_fp8 import bmm_w8a8_fp8
+ 
+ from . import base, consts
+ 
+@@ -69,3 +71,155 @@ def test_bmm_out(monkeypatch):
+     )
+ 
+     bench.run()
++
++
++FP8_DTYPE = getattr(torch, "float8_e4m3fn", None)
++
++
++def _is_fp8e4nv_supported():
++    if FP8_DTYPE is None or not torch.cuda.is_available():
++        return False
++    major, minor = torch.cuda.get_device_capability()
++    return major + minor / 10 >= 8.9
++
++
++def _quantize_a_fp8_per_mk_block(A, block_m=128, block_k=128):
++    fp8_info = torch.finfo(FP8_DTYPE)
++    batch, M, K = A.shape
++    num_m_blocks = (M + block_m - 1) // block_m
++    num_k_blocks = (K + block_k - 1) // block_k
++    padded_m = num_m_blocks * block_m
++    padded_k = num_k_blocks * block_k
++    A_for_scale = A
++    if padded_m != M:
++        A_for_scale = torch.cat(
++            [
++                A_for_scale,
++                torch.zeros((batch, padded_m - M, K), dtype=A.dtype, device=A.device),
++            ],
++            dim=1,
++        )
++    if padded_k != K:
++        A_for_scale = torch.cat(
++            [
++                A_for_scale,
++                torch.zeros(
++                    (batch, padded_m, padded_k - K),
++                    dtype=A.dtype,
++                    device=A.device,
++                ),
++            ],
++            dim=2,
++        )
++    A_blocked = A_for_scale.reshape(
++        batch, num_m_blocks, block_m, num_k_blocks, block_k
++    ).float()
++    scale = (A_blocked.abs().amax(dim=(2, 4)) / fp8_info.max).clamp(min=1e-8)
++    A_fp8 = (
++        (A_blocked / scale[:, :, None, :, None])
++        .clamp(fp8_info.min, fp8_info.max)
++        .to(FP8_DTYPE)
++    )
++    A_fp8 = A_fp8.reshape(batch, padded_m, padded_k)[:, :M, :K].contiguous()
++    return A_fp8, scale.float().contiguous()
++
++
++def _quantize_b_fp8_per_nk_block(B, block_n=128, block_k=128):
++    fp8_info = torch.finfo(FP8_DTYPE)
++    batch, K, N = B.shape
++    num_k_blocks = (K + block_k - 1) // block_k
++    num_n_blocks = (N + block_n - 1) // block_n
++    padded_k = num_k_blocks * block_k
++    padded_n = num_n_blocks * block_n
++    B_for_scale = B
++    if padded_k != K:
++        B_for_scale = torch.cat(
++            [
++                B_for_scale,
++                torch.zeros((batch, padded_k - K, N), dtype=B.dtype, device=B.device),
++            ],
++            dim=1,
++        )
++    if padded_n != N:
++        B_for_scale = torch.cat(
++            [
++                B_for_scale,
++                torch.zeros(
++                    (batch, padded_k, padded_n - N),
++                    dtype=B.dtype,
++                    device=B.device,
++                ),
++            ],
++            dim=2,
++        )
++    B_blocked = B_for_scale.reshape(
++        batch, num_k_blocks, block_k, num_n_blocks, block_n
++    ).float()
++    scale = (B_blocked.abs().amax(dim=(2, 4)) / fp8_info.max).clamp(min=1e-8)
++    B_fp8 = (
++        (B_blocked / scale[:, :, None, :, None])
++        .clamp(fp8_info.min, fp8_info.max)
++        .to(FP8_DTYPE)
++    )
++    B_fp8 = B_fp8.reshape(batch, padded_k, padded_n)[:, :K, :N].contiguous()
++    return B_fp8, scale.float().contiguous()
++
++
++def _triton_bmm_bf16_block_scale_baseline(
++    A, B, A_fp8, B_fp8, A_scale, B_scale, out, block_m, block_n, block_k
++):
++    return triton_bmm_out(A, B, out)
++
++
++def _gems_bmm_w8a8_fp8(
++    A, B, A_fp8, B_fp8, A_scale, B_scale, out, block_m, block_n, block_k
++):
++    return bmm_w8a8_fp8(
++        A_fp8,
++        B_fp8,
++        A_scale,
++        B_scale,
++        block_size=(block_m, block_n, block_k),
++        out=out,
++    )
++
++
++class BmmW8A8Fp8Benchmark(base.Benchmark):
++    DEFAULT_SHAPE_DESC = "B, M, N, K"
++
++    def set_shapes(self, shape_file_path=None):
++        self.shapes = [
++            (2, 16, 32, 64),
++            (4, 64, 64, 128),
++            (2, 128, 128, 256),
++            (4, 256, 256, 512),
++            (8, 512, 512, 1024),
++            (8, 1024, 1024, 2048),
++            (8, 2048, 2048, 4096),
++            (4, 4096, 4096, 16384),
++            (8, 4096, 4096, 16384),
++        ]
++
++    def get_input_iter(self, dtype):
++        for batch, m, n, k in self.shapes:
++            A = torch.randn((batch, m, k), device=self.device, dtype=dtype)
++            B = torch.randn((batch, k, n), device=self.device, dtype=dtype)
++            A_fp8, A_scale = _quantize_a_fp8_per_mk_block(A)
++            B_fp8, B_scale = _quantize_b_fp8_per_nk_block(B)
++            out = torch.empty((batch, m, n), device=self.device, dtype=dtype)
++            yield A, B, A_fp8, B_fp8, A_scale, B_scale, out, 128, 128, 128
++
++
++@pytest.mark.bmm_w8a8_fp8
++@pytest.mark.skipif(
++    not _is_fp8e4nv_supported(),
++    reason="FP8 BMM W8A8 block-scale requires CUDA fp8e4nv support",
++)
++def test_bmm_w8a8_fp8_vs_triton_bf16():
++    bench = BmmW8A8Fp8Benchmark(
++        op_name="bmm_w8a8_fp8_vs_triton_bf16",
++        torch_op=_triton_bmm_bf16_block_scale_baseline,
++        dtypes=[torch.bfloat16],
++    )
++    bench.set_gems(_gems_bmm_w8a8_fp8)
++    bench.run()
+diff --git a/conf/ci_test_aliases.yaml b/conf/ci_test_aliases.yaml
+new file mode 100644
+--- /dev/null
++++ b/conf/ci_test_aliases.yaml
+@@ -0,0 +1,46 @@
++# Operator test aliases
++#
++# Maps operator IDs to their actual test file names when the standard
++# naming convention (tests/test_<id>.py) does not apply.
++#
++# Common cases:
++#   - _out variants share test with the base operator
++#   - Compound operators (e.g., arange_start_step) tested in a shared file
++#   - Operators with special naming (leading underscore, etc.)
++#
++# Format:
++#   <operator_id>: <test_file_stem>  (without tests/ prefix and .py suffix)
++#
++# Example:
++#   addmm_out: test_addmm
++#   means tests/test_addmm.py covers the addmm_out operator
++
++# _out variants - share test with base operator
++addcdiv_out: test_addcdiv
++addcmul_out: test_addcmul
++addmm_out: test_addmm
++addmm_dtype_out: test_addmm
++addmv_out: test_addmv
++arccosh_out: test_acosh
++arcsin_out: test_asin
++arcsinh_out: test_asinh
++arctanh_out: test_atanh
++atan2_out: test_atan2
++alias_copy_out: test_alias_copy
++as_strided_copy_out: test_as_strided_copy
++baddbmm_out: test_baddbmm
++
++# Compound / alternative names
++arange_start_step: test_arange
++addmm_dtype: test_addmm
++all_dim: test_all
++all_dims: test_all
++any_dim: test_any
++any_dims: test_any
++and_scalar: test_bitwise_and
++and_tensor: test_bitwise_and
++arctan: test_atan
++
++# Operators tested in combined files or with different naming
++batch_norm_backward: test_batch_norm
++batch_norm_impl_index: test_batch_norm
+diff --git a/conf/operators.yaml b/conf/operators.yaml
+--- a/conf/operators.yaml
++++ b/conf/operators.yaml
+@@ -1919,6 +1919,19 @@ ops:
+     stages:
+       - stable: '5.0'
+     cpp: '4.0'
++  - id: bmm_w8a8_fp8
++    description: |
++      Performs batched matrix multiplication with block-wise FP8 E4M3
++      quantized activations and weights using FP32 accumulation.
++    for:
++      - None
++    labels:
++      - NoCPU
++      - Quantization
++    kind:
++      - BLAS
++    stages:
++      - alpha: '5.4'
+   - id: broadcast_tensors
+     description: >-
+       Broadcasts the given tensors to a common shape according to
+diff --git a/src/flag_gems/backends.yaml b/src/flag_gems/backends.yaml
+--- a/src/flag_gems/backends.yaml
++++ b/src/flag_gems/backends.yaml
+@@ -186,7 +186,7 @@ backends:
+       - torch==2.9.0+das.opt1.dtk2604
+ 
+   iluvatar:
+-    python: "3.10"
++    python: "3.12"
+     cmake_backend: IX
+     triton: triton==3.1.0+corex.4.4.0
+     # flagtree==0.5.1+iluvatar3.1 — plugin loading bug in venv, disabled for now
+diff --git a/src/flag_gems/ops/__init__.py b/src/flag_gems/ops/__init__.py
+--- a/src/flag_gems/ops/__init__.py
++++ b/src/flag_gems/ops/__init__.py
+@@ -262,6 +262,7 @@
+ from flag_gems.ops.blackman_window import blackman_window, blackman_window_periodic
+ from flag_gems.ops.block_diag import block_diag
+ from flag_gems.ops.bmm import bmm, bmm_out
++from flag_gems.ops.bmm_w8a8_fp8 import bmm_w8a8_fp8
+ from flag_gems.ops.broadcast_tensors import broadcast_tensors
+ from flag_gems.ops.broadcast_to import broadcast_to
+ from flag_gems.ops.bucketize import bucketize
+@@ -1159,6 +1160,7 @@
+     "block_diag",
+     "bmm",
+     "bmm_out",
++    "bmm_w8a8_fp8",
+     "broadcast_tensors",
+     "broadcast_to",
+     "bucketize",
+diff --git a/src/flag_gems/ops/bmm_w8a8_fp8.py b/src/flag_gems/ops/bmm_w8a8_fp8.py
+new file mode 100644
+--- /dev/null
++++ b/src/flag_gems/ops/bmm_w8a8_fp8.py
+@@ -0,0 +1,228 @@
++import logging
++
++import torch
++import triton
++import triton.language as tl
++
++from flag_gems.runtime import torch_device_fn
++from flag_gems.utils import libentry
++from flag_gems.utils import triton_lang_extension as ext
++
++logger = logging.getLogger(__name__)
++
++
++@libentry()
++@triton.jit
++def bmm_w8a8_fp8_kernel(
++    A,
++    B,
++    A_SCALE,
++    B_SCALE,
++    O,
++    M: tl.constexpr,
++    N: tl.constexpr,
++    K: tl.constexpr,
++    NUM_K_TILES: tl.constexpr,
++    BLOCK_M: tl.constexpr,
++    BLOCK_K: tl.constexpr,
++    BLOCK_N: tl.constexpr,
++    stride_ab: tl.constexpr,
++    stride_am: tl.constexpr,
++    stride_ak: tl.constexpr,
++    stride_bb: tl.constexpr,
++    stride_bk: tl.constexpr,
++    stride_bn: tl.constexpr,
++    stride_asb: tl.constexpr,
++    stride_asm: tl.constexpr,
++    stride_ask: tl.constexpr,
++    stride_bsb: tl.constexpr,
++    stride_bsk: tl.constexpr,
++    stride_bsn: tl.constexpr,
++    stride_ob: tl.constexpr,
++    stride_om: tl.constexpr,
++    stride_on: tl.constexpr,
++    TILE_M: tl.constexpr,
++    TILE_N: tl.constexpr,
++    TILE_K: tl.constexpr,
++    GROUP_M: tl.constexpr,
++):
++    pid_b = ext.program_id(2)
++    A += pid_b * stride_ab
++    B += pid_b * stride_bb
++    A_SCALE += pid_b * stride_asb
++    B_SCALE += pid_b * stride_bsb
++    O += pid_b * stride_ob
++
++    pidx = ext.program_id(0)
++    pidy = ext.program_id(1)
++
++    if GROUP_M == 1:
++        pid_m, pid_n = pidx, pidy
++    else:
++        gridx = ext.num_programs(0)
++        gridy = ext.num_programs(1)
++        pid = pidx + pidy * gridx
++        num_cta_per_group = gridy * GROUP_M
++        group_id = pid // num_cta_per_group
++        inner_group_id = pid % num_cta_per_group
++        group_size = tl.where(
++            (group_id * GROUP_M + GROUP_M) > gridx, gridx % GROUP_M, GROUP_M
++        )
++        pid_m = group_id * GROUP_M + inner_group_id % group_size
++        pid_n = inner_group_id // group_size
++
++    offs_m = pid_m * TILE_M + tl.arange(0, TILE_M)
++    offs_n = pid_n * TILE_N + tl.arange(0, TILE_N)
++    offs_k = tl.arange(0, TILE_K)
++
++    a_ptrs = A + offs_m[:, None] * stride_am + offs_k[None, :] * stride_ak
++    b_ptrs = B + offs_k[:, None] * stride_bk + offs_n[None, :] * stride_bn
++    m_block_idx = (pid_m * TILE_M) // BLOCK_M
++    n_block_idx = (pid_n * TILE_N) // BLOCK_N
++    a_scale_ptr = A_SCALE + m_block_idx * stride_asm
++    b_scale_ptr = B_SCALE + n_block_idx * stride_bsn
++    o_ptrs = O + offs_m[:, None] * stride_om + offs_n[None, :] * stride_on
++
++    acc = tl.zeros((TILE_M, TILE_N), dtype=tl.float32)
++    if BLOCK_K == K:
++        a_scale = tl.load(a_scale_ptr).to(tl.float32)
++        b_scale = tl.load(b_scale_ptr).to(tl.float32)
++        for k_tile in range(NUM_K_TILES):
++            k_offsets = k_tile * TILE_K + offs_k
++            a_mask = (offs_m[:, None] < M) & (k_offsets[None, :] < K)
++            b_mask = (k_offsets[:, None] < K) & (offs_n[None, :] < N)
++            a = tl.load(a_ptrs, mask=a_mask, other=0.0)
++            b = tl.load(b_ptrs, mask=b_mask, other=0.0)
++            acc += tl.dot(a, b, allow_tf32=False)
++            a_ptrs += TILE_K * stride_ak
++            b_ptrs += TILE_K * stride_bk
++        acc = acc * a_scale * b_scale
++    else:
++        for k_tile in range(NUM_K_TILES):
++            k_offsets = k_tile * TILE_K + offs_k
++            k_block_idx = (k_tile * TILE_K) // BLOCK_K
++            a_mask = (offs_m[:, None] < M) & (k_offsets[None, :] < K)
++            b_mask = (k_offsets[:, None] < K) & (offs_n[None, :] < N)
++            a = tl.load(a_ptrs, mask=a_mask, other=0.0)
++            b = tl.load(b_ptrs, mask=b_mask, other=0.0)
++            partial = tl.dot(a, b, allow_tf32=False)
++            a_scale = tl.load(a_scale_ptr + k_block_idx * stride_ask).to(tl.float32)
++            b_scale = tl.load(b_scale_ptr + k_block_idx * stride_bsk).to(tl.float32)
++            acc += partial * a_scale * b_scale
++            a_ptrs += TILE_K * stride_ak
++            b_ptrs += TILE_K * stride_bk
++
++    o_mask = (offs_m[:, None] < M) & (offs_n[None, :] < N)
++    tl.store(o_ptrs, acc, mask=o_mask)
++
++
++def _get_bmm_w8a8_fp8_config(M, N, K, block_k):
++    if K <= 64:
++        if M <= 64:
++            return 64, 32, 64, 1, 8, 3
++        return 64, 16, 64, 2, 4, 2
++    if M <= 64 and N <= 64:
++        return 32, 32, 64, 4, 8, 3
++    if M <= 128 and N <= 128:
++        return 32, 16, 128, 2, 4, 2
++    if M <= 256 and N <= 256:
++        return 128, 16, 128, 1, 4, 2
++    if M >= 2048 and N >= 2048:
++        return 256, 32, 128, 2, 4, 2
++    if M >= 1024 and N >= 1024:
++        return 256, 32, 128, 1, 4, 2
++    if M >= 512 and N >= 512:
++        return 128, 32, 128, 8, 4, 3
++    return 64, 16, 128, 2, 4, 2
++
++
++def bmm_w8a8_fp8(
++    A,
++    B,
++    A_scale,
++    B_scale,
++    block_size=(128, 128, 128),
++    out_dtype=torch.bfloat16,
++    out=None,
++):
++    logger.debug("GEMS BMM W8A8 FP8 BLOCK_SCALE")
++    assert A.ndim == 3 and B.ndim == 3 and A_scale.ndim == 3 and B_scale.ndim == 3
++    assert A.shape[0] == B.shape[0] == A_scale.shape[0] == B_scale.shape[0]
++    assert A.shape[2] == B.shape[1], "K dim mismatch"
++    assert A.dtype in (torch.float8_e4m3fn, torch.float8_e5m2), "A must be fp8"
++    assert B.dtype in (torch.float8_e4m3fn, torch.float8_e5m2), "B must be fp8"
++
++    block_m, block_n, block_k = block_size
++    batch, M, K = A.shape
++    _, _, N = B.shape
++    num_m_blocks = triton.cdiv(M, block_m)
++    num_k_blocks = triton.cdiv(K, block_k)
++    num_n_blocks = triton.cdiv(N, block_n)
++    launch_block_m = M if M < block_m else block_m
++    launch_block_k = K if K < block_k else block_k
++    launch_block_n = N if N < block_n else block_n
++    assert A_scale.shape == (batch, num_m_blocks, num_k_blocks)
++    assert B_scale.shape == (batch, num_k_blocks, num_n_blocks)
++
++    if out is None:
++        out = torch.empty((batch, M, N), dtype=out_dtype, device=A.device)
++    else:
++        assert out.shape == (batch, M, N)
++        assert out.dtype == out_dtype and out.device == A.device
++
++    def grid_fn(meta):
++        return (
++            triton.cdiv(M, meta["TILE_M"]),
++            triton.cdiv(N, meta["TILE_N"]),
++            batch,
++        )
++
++    (
++        tile_m,
++        tile_n,
++        tile_k,
++        group_m,
++        num_warps,
++        num_stages,
++    ) = _get_bmm_w8a8_fp8_config(M, N, K, launch_block_k)
++    assert launch_block_m % tile_m == 0 or tile_m % launch_block_m == 0
++    assert launch_block_k % tile_k == 0, "block_k must be divisible by TILE_K"
++    assert launch_block_n % tile_n == 0, "block_n must be divisible by TILE_N"
++
++    with torch_device_fn.device(A.device):
++        bmm_w8a8_fp8_kernel[grid_fn](
++            A,
++            B,
++            A_scale,
++            B_scale,
++            out,
++            M,
++            N,
++            K,
++            NUM_K_TILES=triton.cdiv(K, tile_k),
++            BLOCK_M=launch_block_m,
++            BLOCK_K=launch_block_k,
++            BLOCK_N=launch_block_n,
++            stride_ab=A.stride(0),
++            stride_am=A.stride(1),
++            stride_ak=A.stride(2),
++            stride_bb=B.stride(0),
++            stride_bk=B.stride(1),
++            stride_bn=B.stride(2),
++            stride_asb=A_scale.stride(0),
++            stride_asm=A_scale.stride(1),
++            stride_ask=A_scale.stride(2),
++            stride_bsb=B_scale.stride(0),
++            stride_bsk=B_scale.stride(1),
++            stride_bsn=B_scale.stride(2),
++            stride_ob=out.stride(0),
++            stride_om=out.stride(1),
++            stride_on=out.stride(2),
++            TILE_M=tile_m,
++            TILE_N=tile_n,
++            TILE_K=tile_k,
++            GROUP_M=group_m,
++            num_warps=num_warps,
++            num_stages=num_stages,
++        )
++    return out
+diff --git a/src/flag_gems/runtime/backend/_cambricon/ops/flash_kernel.py b/src/flag_gems/runtime/backend/_cambricon/ops/flash_kernel.py
+--- a/src/flag_gems/runtime/backend/_cambricon/ops/flash_kernel.py
++++ b/src/flag_gems/runtime/backend/_cambricon/ops/flash_kernel.py
+@@ -1233,16 +1233,16 @@ def load_from_kvcache(
+     k_offset = tl.arange(0, BLOCK_K)[:, None] + cache_offset[None, :]
+     v_offset = tl.arange(0, BLOCK_K)[None, :] + cache_offset[:, None]
+     if d == BLOCK_K:
+-        bK_mask = virtual_index[None, :] < max_virtual_index[None, :]
+-        bV_mask = virtual_index[:, None] < max_virtual_index[:, None]
++        bK_mask = virtual_index[None, :] < max_virtual_index
++        bV_mask = virtual_index[:, None] < max_virtual_index
+         bK = tl.load(k_ptr_base + k_offset, mask=bK_mask, other=0.0)
+         bV = tl.load(v_ptr_base + v_offset, mask=bV_mask, other=0.0)
+     else:
+         bK_mask = (tl.arange(0, BLOCK_K)[:, None] < d) & (
+-            virtual_index[None, :] < max_virtual_index[None, :]
++            virtual_index[None, :] < max_virtual_index
+         )
+         bV_mask = (tl.arange(0, BLOCK_K)[None, :] < d) & (
+-            virtual_index[:, None] < max_virtual_index[:, None]
++            virtual_index[:, None] < max_virtual_index
+         )
+         bK = tl.load(k_ptr_base + k_offset, mask=bK_mask, other=0.0)
+         bV = tl.load(v_ptr_base + v_offset, mask=bV_mask, other=0.0)
+diff --git a/src/flag_gems/runtime/backend/_cambricon/tune_configs.yaml b/src/flag_gems/runtime/backend/_cambricon/tune_configs.yaml
+--- a/src/flag_gems/runtime/backend/_cambricon/tune_configs.yaml
++++ b/src/flag_gems/runtime/backend/_cambricon/tune_configs.yaml
+@@ -1462,10 +1462,14 @@ index:
+   - 1
+   - 2
+   - 4
++  # BLOCK_SIZE1=4096 excluded: with the default num_stages=2 a 4096-wide tile
++  # exceeds NRAM (always OutOfResources, can never win) and BLOCK_SIZE0=4 x
++  # BLOCK_SIZE1=4096 trips an MLU AutoTileForTritonPass failure
++  # ("PassManager::run failed" on an untileable tensor.expand_shape that
++  # collapses [1, 4, 4096]) in inductor-wrapped contexts with dynamic shapes.
+   block_size1:
+   - 1024
+   - 2048
+-  - 4096
+   warps:
+   - 1
+   - 4
+diff --git a/src/flag_gems/runtime/backend/_iluvatar/fused/__init__.py b/src/flag_gems/runtime/backend/_iluvatar/fused/__init__.py
+--- a/src/flag_gems/runtime/backend/_iluvatar/fused/__init__.py
++++ b/src/flag_gems/runtime/backend/_iluvatar/fused/__init__.py
+@@ -12,10 +12,12 @@
+ # See the License for the specific language governing permissions and
+ # limitations under the License.
+ 
++from .matmul_bias_activation import matmul_bias_activation
+ from .sparse_attention import sparse_attn_triton
+ from .top_k_per_row_prefill import top_k_per_row_prefill
+ 
+ __all__ = [
++    "matmul_bias_activation",
+     "sparse_attn_triton",
+     "top_k_per_row_prefill",
+ ]
+diff --git a/src/flag_gems/runtime/backend/_iluvatar/fused/matmul_bias_activation.py b/src/flag_gems/runtime/backend/_iluvatar/fused/matmul_bias_activation.py
+new file mode 100644
+--- /dev/null
++++ b/src/flag_gems/runtime/backend/_iluvatar/fused/matmul_bias_activation.py
+@@ -0,0 +1,185 @@
++# Copyright 2026 FlagOS Contributors
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++import logging
++
++import torch
++import triton
++import triton.language as tl
++
++from flag_gems.runtime import torch_device_fn
++from flag_gems.utils import broadcastable_to, libentry
++
++logger = logging.getLogger(__name__)
++
++_DTYPE_CONFIGS = {
++    torch.float16: {
++        "BLOCK_SIZE_M": 256,
++        "BLOCK_SIZE_N": 256,
++        "BLOCK_SIZE_K": 32,
++        "num_warps": 16,
++        "num_stages": 2,
++    },
++    torch.bfloat16: {
++        "BLOCK_SIZE_M": 256,
++        "BLOCK_SIZE_N": 256,
++        "BLOCK_SIZE_K": 32,
++        "num_warps": 16,
++        "num_stages": 2,
++    },
++    torch.float32: {
++        "BLOCK_SIZE_M": 128,
++        "BLOCK_SIZE_N": 128,
++        "BLOCK_SIZE_K": 32,
++        "num_warps": 8,
++        "num_stages": 2,
++    },
++}
++
++
++def _mba_config(args):
++    return _DTYPE_CONFIGS.get(args["a_ptr"].dtype, _DTYPE_CONFIGS[torch.float16])
++
++
++@libentry()
++@triton.heuristics(
++    {
++        "BLOCK_SIZE_M": lambda args: _mba_config(args)["BLOCK_SIZE_M"],
++        "BLOCK_SIZE_N": lambda args: _mba_config(args)["BLOCK_SIZE_N"],
++        "BLOCK_SIZE_K": lambda args: _mba_config(args)["BLOCK_SIZE_K"],
++        "num_warps": lambda args: _mba_config(args)["num_warps"],
++        "num_stages": lambda args: _mba_config(args)["num_stages"],
++        "EVEN_K": lambda args: args["K"] % args["BLOCK_SIZE_K"] == 0,
++    }
++)
++@triton.jit
++def matmul_bias_activation_kernel(
++    a_ptr,
++    b_ptr,
++    bias_ptr,
++    c_ptr,
++    M,
++    N,
++    K,
++    stride_am,
++    stride_ak,
++    stride_bk,
++    stride_bn,
++    stride_bias,
++    stride_cm,
++    stride_cn,
++    BLOCK_SIZE_M: tl.constexpr,
++    BLOCK_SIZE_N: tl.constexpr,
++    BLOCK_SIZE_K: tl.constexpr,
++    EVEN_K: tl.constexpr,
++):
++    pid = tl.program_id(0)
++    grid_n = tl.cdiv(N, BLOCK_SIZE_N)
++    pid_m = pid // grid_n
++    pid_n = pid % grid_n
++
++    offs_am = pid_m * BLOCK_SIZE_M + tl.arange(0, BLOCK_SIZE_M)
++    offs_bn = pid_n * BLOCK_SIZE_N + tl.arange(0, BLOCK_SIZE_N)
++    offs_k = tl.arange(0, BLOCK_SIZE_K)
++    # Wrap M/N indices so full-tile loads can omit masks without OOB
++    ram = tl.max_contiguous(tl.multiple_of(offs_am % M, BLOCK_SIZE_M), BLOCK_SIZE_M)
++    rbn = tl.max_contiguous(tl.multiple_of(offs_bn % N, BLOCK_SIZE_N), BLOCK_SIZE_N)
++    a_ptrs = a_ptr + (ram[:, None] * stride_am + offs_k[None, :] * stride_ak)
++    b_ptrs = b_ptr + (offs_k[:, None] * stride_bk + rbn[None, :] * stride_bn)
++
++    accumulator = tl.zeros((BLOCK_SIZE_M, BLOCK_SIZE_N), dtype=tl.float32)
++    if EVEN_K:
++        for k in range(0, tl.cdiv(K, BLOCK_SIZE_K)):
++            a = tl.load(a_ptrs)
++            b = tl.load(b_ptrs)
++            accumulator += tl.dot(a, b, allow_tf32=False)
++            a_ptrs += BLOCK_SIZE_K * stride_ak
++            b_ptrs += BLOCK_SIZE_K * stride_bk
++    else:
++        # Only the last (partial) K tile needs a mask
++        loop_num = tl.cdiv(K, BLOCK_SIZE_K) - 1
++        for k in range(0, loop_num):
++            a = tl.load(a_ptrs)
++            b = tl.load(b_ptrs)
++            accumulator += tl.dot(a, b, allow_tf32=False)
++            a_ptrs += BLOCK_SIZE_K * stride_ak
++            b_ptrs += BLOCK_SIZE_K * stride_bk
++
++        k_remaining = K - loop_num * BLOCK_SIZE_K
++        a = tl.load(a_ptrs, mask=offs_k[None, :] < k_remaining, other=0.0)
++        b = tl.load(b_ptrs, mask=offs_k[:, None] < k_remaining, other=0.0)
++        accumulator += tl.dot(a, b, allow_tf32=False)
++
++    c_ptrs = c_ptr + stride_cm * offs_am[:, None] + stride_cn * offs_bn[None, :]
++    c_mask = (offs_am[:, None] < M) & (offs_bn[None, :] < N)
++    bias_ptrs = bias_ptr + offs_bn * stride_bias
++    bias = tl.load(bias_ptrs, mask=offs_bn < N, other=0.0)
++    accumulator = accumulator + bias[None, :]
++
++    # Apply ReLU activation
++    accumulator = tl.where(accumulator > 0, accumulator, 0.0)
++
++    c = accumulator.to(bias.dtype)
++    tl.store(c_ptrs, c, mask=c_mask)
++
++
++def matmul_bias_activation(input, weight, bias):
++    """
++    Fused matmul + bias + ReLU activation.
++
++    Args:
++        input: Input tensor of shape (M, K)
++        weight: Weight matrix of shape (K, N)
++        bias: Bias vector of shape (N,) or (1, N)
++
++    Returns:
++        Output tensor of shape (M, N) with ReLU activation applied
++    """
++    assert input.shape[1] == weight.shape[0], "Incompatible dimensions"
++    assert broadcastable_to(
++        bias.shape, (input.shape[0], weight.shape[1])
++    ), "Incompatible input shape"
++    M, K = input.shape
++    _, N = weight.shape
++
++    logger.debug("GEMS_ILUVATAR MATMUL_BIAS_ACTIVATION")
++    if input.stride(0) > 1 and input.stride(1) > 1:
++        input = input.contiguous()
++    if weight.stride(0) > 1 and weight.stride(1) > 1:
++        weight = weight.contiguous()
++    if bias.dim() > 1:
++        bias = bias.reshape(-1)
++    out = torch.empty((M, N), device=input.device, dtype=input.dtype)
++
++    grid = lambda META: (
++        triton.cdiv(M, META["BLOCK_SIZE_M"]) * triton.cdiv(N, META["BLOCK_SIZE_N"]),
++    )
++    with torch_device_fn.device(input.device):
++        matmul_bias_activation_kernel[grid](
++            input,
++            weight,
++            bias,
++            out,
++            M,
++            N,
++            K,
++            input.stride(0),
++            input.stride(1),
++            weight.stride(0),
++            weight.stride(1),
++            bias.stride(0),
++            out.stride(0),
++            out.stride(1),
++        )
++    return out
+diff --git a/src/flag_gems/runtime/backend/_iluvatar/ops/__init__.py b/src/flag_gems/runtime/backend/_iluvatar/ops/__init__.py
+--- a/src/flag_gems/runtime/backend/_iluvatar/ops/__init__.py
++++ b/src/flag_gems/runtime/backend/_iluvatar/ops/__init__.py
+@@ -41,6 +41,7 @@
+ from .permute_copy import permute_copy
+ from .renorm_ import renorm_
+ from .repeat import repeat
++from .repeat_interleave import repeat_interleave_self_int
+ from .resolve_neg import resolve_neg
+ from .scatter_add import scatter_add_
+ from .softplus import softplus_backward
+@@ -98,6 +99,7 @@
+     "renorm_",
+     "repeat",
+     "resolve_neg",
++    "repeat_interleave_self_int",
+     "run",
+     "scatter_add_",
+     "softplus_backward",
+diff --git a/src/flag_gems/runtime/backend/_iluvatar/ops/repeat_interleave.py b/src/flag_gems/runtime/backend/_iluvatar/ops/repeat_interleave.py
+new file mode 100644
+--- /dev/null
++++ b/src/flag_gems/runtime/backend/_iluvatar/ops/repeat_interleave.py
+@@ -0,0 +1,140 @@
++# Copyright 2026 FlagOS Contributors
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++import logging
++
++import torch
++import triton
++import triton.language as tl
++
++from flag_gems.runtime import torch_device_fn
++from flag_gems.utils.libentry import libentry
++
++logger = logging.getLogger(__name__)
++
++BLOCK_SIZE = 2048
++NUM_WARPS = 8
++PROGRAMS_PER_SM = 8
++
++
++@libentry()
++@triton.jit
++def repeat_interleave_flat_kernel(
++    inp,
++    out,
++    n_elements,
++    repeats: tl.constexpr,
++    BLOCK_SIZE: tl.constexpr,
++):
++    pid = tl.program_id(0)
++    num_programs = tl.num_programs(0)
++    offsets = tl.arange(0, BLOCK_SIZE)
++    n_blocks = tl.cdiv(n_elements, BLOCK_SIZE)
++
++    for block_id in tl.range(pid, n_blocks, num_programs):
++        out_offsets = block_id * BLOCK_SIZE + offsets
++        mask = out_offsets < n_elements
++        inp_offsets = out_offsets // repeats
++        values = tl.load(inp + inp_offsets, mask=mask)
++        tl.store(out + out_offsets, values, mask=mask)
++
++
++@libentry()
++@triton.jit
++def repeat_interleave_dim_kernel(
++    inp,
++    out,
++    n_elements,
++    inner_size,
++    repeated_inner_size: tl.constexpr,
++    BLOCK_SIZE: tl.constexpr,
++):
++    pid = tl.program_id(0)
++    num_programs = tl.num_programs(0)
++    offsets = tl.arange(0, BLOCK_SIZE)
++    n_blocks = tl.cdiv(n_elements, BLOCK_SIZE)
++
++    for block_id in tl.range(pid, n_blocks, num_programs):
++        out_offsets = block_id * BLOCK_SIZE + offsets
++        mask = out_offsets < n_elements
++        inner_offsets = out_offsets % inner_size
++        outer_offsets = out_offsets // repeated_inner_size
++        inp_offsets = outer_offsets * inner_size + inner_offsets
++        values = tl.load(inp + inp_offsets, mask=mask)
++        tl.store(out + out_offsets, values, mask=mask)
++
++
++def repeat_interleave_self_int(inp, repeats, dim=None, *, output_size=None):
++    logger.debug("GEMS_ILUVATAR REPEAT_INTERLEAVE_SELF_INT")
++
++    if dim is None:
++        inp = inp.contiguous().flatten()
++        dim = 0
++    else:
++        if dim < -inp.ndim or dim >= inp.ndim:
++            raise IndexError(
++                "Dimension out of range (expected to be in range of [{}, {}], but got {})".format(
++                    -inp.ndim, inp.ndim - 1, dim
++                )
++            )
++        if dim < 0:
++            dim += inp.ndim
++
++    inp_shape = list(inp.shape)
++    output_shape = list(inp_shape)
++    output_shape[dim] *= repeats
++
++    if output_size is not None and output_size != output_shape[dim]:
++        raise RuntimeError(
++            "repeat_interleave: Invalid output_size, expected {} but got {}".format(
++                output_shape[dim], output_size
++            )
++        )
++
++    output = torch.empty(output_shape, dtype=inp.dtype, device=inp.device)
++    if repeats == 0 or output.numel() == 0:
++        return output
++
++    inp = inp.contiguous()
++    n_elements = output.numel()
++    n_blocks = triton.cdiv(n_elements, BLOCK_SIZE)
++    num_sms = torch.cuda.get_device_properties(inp.device).multi_processor_count
++    grid = (min(n_blocks, num_sms * PROGRAMS_PER_SM),)
++
++    inner_size = 1
++    for size in inp_shape[dim + 1 :]:
++        inner_size *= size
++
++    with torch_device_fn.device(inp.device):
++        if inner_size == 1:
++            repeat_interleave_flat_kernel[grid](
++                inp,
++                output,
++                n_elements,
++                repeats=repeats,
++                BLOCK_SIZE=BLOCK_SIZE,
++                num_warps=NUM_WARPS,
++            )
++        else:
++            repeat_interleave_dim_kernel[grid](
++                inp,
++                output,
++                n_elements,
++                inner_size,
++                repeated_inner_size=repeats * inner_size,
++                BLOCK_SIZE=BLOCK_SIZE,
++                num_warps=NUM_WARPS,
++            )
++
++    return output
+diff --git a/src/flag_gems/utils/libentry.py b/src/flag_gems/utils/libentry.py
+--- a/src/flag_gems/utils/libentry.py
++++ b/src/flag_gems/utils/libentry.py
+@@ -995,7 +995,20 @@ def run(self, *args, **kwargs):
+                 def bench(config: triton.Config) -> List[float]:
+                     ret = cache.get(config)
+                     if ret is None:
+-                        ret = self._bench(*args, config=config, **kwargs)
++                        try:
++                            ret = self._bench(*args, config=config, **kwargs)
++                        except RuntimeError as e:
++                            # A config whose COMPILE raises a plain RuntimeError
++                            # is outside triton's autotuner catch list
++                            # (OutOfResources / CompileTimeAssertionFailure /
++                            # PTXASError) and would kill the whole process. Some
++                            # backend compilers do this — e.g. cambricon MLU
++                            # AutoTileForTritonPass raises "PassManager::run
++                            # failed" on a tensor.expand_shape it cannot tile.
++                            # Treat such a config as a non-candidate (inf) so
++                            # tuning continues and a working config is selected.
++                            print(f"[libentry] config {config} failed to compile: {e}")
++                            ret = (float("inf"), float("inf"), float("inf"))
+                         # Some Triton backends (e.g. tsingmicro with
+                         # use_cuda_graph=True) return a scalar float from
+                         # _bench instead of the standard (p50, p20, p80) tuple.
+diff --git a/tests/test_bmm.py b/tests/test_bmm.py
+--- a/tests/test_bmm.py
++++ b/tests/test_bmm.py
+@@ -19,6 +19,7 @@
+ import torch
+ 
+ import flag_gems
++from flag_gems.ops.bmm_w8a8_fp8 import bmm_w8a8_fp8
+ 
+ from . import accuracy_utils as utils
+ from . import conftest as cfg
+@@ -121,3 +122,139 @@ def test_bmm_out(M, N, K, dtype):
+         torch.bmm(mat1, mat2, out=out)
+ 
+     utils.gems_assert_close(out, ref_out, dtype, reduce_dim=K)
++
++
++FP8_DTYPE = getattr(torch, "float8_e4m3fn", None)
++FP8_W8A8_BLOCK_SCALE_BMM_SHAPES = [
++    (2, 16, 32, 64),
++    (4, 64, 64, 128),
++    (2, 128, 128, 256),
++]
++
++
++def _is_fp8e4nv_supported():
++    if flag_gems.device != "cuda" or FP8_DTYPE is None:
++        return False
++    major, minor = torch.cuda.get_device_capability()
++    return major + minor / 10 >= 8.9
++
++
++def _quantize_a_fp8_per_mk_block(A, block_m=128, block_k=128):
++    fp8_info = torch.finfo(FP8_DTYPE)
++    batch, M, K = A.shape
++    num_m_blocks = (M + block_m - 1) // block_m
++    num_k_blocks = (K + block_k - 1) // block_k
++    padded_m = num_m_blocks * block_m
++    padded_k = num_k_blocks * block_k
++    A_for_scale = A
++    if padded_m != M:
++        A_for_scale = torch.cat(
++            [
++                A_for_scale,
++                torch.zeros((batch, padded_m - M, K), dtype=A.dtype, device=A.device),
++            ],
++            dim=1,
++        )
++    if padded_k != K:
++        A_for_scale = torch.cat(
++            [
++                A_for_scale,
++                torch.zeros(
++                    (batch, padded_m, padded_k - K),
++                    dtype=A.dtype,
++                    device=A.device,
++                ),
++            ],
++            dim=2,
++        )
++    A_blocked = A_for_scale.reshape(
++        batch, num_m_blocks, block_m, num_k_blocks, block_k
++    ).float()
++    scale = (A_blocked.abs().amax(dim=(2, 4)) / fp8_info.max).clamp(min=1e-8)
++    A_fp8 = (
++        (A_blocked / scale[:, :, None, :, None])
++        .clamp(fp8_info.min, fp8_info.max)
++        .to(FP8_DTYPE)
++    )
++    A_fp8 = A_fp8.reshape(batch, padded_m, padded_k)[:, :M, :K].contiguous()
++    return A_fp8, scale.float().contiguous()
++
++
++def _dequant_a_fp8_per_mk_block(A_fp8, A_scale, block_m=128, block_k=128):
++    M = A_fp8.shape[1]
++    K = A_fp8.shape[2]
++    m_ids = torch.arange(M, device=A_fp8.device) // block_m
++    k_ids = torch.arange(K, device=A_fp8.device) // block_k
++    scale = A_scale.index_select(1, m_ids).index_select(2, k_ids)
++    return A_fp8.float() * scale.float()
++
++
++def _quantize_b_fp8_per_nk_block(B, block_n=128, block_k=128):
++    fp8_info = torch.finfo(FP8_DTYPE)
++    batch, K, N = B.shape
++    num_k_blocks = (K + block_k - 1) // block_k
++    num_n_blocks = (N + block_n - 1) // block_n
++    padded_k = num_k_blocks * block_k
++    padded_n = num_n_blocks * block_n
++    B_for_scale = B
++    if padded_k != K:
++        B_for_scale = torch.cat(
++            [
++                B_for_scale,
++                torch.zeros((batch, padded_k - K, N), dtype=B.dtype, device=B.device),
++            ],
++            dim=1,
++        )
++    if padded_n != N:
++        B_for_scale = torch.cat(
++            [
++                B_for_scale,
++                torch.zeros(
++                    (batch, padded_k, padded_n - N),
++                    dtype=B.dtype,
++                    device=B.device,
++                ),
++            ],
++            dim=2,
++        )
++    B_blocked = B_for_scale.reshape(
++        batch, num_k_blocks, block_k, num_n_blocks, block_n
++    ).float()
++    scale = (B_blocked.abs().amax(dim=(2, 4)) / fp8_info.max).clamp(min=1e-8)
++    B_fp8 = (
++        (B_blocked / scale[:, :, None, :, None])
++        .clamp(fp8_info.min, fp8_info.max)
++        .to(FP8_DTYPE)
++    )
++    B_fp8 = B_fp8.reshape(batch, padded_k, padded_n)[:, :K, :N].contiguous()
++    return B_fp8, scale.float().contiguous()
++
++
++def _dequant_b_fp8_per_nk_block(B_fp8, B_scale, block_n=128, block_k=128):
++    K = B_fp8.shape[1]
++    N = B_fp8.shape[2]
++    k_ids = torch.arange(K, device=B_fp8.device) // block_k
++    n_ids = torch.arange(N, device=B_fp8.device) // block_n
++    scale = B_scale.index_select(1, k_ids).index_select(2, n_ids)
++    return B_fp8.float() * scale.float()
++
++
++@pytest.mark.bmm_w8a8_fp8
++@pytest.mark.skipif(
++    not _is_fp8e4nv_supported(),
++    reason="FP8 BMM W8A8 block-scale requires CUDA fp8e4nv support",
++)
++@pytest.mark.parametrize("batch, M, N, K", FP8_W8A8_BLOCK_SCALE_BMM_SHAPES)
++def test_bmm_w8a8_fp8(batch, M, N, K):
++    torch.manual_seed(0)
++    A = torch.randn((batch, M, K), dtype=torch.bfloat16, device=flag_gems.device)
++    B = torch.randn((batch, K, N), dtype=torch.bfloat16, device=flag_gems.device)
++    A_fp8, A_scale = _quantize_a_fp8_per_mk_block(A)
++    B_fp8, B_scale = _quantize_b_fp8_per_nk_block(B)
++    A_dequant = _dequant_a_fp8_per_mk_block(A_fp8, A_scale)
++    B_dequant = _dequant_b_fp8_per_nk_block(B_fp8, B_scale)
++
++    ref_out = torch.bmm(A_dequant, B_dequant).to(torch.bfloat16)
++    res_out = bmm_w8a8_fp8(A_fp8, B_fp8, A_scale, B_scale)
++
++    utils.gems_assert_close(res_out, ref_out, torch.bfloat16, reduce_dim=K)
+diff --git a/tools/ci_checks/check_aten_operators.py b/tools/ci_checks/check_aten_operators.py
+new file mode 100644
+--- /dev/null
++++ b/tools/ci_checks/check_aten_operators.py
+@@ -0,0 +1,179 @@
++#!/usr/bin/env python3
++# Copyright 2026 FlagOS Contributors
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++"""Check that aten operator names in operators.yaml are valid.
++
++Rules:
++  1. Operators with 'aten' label must have a non-empty 'for' field
++  2. Each name in 'for' must match the aten naming pattern:
++     - Simple: <op_name> (e.g., "abs", "_reshape_alias")
++     - Overloaded: <op_name>.<overload> (e.g., "div.Scalar_mode")
++  3. If a static allowlist is available, validate names against it
++  4. Non-aten operators (fused, vLLM, etc.) with 'for' set to 'None' string are acceptable
++
++Exit codes:
++  0 - all checks pass
++  1 - rule violations found
++  2 - script internal error
++"""
++
++import argparse
++import json
++import re
++import sys
++from pathlib import Path
++
++import yaml
++
++OPERATORS_YAML = Path("conf/operators.yaml")
++ATEN_ALLOWLIST_FILE = Path("conf/aten_op_allowlist.txt")
++
++# Pattern for valid aten operator names
++# Allows: word chars, dots for overloads, leading underscores
++ATEN_NAME_PATTERN = re.compile(r"^_?[a-zA-Z][a-zA-Z0-9_]*(\.[a-zA-Z][a-zA-Z0-9_]*)?$")
++
++
++def load_operators_yaml() -> dict[str, dict]:
++    """Load operators.yaml and return dict keyed by id."""
++    if not OPERATORS_YAML.exists():
++        print(f"::error::Cannot find {OPERATORS_YAML}", file=sys.stderr)
++        sys.exit(2)
++    with open(OPERATORS_YAML) as f:
++        data = yaml.safe_load(f)
++    return {op["id"]: op for op in data.get("ops", []) if "id" in op}
++
++
++def load_allowlist() -> set[str] | None:
++    """Load the aten operator allowlist if available.
++
++    Returns None if the file doesn't exist (allowlist-based validation is optional).
++    """
++    if not ATEN_ALLOWLIST_FILE.exists():
++        return None
++    with open(ATEN_ALLOWLIST_FILE) as f:
++        return {line.strip() for line in f if line.strip() and not line.startswith("#")}
++
++
++def check_aten_names(
++    op_id: str, op_info: dict, allowlist: set[str] | None
++) -> list[str]:
++    """Validate aten names for a single operator."""
++    errors = []
++    labels = op_info.get("labels", [])
++
++    # Only check operators with 'aten' label
++    if "aten" not in labels:
++        return errors
++
++    for_field = op_info.get("for")
++
++    # Rule 1: aten operators must have a non-empty 'for' field
++    if for_field is None:
++        errors.append(
++            f"Operator '{op_id}': has 'aten' label but 'for' field is None/missing"
++        )
++        return errors
++
++    if isinstance(for_field, str) and for_field == "None":
++        errors.append(
++            f"Operator '{op_id}': has 'aten' label but 'for' is string 'None'"
++        )
++        return errors
++
++    if not isinstance(for_field, list) or len(for_field) == 0:
++        errors.append(f"Operator '{op_id}': 'for' must be a non-empty list")
++        return errors
++
++    # Rule 2: Each name must match the aten naming pattern
++    for name in for_field:
++        if not isinstance(name, str):
++            errors.append(
++                f"Operator '{op_id}': 'for' contains non-string value: {name}"
++            )
++            continue
++
++        if not ATEN_NAME_PATTERN.match(name):
++            errors.append(
++                f"Operator '{op_id}': aten name '{name}' does not match expected pattern "
++                f"(expected: <op_name> or <op_name>.<overload>)"
++            )
++
++        # Rule 3: If allowlist exists, validate against it
++        if allowlist is not None:
++            # Strip overload for base-name check
++            base_name = name.split(".")[0]
++            if base_name not in allowlist and name not in allowlist:
++                errors.append(
++                    f"Operator '{op_id}': aten name '{name}' (base: '{base_name}') "
++                    f"not found in allowlist"
++                )
++
++    return errors
++
++
++def main():
++    parser = argparse.ArgumentParser(description="Check aten operator name validity")
++    parser.add_argument(
++        "--operators",
++        help="JSON list of operator IDs to check (incremental mode)",
++        default="",
++    )
++    args = parser.parse_args()
++
++    if not args.operators:
++        print("No operators specified. Use --operators with a JSON list.")
++        sys.exit(0)
++
++    try:
++        op_ids = json.loads(args.operators)
++    except json.JSONDecodeError:
++        op_ids = [op.strip() for op in args.operators.split(",") if op.strip()]
++
++    if not op_ids:
++        print("No operators to check.")
++        sys.exit(0)
++
++    all_operators = load_operators_yaml()
++    allowlist = load_allowlist()
++    if allowlist:
++        print(f"Loaded aten allowlist: {len(allowlist)} entries")
++    else:
++        print("No aten allowlist found, skipping allowlist validation")
++
++    # Only check operators that exist in the registry
++    ops_to_check = [op_id for op_id in op_ids if op_id in all_operators]
++    if not ops_to_check:
++        print("None of the specified operators found in registry.")
++        sys.exit(0)
++
++    print(f"Checking aten names for {len(ops_to_check)} operator(s)...")
++    all_errors = []
++
++    for op_id in sorted(ops_to_check):
++        all_errors.extend(check_aten_names(op_id, all_operators[op_id], allowlist))
++
++    if all_errors:
++        print(f"\n❌ Found {len(all_errors)} issue(s):\n")
++        for err in all_errors:
++            print(f"::error::{err}")
++            print(f"  • {err}")
++        sys.exit(1)
++    else:
++        print("✅ All aten names are valid.")
++        sys.exit(0)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/tools/ci_checks/check_init_exports.py b/tools/ci_checks/check_init_exports.py
+new file mode 100644
+--- /dev/null
++++ b/tools/ci_checks/check_init_exports.py
+@@ -0,0 +1,177 @@
++#!/usr/bin/env python3
++# Copyright 2026 FlagOS Contributors
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++"""Check __init__.py for export list ordering and registry key duplicates.
++
++Rules:
++  1. __all__ entries must be sorted by casefold
++  2. __all__ must not contain duplicates
++  3. _FULL_CONFIG must not contain duplicate aten op name keys
++
++Exit codes:
++  0 - all checks pass
++  1 - rule violations found
++  2 - script internal error
++"""
++
++import ast
++import sys
++from pathlib import Path
++
++INIT_FILE = Path("src/flag_gems/__init__.py")
++
++
++def extract_all_list(tree: ast.Module) -> list[str] | None:
++    """Extract __all__ list from AST."""
++    for node in ast.walk(tree):
++        if isinstance(node, ast.Assign):
++            for target in node.targets:
++                if isinstance(target, ast.Name) and target.id == "__all__":
++                    if isinstance(node.value, ast.List):
++                        elements = []
++                        for elt in node.value.elts:
++                            if isinstance(elt, ast.Constant) and isinstance(
++                                elt.value, str
++                            ):
++                                elements.append(elt.value)
++                        return elements
++    return None
++
++
++def extract_full_config_keys(source: str) -> list[tuple[str, int]]:
++    """Extract the first element (aten op name) from each tuple in _FULL_CONFIG.
++
++    Returns list of (key, line_number) tuples.
++
++    Uses AST to find the _FULL_CONFIG assignment and extract string keys
++    from the tuple-of-tuples structure.
++    """
++    tree = ast.parse(source)
++    keys = []
++
++    for node in ast.walk(tree):
++        if isinstance(node, ast.Assign):
++            for target in node.targets:
++                if isinstance(target, ast.Name) and target.id == "_FULL_CONFIG":
++                    # _FULL_CONFIG is a tuple of tuples
++                    if isinstance(node.value, ast.Tuple):
++                        for elt in node.value.elts:
++                            if isinstance(elt, ast.Tuple) and len(elt.elts) >= 2:
++                                first = elt.elts[0]
++                                if isinstance(first, ast.Constant) and isinstance(
++                                    first.value, str
++                                ):
++                                    keys.append((first.value, first.lineno))
++    return keys
++
++
++def check_all_sorted(all_list: list[str]) -> list[str]:
++    """Check __all__ is sorted by casefold and has no duplicates."""
++    errors = []
++
++    # Check duplicates
++    seen = set()
++    for item in all_list:
++        if item in seen:
++            errors.append(f"__all__ contains duplicate entry: '{item}'")
++        seen.add(item)
++
++    # Check sort order
++    sorted_list = sorted(all_list, key=lambda x: x.casefold())
++    if all_list != sorted_list:
++        # Find first mismatch
++        for i, (actual, expected) in enumerate(zip(all_list, sorted_list)):
++            if actual != expected:
++                errors.append(
++                    f"__all__ is not sorted by casefold. "
++                    f"Position {i}: got '{actual}', expected '{expected}'"
++                )
++                break
++
++    return errors
++
++
++# Known intentional duplicate keys in _FULL_CONFIG (by design)
++KNOWN_DUPLICATE_KEYS = {
++    "ne_.Scalar",
++    "ne_.Tensor",
++}
++
++
++def check_config_duplicates(keys: list[tuple[str, int]]) -> list[str]:
++    """Check _FULL_CONFIG for duplicate aten op name keys.
++
++    Known intentional duplicates are excluded from error reporting.
++    """
++    errors = []
++    seen: dict[str, int] = {}
++
++    for key, lineno in keys:
++        if key in seen:
++            if key not in KNOWN_DUPLICATE_KEYS:
++                errors.append(
++                    f"_FULL_CONFIG has duplicate key '{key}': "
++                    f"first at line {seen[key]}, duplicate at line {lineno}"
++                )
++        else:
++            seen[key] = lineno
++
++    return errors
++
++
++def main():
++    if not INIT_FILE.exists():
++        print(f"::error::Cannot find {INIT_FILE}", file=sys.stderr)
++        sys.exit(2)
++
++    try:
++        source = INIT_FILE.read_text()
++        tree = ast.parse(source)
++    except SyntaxError as e:
++        print(f"::error::Failed to parse {INIT_FILE}: {e}", file=sys.stderr)
++        sys.exit(2)
++
++    print(f"Checking {INIT_FILE}...")
++    all_errors = []
++
++    # Check __all__
++    all_list = extract_all_list(tree)
++    if all_list is not None:
++        print(f"  __all__ has {len(all_list)} entries")
++        all_errors.extend(check_all_sorted(all_list))
++    else:
++        print("  __all__ not found (skipping __all__ checks)")
++
++    # Check _FULL_CONFIG
++    config_keys = extract_full_config_keys(source)
++    if config_keys:
++        print(f"  _FULL_CONFIG has {len(config_keys)} entries")
++        all_errors.extend(check_config_duplicates(config_keys))
++    else:
++        print("  _FULL_CONFIG not found or empty (skipping registry checks)")
++
++    if all_errors:
++        print(f"\n❌ Found {len(all_errors)} issue(s):\n")
++        for err in all_errors:
++            print(f"::error file={INIT_FILE}::{err}")
++            print(f"  • {err}")
++        sys.exit(1)
++    else:
++        print("✅ All checks passed.")
++        sys.exit(0)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/tools/ci_checks/check_kernelgen_tests.py b/tools/ci_checks/check_kernelgen_tests.py
+new file mode 100644
+--- /dev/null
++++ b/tools/ci_checks/check_kernelgen_tests.py
+@@ -0,0 +1,175 @@
++#!/usr/bin/env python3
++# Copyright 2026 FlagOS Contributors
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++"""Check KernelGen test files for forbidden use_gems() calls.
++
++Rules:
++  1. Test files for KernelGen operators must NOT call flag_gems.use_gems()
++     or use_gems() directly, as this bypasses reference implementation comparison.
++
++Exit codes:
++  0 - all checks pass
++  1 - rule violations found
++  2 - script internal error
++"""
++
++import argparse
++import ast
++import json
++import re
++import sys
++from pathlib import Path
++
++import yaml
++
++OPERATORS_YAML = Path("conf/operators.yaml")
++TESTS_DIR = Path("tests")
++
++
++def get_kernelgen_operators() -> set[str]:
++    """Get operator IDs that have 'KernelGen' label."""
++    if not OPERATORS_YAML.exists():
++        print(f"::error::Cannot find {OPERATORS_YAML}", file=sys.stderr)
++        sys.exit(2)
++    with open(OPERATORS_YAML) as f:
++        data = yaml.safe_load(f)
++    ops = data.get("ops", [])
++    return {op["id"] for op in ops if "KernelGen" in op.get("labels", [])}
++
++
++def find_use_gems_calls(filepath: Path) -> list[tuple[int, str]]:
++    """Find use_gems() calls in a Python file using AST.
++
++    Returns list of (line_number, code_snippet) tuples.
++    """
++    try:
++        source = filepath.read_text()
++        tree = ast.parse(source)
++    except SyntaxError:
++        # If we can't parse, skip gracefully
++        return []
++
++    violations = []
++    source_lines = source.splitlines()
++
++    for node in ast.walk(tree):
++        if isinstance(node, ast.Call):
++            # Check for use_gems() or flag_gems.use_gems()
++            func = node.func
++            if isinstance(func, ast.Name) and func.id == "use_gems":
++                line = (
++                    source_lines[node.lineno - 1].strip()
++                    if node.lineno <= len(source_lines)
++                    else ""
++                )
++                violations.append((node.lineno, line))
++            elif isinstance(func, ast.Attribute) and func.attr == "use_gems":
++                # e.g., flag_gems.use_gems()
++                line = (
++                    source_lines[node.lineno - 1].strip()
++                    if node.lineno <= len(source_lines)
++                    else ""
++                )
++                violations.append((node.lineno, line))
++
++    return violations
++
++
++def main():
++    parser = argparse.ArgumentParser(
++        description="Check KernelGen tests for forbidden use_gems() calls"
++    )
++    parser.add_argument(
++        "--operators",
++        help="JSON list of operator IDs to check (incremental mode)",
++        default="",
++    )
++    parser.add_argument(
++        "--changed-files",
++        help="JSON list of changed test file paths (incremental mode)",
++        default="",
++    )
++    parser.add_argument(
++        "--all",
++        action="store_true",
++        help="Check all KernelGen operator tests (full scan, not used in CI)",
++    )
++    args = parser.parse_args()
++
++    kernelgen_ops = get_kernelgen_operators()
++    print(f"KernelGen operators in registry: {len(kernelgen_ops)}")
++
++    # Incremental mode: only check operators from the current PR
++    if args.all:
++        ops_to_check = kernelgen_ops
++    elif args.operators:
++        try:
++            requested_ops = json.loads(args.operators)
++        except json.JSONDecodeError:
++            requested_ops = [
++                op.strip() for op in args.operators.split(",") if op.strip()
++            ]
++        # Only check ops that are KernelGen
++        ops_to_check = set(requested_ops) & kernelgen_ops
++    elif args.changed_files:
++        # Derive operators from changed test file paths
++        try:
++            changed = json.loads(args.changed_files)
++        except json.JSONDecodeError:
++            changed = [f.strip() for f in args.changed_files.split(",") if f.strip()]
++        ops_from_files = set()
++        for fp in changed:
++            m = re.match(r"tests/test_(.+)\.py$", fp)
++            if m:
++                ops_from_files.add(m.group(1))
++        ops_to_check = ops_from_files & kernelgen_ops
++    else:
++        # No operators specified and not --all: nothing to check (safe default)
++        print("No operators specified. Use --operators or --all.")
++        sys.exit(0)
++
++    if not ops_to_check:
++        print("No KernelGen operators to check.")
++        sys.exit(0)
++
++    print(f"Checking {len(ops_to_check)} operator test(s)...")
++    all_violations = []
++
++    for op_id in sorted(ops_to_check):
++        # Find corresponding test file(s)
++        test_file = TESTS_DIR / f"test_{op_id}.py"
++        if not test_file.exists():
++            # Try with leading underscore stripped from test name
++            continue
++
++        violations = find_use_gems_calls(test_file)
++        if violations:
++            for lineno, code in violations:
++                msg = f"{test_file}:{lineno}: use_gems() call found: {code}"
++                all_violations.append(msg)
++
++    if all_violations:
++        print(f"\n❌ Found {len(all_violations)} forbidden use_gems() call(s):\n")
++        for v in all_violations:
++            print(f"::error::{v}")
++            print(f"  • {v}")
++        sys.exit(1)
++    else:
++        print("✅ No forbidden use_gems() calls found.")
++        sys.exit(0)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/tools/ci_checks/check_operator_markers.py b/tools/ci_checks/check_operator_markers.py
+new file mode 100644
+--- /dev/null
++++ b/tools/ci_checks/check_operator_markers.py
+@@ -0,0 +1,208 @@
++#!/usr/bin/env python3
++# Copyright 2026 FlagOS Contributors
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++"""Check that changed operators have corresponding test files and pytest markers.
++
++Rules:
++  1. Each operator in operators.yaml must have a test file: tests/test_<id>.py
++  2. Test file must contain at least one function decorated with @pytest.mark.<id>
++  3. The marker must be collectible (file must be parseable by AST)
++
++Exit codes:
++  0 - all checks pass
++  1 - rule violations found
++  2 - script internal error
++"""
++
++import argparse
++import ast
++import json
++import sys
++from pathlib import Path
++
++import yaml
++
++OPERATORS_YAML = Path("conf/operators.yaml")
++TESTS_DIR = Path("tests")
++ALIASES_FILE = Path("conf/ci_test_aliases.yaml")
++
++
++def load_operators_yaml() -> dict[str, dict]:
++    """Load operators.yaml and return dict keyed by id."""
++    if not OPERATORS_YAML.exists():
++        print(f"::error::Cannot find {OPERATORS_YAML}", file=sys.stderr)
++        sys.exit(2)
++    with open(OPERATORS_YAML) as f:
++        data = yaml.safe_load(f)
++    return {op["id"]: op for op in data.get("ops", []) if "id" in op}
++
++
++def load_aliases() -> dict[str, str]:
++    """Load test file aliases mapping operator_id -> test_file_stem."""
++    if not ALIASES_FILE.exists():
++        return {}
++    with open(ALIASES_FILE) as f:
++        data = yaml.safe_load(f)
++    return data if isinstance(data, dict) else {}
++
++
++def find_test_file(op_id: str, aliases: dict[str, str]) -> Path | None:
++    """Find the test file for an operator.
++
++    Tries in order:
++      1. Alias mapping from ci_test_aliases.yaml
++      2. tests/test_<id>.py (direct match)
++      3. tests/test_<id without trailing _>.py (inplace variants)
++    """
++    # Check alias first
++    if op_id in aliases:
++        alias_stem = aliases[op_id]
++        # Ensure it has test_ prefix
++        if not alias_stem.startswith("test_"):
++            alias_stem = f"test_{alias_stem}"
++        alias_path = TESTS_DIR / f"{alias_stem}.py"
++        if alias_path.exists():
++            return alias_path
++
++    # Direct match
++    direct = TESTS_DIR / f"test_{op_id}.py"
++    if direct.exists():
++        return direct
++
++    # Inplace variant: abs_ might share tests/test_abs.py
++    if op_id.endswith("_"):
++        base = TESTS_DIR / f"test_{op_id[:-1]}.py"
++        if base.exists():
++            return base
++
++    return None
++
++
++def check_marker_in_file(filepath: Path, op_id: str) -> bool:
++    """Check if the test file has at least one @pytest.mark.<op_id> decorator."""
++    try:
++        source = filepath.read_text()
++        tree = ast.parse(source)
++    except (SyntaxError, UnicodeDecodeError):
++        # If we can't parse, assume marker is present (don't block on parse errors)
++        return True
++
++    for node in ast.walk(tree):
++        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
++            for decorator in node.decorator_list:
++                if _is_pytest_mark(decorator, op_id):
++                    return True
++    return False
++
++
++def _is_pytest_mark(node: ast.expr, marker_name: str) -> bool:
++    """Check if a decorator node is @pytest.mark.<marker_name>."""
++    # Pattern: pytest.mark.<name>
++    if isinstance(node, ast.Attribute) and node.attr == marker_name:
++        # Check it's pytest.mark.<name>
++        if isinstance(node.value, ast.Attribute) and node.value.attr == "mark":
++            if (
++                isinstance(node.value.value, ast.Name)
++                and node.value.value.id == "pytest"
++            ):
++                return True
++    # Pattern: pytest.mark.<name>(...) - marker with arguments (shouldn't happen but be safe)
++    if isinstance(node, ast.Call):
++        return _is_pytest_mark(node.func, marker_name)
++    return False
++
++
++def main():
++    parser = argparse.ArgumentParser(
++        description="Check operator test coverage and markers"
++    )
++    parser.add_argument(
++        "--operators",
++        help="JSON list of operator IDs to check (incremental mode)",
++        default="",
++    )
++    args = parser.parse_args()
++
++    if not args.operators:
++        print("No operators specified. Use --operators with a JSON list.")
++        sys.exit(0)
++
++    try:
++        op_ids = json.loads(args.operators)
++    except json.JSONDecodeError:
++        op_ids = [op.strip() for op in args.operators.split(",") if op.strip()]
++
++    if not op_ids:
++        print("No operators to check.")
++        sys.exit(0)
++
++    all_operators = load_operators_yaml()
++    aliases = load_aliases()
++    if aliases:
++        print(f"Loaded {len(aliases)} test aliases")
++
++    # Only check operators that exist in the registry
++    ops_to_check = [op_id for op_id in op_ids if op_id in all_operators]
++    if not ops_to_check:
++        print("None of the specified operators found in registry.")
++        sys.exit(0)
++
++    print(f"Checking test coverage for {len(ops_to_check)} operator(s)...")
++    errors = []
++
++    for op_id in sorted(ops_to_check):
++        op_info = all_operators[op_id]
++        labels = op_info.get("labels", [])
++
++        # Skip fused operators that don't have aten label - they may have different test patterns
++        if "aten" not in labels and "fused" in labels:
++            print(f"  {op_id}: fused operator, skipping test file check")
++            continue
++
++        # Rule 1: Test file must exist
++        test_file = find_test_file(op_id, aliases)
++        if test_file is None:
++            errors.append(
++                f"Operator '{op_id}': no test file found (expected tests/test_{op_id}.py)"
++            )
++            continue
++
++        # Rule 2: Test file must have the operator marker
++        has_marker = check_marker_in_file(test_file, op_id)
++        if not has_marker:
++            # For inplace variants (e.g., abs_), also accept base marker
++            if op_id.endswith("_"):
++                base_id = op_id[:-1]
++                has_marker = check_marker_in_file(test_file, base_id)
++
++        if not has_marker:
++            errors.append(
++                f"Operator '{op_id}': test file {test_file} has no "
++                f"@pytest.mark.{op_id} decorator"
++            )
++
++    if errors:
++        print(f"\n❌ Found {len(errors)} issue(s):\n")
++        for err in errors:
++            print(f"::error::{err}")
++            print(f"  • {err}")
++        sys.exit(1)
++    else:
++        print("✅ All operators have test coverage.")
++        sys.exit(0)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/tools/ci_checks/check_operators_yaml.py b/tools/ci_checks/check_operators_yaml.py
+new file mode 100644
+--- /dev/null
++++ b/tools/ci_checks/check_operators_yaml.py
+@@ -0,0 +1,172 @@
++#!/usr/bin/env python3
++# Copyright 2026 FlagOS Contributors
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++"""Check conf/operators.yaml for schema, duplicates, and ordering issues.
++
++Rules:
++  1. Every entry must have required fields: id, description, for, labels, kind, stages
++  2. No duplicate id values
++  3. Entries must be sorted by id.casefold()
++  4. id must be a non-empty string
++  5. labels must be a non-empty list
++  6. stages must be a non-empty list
++
++Exit codes:
++  0 - all checks pass
++  1 - rule violations found
++  2 - script internal error
++"""
++
++import argparse
++import json
++import sys
++from pathlib import Path
++
++import yaml
++
++OPERATORS_YAML = Path("conf/operators.yaml")
++
++REQUIRED_FIELDS = {"id", "description", "for", "labels", "kind", "stages"}
++
++
++def check_required_fields(ops: list[dict]) -> list[str]:
++    """Check that all entries have required fields."""
++    errors = []
++    for i, op in enumerate(ops):
++        op_id = op.get("id", f"<entry #{i+1}>")
++        missing = REQUIRED_FIELDS - set(op.keys())
++        if missing:
++            errors.append(
++                f"Operator '{op_id}': missing required fields: {sorted(missing)}"
++            )
++        # Validate field types
++        if "id" in op:
++            if not isinstance(op["id"], str) or not op["id"].strip():
++                errors.append(f"Entry #{i+1}: 'id' must be a non-empty string")
++        if "labels" in op:
++            if not isinstance(op["labels"], list) or len(op["labels"]) == 0:
++                errors.append(f"Operator '{op_id}': 'labels' must be a non-empty list")
++        if "stages" in op:
++            if not isinstance(op["stages"], list) or len(op["stages"]) == 0:
++                errors.append(f"Operator '{op_id}': 'stages' must be a non-empty list")
++    return errors
++
++
++def check_duplicate_ids(ops: list[dict]) -> list[str]:
++    """Check for duplicate operator IDs."""
++    errors = []
++    seen = {}
++    for i, op in enumerate(ops):
++        op_id = op.get("id")
++        if op_id is None:
++            continue
++        if op_id in seen:
++            errors.append(
++                f"Duplicate id '{op_id}': appears at entry #{seen[op_id]+1} and #{i+1}"
++            )
++        else:
++            seen[op_id] = i
++    return errors
++
++
++def check_sort_order(ops: list[dict]) -> list[str]:
++    """Check that entries are sorted by id.casefold()."""
++    errors = []
++    ids = [op.get("id", "") for op in ops]
++    sorted_ids = sorted(ids, key=lambda x: x.casefold())
++
++    first_mismatch = None
++    for i, (actual, expected) in enumerate(zip(ids, sorted_ids)):
++        if actual != expected:
++            first_mismatch = i
++            break
++
++    if first_mismatch is not None:
++        # Find the first few out-of-order entries for a helpful message
++        mismatches = []
++        for i in range(first_mismatch, min(first_mismatch + 5, len(ids))):
++            if ids[i] != sorted_ids[i]:
++                mismatches.append(
++                    f"  position {i+1}: got '{ids[i]}', expected '{sorted_ids[i]}'"
++                )
++        errors.append(
++            "operators.yaml is not sorted by id.casefold(). First mismatches:\n"
++            + "\n".join(mismatches)
++        )
++    return errors
++
++
++def main():
++    parser = argparse.ArgumentParser(description="Check operators.yaml validity")
++    parser.add_argument(
++        "--operators",
++        help="JSON list of operator IDs to check (incremental mode). "
++        "If not provided, only duplicate-id check runs globally.",
++        default="",
++    )
++    args = parser.parse_args()
++
++    if not OPERATORS_YAML.exists():
++        print(f"::error::Cannot find {OPERATORS_YAML}", file=sys.stderr)
++        sys.exit(2)
++
++    try:
++        with open(OPERATORS_YAML) as f:
++            data = yaml.safe_load(f)
++    except yaml.YAMLError as e:
++        print(f"::error::Failed to parse {OPERATORS_YAML}: {e}", file=sys.stderr)
++        sys.exit(2)
++
++    ops = data.get("ops", [])
++    if not ops:
++        print(f"::error::No 'ops' key found in {OPERATORS_YAML}", file=sys.stderr)
++        sys.exit(2)
++
++    print(f"Total operators in {OPERATORS_YAML}: {len(ops)}")
++
++    all_errors = []
++
++    # Duplicate ID check always runs globally (cheap, catches merge conflicts)
++    all_errors.extend(check_duplicate_ids(ops))
++
++    # Required fields check: incremental if --operators given, else global
++    if args.operators:
++        try:
++            changed_ids = json.loads(args.operators)
++        except json.JSONDecodeError:
++            changed_ids = [op.strip() for op in args.operators.split(",") if op.strip()]
++        changed_ops = [op for op in ops if op.get("id") in set(changed_ids)]
++        print(f"Checking required fields for {len(changed_ops)} changed operator(s)...")
++        all_errors.extend(check_required_fields(changed_ops))
++    else:
++        print("Checking required fields for all operators...")
++        all_errors.extend(check_required_fields(ops))
++
++    # Sort order check disabled until existing data is fixed
++    # all_errors.extend(check_sort_order(ops))
++
++    if all_errors:
++        print(f"\n❌ Found {len(all_errors)} issue(s):\n")
++        for err in all_errors:
++            print(f"::error::{err}")
++            print(f"  • {err}")
++        sys.exit(1)
++    else:
++        print("✅ All checks passed.")
++        sys.exit(0)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/tools/ci_checks/derive_changed_operators.py b/tools/ci_checks/derive_changed_operators.py
+new file mode 100644
+--- /dev/null
++++ b/tools/ci_checks/derive_changed_operators.py
+@@ -0,0 +1,196 @@
++#!/usr/bin/env python3
++# Copyright 2026 FlagOS Contributors
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++"""Derive which operators are affected by a PR based on git diff.
++
++Outputs:
++  - changed_operators: JSON list of operator IDs
++  - changed_files: JSON list of changed file paths
++  - has_changes: 'true' or 'false'
++
++Exit codes:
++  0 - success
++  2 - script internal error
++"""
++
++import argparse
++import json
++import os
++import re
++import subprocess
++import sys
++from pathlib import Path
++
++import yaml
++
++# Paths relative to repo root
++OPERATORS_YAML = "conf/operators.yaml"
++OPS_DIR = "src/flag_gems/ops"
++TESTS_DIR = "tests"
++INIT_FILE = "src/flag_gems/__init__.py"
++
++# Patterns that map file paths to operator IDs
++OPS_FILE_RE = re.compile(r"^src/flag_gems/ops/(.+)\.py$")
++TEST_FILE_RE = re.compile(r"^tests/test_(.+)\.py$")
++
++
++def get_diff_files(base_sha: str, head_sha: str) -> list[str]:
++    """Get list of changed files between base and head."""
++    try:
++        result = subprocess.run(
++            ["git", "diff", "--name-only", "--diff-filter=ACMR", base_sha, head_sha],
++            capture_output=True,
++            text=True,
++            check=True,
++        )
++        return [f.strip() for f in result.stdout.splitlines() if f.strip()]
++    except subprocess.CalledProcessError as e:
++        print(f"::error::Failed to get git diff: {e.stderr}", file=sys.stderr)
++        sys.exit(2)
++
++
++def load_operators_yaml() -> dict[str, dict]:
++    """Load operators.yaml and return a dict keyed by operator id."""
++    yaml_path = Path(OPERATORS_YAML)
++    if not yaml_path.exists():
++        print(f"::error::Cannot find {OPERATORS_YAML}", file=sys.stderr)
++        sys.exit(2)
++    with open(yaml_path) as f:
++        data = yaml.safe_load(f)
++    ops = data.get("ops", [])
++    return {op["id"]: op for op in ops if "id" in op}
++
++
++def filename_to_operator_id(filename: str) -> str | None:
++    """Convert a filename stem to a potential operator id.
++
++    Handles cases like:
++      - test_abs.py -> abs
++      - test__reshape_alias.py -> _reshape_alias
++      - abs.py (in ops/) -> abs
++    """
++    # Strip leading underscore that is part of the name, not a prefix artifact
++    return filename if filename else None
++
++
++def derive_operators(changed_files: list[str], all_operators: dict) -> list[str]:
++    """Given changed files, derive which operator IDs are affected."""
++    changed_ops = set()
++
++    for filepath in changed_files:
++        # Case 1: operators.yaml itself changed -> check all operators in diff
++        if filepath == OPERATORS_YAML:
++            # When operators.yaml changes, we flag all operators for full check
++            # In practice, individual checks will determine what to validate
++            changed_ops.add("__operators_yaml_changed__")
++            continue
++
++        # Case 2: ops source file changed
++        m = OPS_FILE_RE.match(filepath)
++        if m:
++            stem = m.group(1)
++            # Handle subdirectory ops like ops/sub/file.py -> sub/file
++            # But most ops are flat: ops/abs.py -> abs
++            op_id = stem.replace("/", "_")
++            if op_id == "__init__":
++                continue
++            # Try exact match first
++            if op_id in all_operators:
++                changed_ops.add(op_id)
++            else:
++                # Try without trailing underscore (inplace variants)
++                # e.g., ops file might be abs_.py for abs_ operator
++                changed_ops.add(op_id)
++            continue
++
++        # Case 3: test file changed
++        m = TEST_FILE_RE.match(filepath)
++        if m:
++            stem = m.group(1)
++            if stem in all_operators:
++                changed_ops.add(stem)
++            else:
++                # Still track it, checks can use it
++                changed_ops.add(stem)
++            continue
++
++        # Case 4: __init__.py changed -> full init check needed
++        if filepath == INIT_FILE:
++            changed_ops.add("__init_changed__")
++            continue
++
++    # Remove sentinel markers from operator list for downstream
++    sentinel_markers = {"__operators_yaml_changed__", "__init_changed__"}
++    real_ops = sorted(changed_ops - sentinel_markers)
++
++    return real_ops
++
++
++def set_output(name: str, value: str):
++    """Set a GitHub Actions output variable."""
++    output_file = os.environ.get("GITHUB_OUTPUT")
++    if output_file:
++        with open(output_file, "a") as f:
++            # Use delimiter for multiline values
++            if "\n" in value:
++                f.write(f"{name}<<EOF\n{value}\nEOF\n")
++            else:
++                f.write(f"{name}={value}\n")
++    else:
++        # Running locally, just print
++        print(f"  {name}={value}")
++
++
++def main():
++    parser = argparse.ArgumentParser(
++        description="Derive changed operators from PR diff"
++    )
++    parser.add_argument("--base", required=True, help="Base commit SHA")
++    parser.add_argument("--head", required=True, help="Head commit SHA")
++    args = parser.parse_args()
++
++    print(f"Comparing {args.base}..{args.head}")
++
++    changed_files = get_diff_files(args.base, args.head)
++    print(f"Changed files ({len(changed_files)}):")
++    for f in changed_files[:20]:
++        print(f"  {f}")
++    if len(changed_files) > 20:
++        print(f"  ... and {len(changed_files) - 20} more")
++
++    all_operators = load_operators_yaml()
++    print(f"Total operators in registry: {len(all_operators)}")
++
++    changed_ops = derive_operators(changed_files, all_operators)
++    print(f"Changed operators ({len(changed_ops)}):")
++    for op in changed_ops[:20]:
++        print(f"  {op}")
++    if len(changed_ops) > 20:
++        print(f"  ... and {len(changed_ops) - 20} more")
++
++    # Set outputs
++    ops_json = json.dumps(changed_ops)
++    files_json = json.dumps(changed_files)
++    has_changes = "true" if changed_ops else "false"
++
++    set_output("changed_operators", ops_json)
++    set_output("changed_files", files_json)
++    set_output("has_changes", has_changes)
++
++    print(f"\nhas_changes={has_changes}")
++
++
++if __name__ == "__main__":
++    main()

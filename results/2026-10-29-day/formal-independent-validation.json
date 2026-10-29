@@ -1,0 +1,79 @@
+{
+  "cases": [
+    {
+      "input_len": 4096,
+      "rounds": 4,
+      "successful_requests_each": 256,
+      "discard_first": true,
+      "total_tokens_per_second": 1874.1966666666667,
+      "mean_ttft_ms": 12333.07,
+      "throughput_reference": 2028.01,
+      "ttft_reference": 11573.53,
+      "throughput_pass": false,
+      "ttft_pass": false
+    },
+    {
+      "input_len": 16384,
+      "rounds": 4,
+      "successful_requests_each": 128,
+      "discard_first": true,
+      "total_tokens_per_second": 862.0300000000001,
+      "mean_ttft_ms": 636477.0433333333,
+      "throughput_reference": 915.15,
+      "ttft_reference": 599262.03,
+      "throughput_pass": false,
+      "ttft_pass": false
+    }
+  ],
+  "accuracy": 0.9714285714285714,
+  "accuracy_reported": 0.9714,
+  "accuracy_audit": {
+    "run_dir": "outputs\\live_repro_20261029_day\\level3\\20261029_165624",
+    "prediction_rows": 105,
+    "review_rows": 105,
+    "indices_complete_unique": true,
+    "prediction_error_indices": [],
+    "empty_final_output_indices": [],
+    "finish_reasons": {
+      "stop": 105
+    },
+    "review_statuses": {
+      "success": 105
+    },
+    "correct": 102,
+    "incorrect_indices": [
+      18,
+      87,
+      90
+    ],
+    "score_recomputed": 0.9714285714285714,
+    "score_reported": 0.9714,
+    "execution_summary": {
+      "requested": 105,
+      "succeeded": 105,
+      "errored": 0,
+      "incomplete": false,
+      "subsets": {
+        "Level 3": {
+          "requested": 105,
+          "succeeded": 105,
+          "errored": 0
+        }
+      }
+    },
+    "integrity_pass": true,
+    "accuracy_pass": true
+  },
+  "accuracy_pass": true,
+  "performance_pass": false,
+  "source_tree": "ddf3c7566aac7d23385a1b10c7c258091ef1d3a7",
+  "source_commit_equivalent_tree": "a7620cc191a0b42e040194622c5758b22a7a25dc",
+  "source_git_head_is_not_target_commit": true,
+  "optimization_implemented": false,
+  "raw_csv": "outputs\\repro_20261029_day\\formal-raw-snapshot.csv",
+  "raw_sha256": "031827164dbc6c88df468fae3b75abfaa883182c1b41d77131e4da83b9dd2b97",
+  "original_summary_csv": "outputs\\repro_20261029_day\\formal-summary-snapshot.csv",
+  "independent_validation": true,
+  "workloads_complete": true,
+  "explanation": "Saved evidence audit uses EvalScope indices 0..104; it corrects the controller result-check assertion without rerunning or modifying evaluation."
+}

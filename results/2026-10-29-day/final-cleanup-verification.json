@@ -1,0 +1,17 @@
+{
+  "checked_at": 1793268221.0322015,
+  "matching_processes": [
+    {
+      "status": "zombie",
+      "ppid": 1,
+      "create_time": 1793250525.38,
+      "cmdline": null,
+      "pid": 1729
+    }
+  ],
+  "port_9031_listening": false,
+  "post_formal_diagnostic_directory_exists": false,
+  "interpretation": "No active experiment process or model listener. Only the exited controller remains as a zombie under PID 1; it performs no inference. Optional post-formal source comparison was not launched.",
+  "automation_deleted": true,
+  "backup_helper_exited": true
+}

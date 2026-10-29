@@ -1,0 +1,10 @@
+{
+  "plugin_commit": "13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0",
+  "flaggems_official_tag": "v5.3.5",
+  "flaggems_official_commit": "a7620cc191a0b42e040194622c5758b22a7a25dc",
+  "flaggems_official_tree": "ddf3c7566aac7d23385a1b10c7c258091ef1d3a7",
+  "flaggems_original_commit": "4df52d9168ac55c1c1061cefb4638c570292d896",
+  "hardware": "Iluvatar BI-V150",
+  "driver": "4.5.0",
+  "optimization_implemented": false
+}

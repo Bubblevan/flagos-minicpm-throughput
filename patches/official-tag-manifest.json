@@ -1,0 +1,121 @@
+{
+  "base_commit": "4df52d9168ac55c1c1061cefb4638c570292d896",
+  "target_commit": "a7620cc191a0b42e040194622c5758b22a7a25dc",
+  "target_tree": "ddf3c7566aac7d23385a1b10c7c258091ef1d3a7",
+  "empty_files": [
+    "tools/ci_checks/__init__.py"
+  ],
+  "files": [
+    {
+      "path": ".github/workflows/rule-check.yaml",
+      "status": "added",
+      "sha": "ede78c8522560465b88e08c3396bca65742dc620"
+    },
+    {
+      "path": "benchmark/test_bmm.py",
+      "status": "modified",
+      "sha": "ce1fa677f1b7c3850eedc249e2f46c3cbefbf502"
+    },
+    {
+      "path": "conf/ci_test_aliases.yaml",
+      "status": "added",
+      "sha": "f63abe9e6c9a886c1cf2fc16208c97150bd52e43"
+    },
+    {
+      "path": "conf/operators.yaml",
+      "status": "modified",
+      "sha": "91c49617c09db9c9ca61a4be94a787911a0bc1b7"
+    },
+    {
+      "path": "src/flag_gems/backends.yaml",
+      "status": "modified",
+      "sha": "215698c9fe002cdebfa30d336a2f56bbc9d64bb4"
+    },
+    {
+      "path": "src/flag_gems/ops/__init__.py",
+      "status": "modified",
+      "sha": "efec7c13e518f1f044f26987809388b164f74c3c"
+    },
+    {
+      "path": "src/flag_gems/ops/bmm_w8a8_fp8.py",
+      "status": "added",
+      "sha": "ba9aa1c928e02627c4dde0a5cbd64180ef58294f"
+    },
+    {
+      "path": "src/flag_gems/runtime/backend/_cambricon/ops/flash_kernel.py",
+      "status": "modified",
+      "sha": "7044a58961426534770a4f6d4410a20c8014ca1a"
+    },
+    {
+      "path": "src/flag_gems/runtime/backend/_cambricon/tune_configs.yaml",
+      "status": "modified",
+      "sha": "5463132938c09bd9c398fc761f51292c04a68241"
+    },
+    {
+      "path": "src/flag_gems/runtime/backend/_iluvatar/fused/__init__.py",
+      "status": "modified",
+      "sha": "9980300b6ff0099ab708b45d7d67ca171990dd9e"
+    },
+    {
+      "path": "src/flag_gems/runtime/backend/_iluvatar/fused/matmul_bias_activation.py",
+      "status": "added",
+      "sha": "b4201398e4a9c5ba4b0bf822c95fbe7ddf59b769"
+    },
+    {
+      "path": "src/flag_gems/runtime/backend/_iluvatar/ops/__init__.py",
+      "status": "modified",
+      "sha": "7ff5263233eea49b129ca444a6ae91d302852b0f"
+    },
+    {
+      "path": "src/flag_gems/runtime/backend/_iluvatar/ops/repeat_interleave.py",
+      "status": "added",
+      "sha": "a3815f281690839689b1df7fccd93cd85f0cb76a"
+    },
+    {
+      "path": "src/flag_gems/utils/libentry.py",
+      "status": "modified",
+      "sha": "24876afff22c9669fbb3b9ca58eb70d33d333412"
+    },
+    {
+      "path": "tests/test_bmm.py",
+      "status": "modified",
+      "sha": "1240e77a7bd3a07b3838445644372ceebacc6287"
+    },
+    {
+      "path": "tools/ci_checks/__init__.py",
+      "status": "added",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "tools/ci_checks/check_aten_operators.py",
+      "status": "added",
+      "sha": "afc7795db11ed67875a4defe7eca0baf0e327600"
+    },
+    {
+      "path": "tools/ci_checks/check_init_exports.py",
+      "status": "added",
+      "sha": "8358ae52194a01548fd53dc8dce2438778fd9d6b"
+    },
+    {
+      "path": "tools/ci_checks/check_kernelgen_tests.py",
+      "status": "added",
+      "sha": "65d36d652eb0876073b950dd4eeee0dd95e3ea69"
+    },
+    {
+      "path": "tools/ci_checks/check_operator_markers.py",
+      "status": "added",
+      "sha": "b9643c7155151f4363e4bfdc49e7506e40253582"
+    },
+    {
+      "path": "tools/ci_checks/check_operators_yaml.py",
+      "status": "added",
+      "sha": "d6c9811960b525fed644e88e1e24494bae265d45"
+    },
+    {
+      "path": "tools/ci_checks/derive_changed_operators.py",
+      "status": "added",
+      "sha": "3c88b97f9529edd72c44658b150906823c873fe4"
+    }
+  ],
+  "source": "https://api.github.com/repos/flagos-ai/FlagGems/compare/4df52d9168ac55c1c1061cefb4638c570292d896...a7620cc191a0b42e040194622c5758b22a7a25dc"
+}

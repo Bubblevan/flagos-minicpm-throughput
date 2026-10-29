@@ -1,0 +1,27 @@
+{
+  "historical_active_sm_frequency_verified": false,
+  "status": "Unconfirmed; mathematical agreement is not proof.",
+  "current_aligned_4k": {
+    "relative_difference_vs_scaled_reference": -0.014234095930931723,
+    "observed": 1874.1966666666667
+  },
+  "interpretation": "Prior results fit the hypothetical frequency ratio within 1%, but official and historical active clocks are not verified. Current aligned 4K remains 1.42% below that hypothetical scaled reference. Do not alter clocks or report normalized values as competition scores.",
+  "current_measured_active_sm_mhz": 1500,
+  "historical_comparisons": [
+    {
+      "reference_scaled_by_1500_over_1600": 1901.259375,
+      "relative_difference": 0.002177832785176914,
+      "prior_observed": 1905.4,
+      "prefill": 4096
+    },
+    {
+      "reference_scaled_by_1500_over_1600": 857.953125,
+      "relative_difference": 0.006721666757726341,
+      "prior_observed": 863.72,
+      "prefill": 16384
+    }
+  ],
+  "hypothesis": "Official reference may have used 1600 MHz while current instance runs at 1500 MHz.",
+  "device_reported_max_sm_mhz": 1600,
+  "official_measured_active_sm_mhz": null
+}

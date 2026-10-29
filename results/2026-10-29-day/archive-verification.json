@@ -1,0 +1,12 @@
+{
+  "archive": "outputs\\FlagOS-基线复现排查-20261029.zip",
+  "entries": 99,
+  "archive_bytes": 1920774,
+  "archive_sha256": "1d90e53b391c87e7605421356e52bd9f0ad97ef445762c689ff77d3d2fd4e82f",
+  "all_archived_entries_hash_verified": true,
+  "private_keys_included": false,
+  "current_accuracy_run": "20261029_165624",
+  "workloads_complete": true,
+  "accuracy_pass": true,
+  "performance_pass": false
+}
