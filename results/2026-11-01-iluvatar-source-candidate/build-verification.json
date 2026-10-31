@@ -1,0 +1,17 @@
+{
+  "archive": "D:\\MyLab\\FlagOS\\releases\\iluvatar-v2-20261101\\FlagOS-Iluvatar-v2-full-source.zip",
+  "sha256": "ace45a56569999e010c9882d434e1d516d932790aabbc6497d703c1b23076cfc",
+  "size_bytes": 767327,
+  "source_files": 405,
+  "python_syntax_files": 287,
+  "changed_files": [
+    "vllm_fl/dispatch/backends/vendor/iluvatar/impl/attention_tiles.py",
+    "vllm_fl/platform.py"
+  ],
+  "contract_smoke": {
+    "cases": 20,
+    "pass": true,
+    "scope": "CPU launch/fallback contract only; not a GPU or mathematical test"
+  },
+  "full_fresh_container_gpu_restore_verified": false
+}

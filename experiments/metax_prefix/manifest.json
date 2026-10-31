@@ -1,0 +1,8 @@
+{
+  "base_commit": "13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0",
+  "modified_file": "vllm_fl/dispatch/backends/vendor/metax/impl/attention/flash_attn.py",
+  "native_sha256": "f81fa552667b3ed98d1cf141d2dee33ba10476cda9a997744495bdbc36289ef2",
+  "candidate_sha256": "cda1bce8d7cce50563cf2646bb203df22c677631fa83f065f4fab50f786cb34a",
+  "validated_on_gpu": false,
+  "serving_gain_measured": false
+}
