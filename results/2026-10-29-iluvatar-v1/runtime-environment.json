@@ -1,0 +1,42 @@
+{
+  "source_root": "/workspace/tokenforge-sources/FlagGems-a7620cc",
+  "target_commit": "a7620cc191a0b42e040194622c5758b22a7a25dc",
+  "target_tree": "ddf3c7566aac7d23385a1b10c7c258091ef1d3a7",
+  "environment": {
+    "VLLM_PLUGINS": "fl",
+    "PYTHONPATH": "/workspace/tokenforge-sources/vllm-plugin-FL-prefill-query-tiling-v1:/workspace/tokenforge-sources/FlagGems-a7620cc/src",
+    "VLLM_CACHE_ROOT": "/workspace/tokenforge-caches/repro_20261029_1810/optimized_formal_v1/vllm",
+    "TRITON_CACHE_DIR": "/workspace/tokenforge-caches/repro_20261029_1810/optimized_formal_v1/triton",
+    "TORCHINDUCTOR_CACHE_DIR": "/workspace/tokenforge-caches/repro_20261029_1810/optimized_formal_v1/inductor"
+  },
+  "argv": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "original_install_untouched": true,
+  "plugin_candidate_manifest": {
+    "plugin_base_commit": "13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0",
+    "candidate_root": "/workspace/tokenforge-sources/vllm-plugin-FL-prefill-query-tiling-v1",
+    "changes": {
+      "vllm_fl/platform.py": "af4855b54647dba827e9a9f1688450a4ae0e49ac2349130129f1f073432be820",
+      "vllm_fl/dispatch/backends/vendor/iluvatar/impl/attention_tiles.py": "bb4ad2070e13271eb7c48493fa53e557eea9445c35d93b9de184febf4a0140fd"
+    },
+    "original_packages_unchanged": true,
+    "optimization_measured_end_to_end": false,
+    "revision": "v1-with-runtime-observation",
+    "numerical_algorithm_unchanged_from_short_trial": true
+  },
+  "purpose": "Isolated kernel query-tiling candidate; fixed original official workload; source and caches outside evidence root.",
+  "controller_repository_commit": "c57badb63d0da8f46b38294bb046c24df5a07457"
+}
