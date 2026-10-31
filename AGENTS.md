@@ -96,3 +96,10 @@ before any claim of independent audit, full backup, or new GPU work.
 The complete Iluvatar v2 frozen source ZIP and recovery instructions are in
 artifacts/FlagOS-Iluvatar-v2-full-source.zip and docs/iluvatar-candidate.md.
 No fresh BI-V150 container end-to-end restoration has been performed.
+
+Final user decision: stop download attempts and commit/push the honest state.
+User then explicitly authorized provider shutdown; the C500 UI confirmed stopped
+with about 36 hours of data retention. The new raw logs are remote-only, not
+GitHub-backed. The full remote archive's SHA and size are recorded in the short
+report. Do not claim a complete local backup, restart the provider without new
+authorization, attempt SSH again, or upload temporary authentication documents.

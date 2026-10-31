@@ -40,5 +40,17 @@
       "exit_code": 0,
       "server_pid": 52296
     }
-  ]
+  ],
+  "user_declined_further_download_attempts": true,
+  "provider_shutdown_confirmed": true,
+  "provider_shutdown_observed_at": "2026-11-01T03:20:20.8214426+08:00",
+  "provider_retention_display": "1 day 11 hours 59 minutes at observed shutdown; not permanent storage",
+  "remote_complete_archive": {
+    "path": "/data/tokenforge-artifacts/metax-prefix-session-20261101-complete.tar.gz",
+    "sha256": "41d3f1738870fa5ec722873f568683252fec27c2a38dcb4458a468bcd713db63",
+    "size_bytes": 1534665,
+    "remote_gzip_crc_pass": true,
+    "local_copy_verified": false,
+    "hash_source": "Read from remote terminal in four 16-character groups"
+  }
 }

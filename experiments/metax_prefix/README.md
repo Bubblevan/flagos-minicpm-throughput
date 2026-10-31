@@ -1,3 +1,10 @@
+Latest observed outcome: the bounded 11/01 native/candidate/native short trial
+reported 4K +11.52% and 16K +7.64%, with low native drift and all services stopped.
+The five metadata/native-FA2 micro cases were bitwise equal. Raw local audit is
+still pending: the user stopped download attempts; provider shutdown was explicitly
+authorized and confirmed. Read results/2026-11-01-metax-prefix-short/report.md.
+The following is the original pre-registration, not a full official validation.
+
 # MetaX prefix-metadata hoisting v1 (candidate, not a measured optimization)
 
 Frozen file: vllm_fl/dispatch/backends/vendor/metax/impl/attention/flash_attn.py.
