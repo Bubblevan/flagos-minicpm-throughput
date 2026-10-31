@@ -32,3 +32,6 @@ MiniCPM5-2B 在 FlagOS 天数 BI-V150 与沐曦 C500 上的基线复现和优化
 
 
 2026-10-31新增混合批次覆盖候选：12组差分与原版逐位一致，128请求/64并发、4K输入/512输出的同种子短测，v1均值2412.24→v2 3046.62 tok/s（+26.30%），768请求tokens完整并经独立核算。短测不是官方1024输出满负载成绩。新候选完整验收已启动，预设4K四轮不达标就停止剩余长测，达标才继续16K和新105题；23:55硬截止。见[本次实验与限制](experiments/attention_tiling_mixed/README.md)与[独立短测核验](results/2026-10-31-mixed-dispatch/short-independent-validation.json)。
+
+
+10/31 21:44阶段核验：v2在原版4K/1024输出、64并发、256请求的四轮中全部成功且tokens完整；丢首轮后平均2167.5333 tok/s、TTFT8050.3533ms，分别比天数参考高6.8798%、低30.4417%，4K两项达标。16K正在第3/4轮，新精度尚待执行，不能据此宣称整套验收已通过。[原始快照及独立阶段核验](results/2026-10-31-mixed-dispatch/formal-4k-stage/independent-stage.json)。
