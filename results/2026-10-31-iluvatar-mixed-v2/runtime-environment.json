@@ -1,0 +1,51 @@
+{
+  "source_root": "/workspace/tokenforge-sources/FlagGems-a7620cc",
+  "target_commit": "a7620cc191a0b42e040194622c5758b22a7a25dc",
+  "target_tree": "ddf3c7566aac7d23385a1b10c7c258091ef1d3a7",
+  "environment": {
+    "VLLM_PLUGINS": "fl",
+    "PYTHONPATH": "/workspace/tokenforge-sources/plugin-mixed-20261031-v2:/workspace/tokenforge-sources/FlagGems-a7620cc/src",
+    "FLAGOS_OBSERVE_DISPATCH": "0",
+    "VLLM_CACHE_ROOT": "/workspace/tokenforge-caches/mixed_prefill_20261031_1900/formal-v2/vllm",
+    "TRITON_CACHE_DIR": "/workspace/tokenforge-caches/mixed_prefill_20261031_1900/formal-v2/triton",
+    "TORCHINDUCTOR_CACHE_DIR": "/workspace/tokenforge-caches/mixed_prefill_20261031_1900/formal-v2/inductor"
+  },
+  "argv": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "candidate_manifest": {
+    "candidate_root": "/workspace/tokenforge-sources/plugin-mixed-20261031-v2",
+    "plugin_base_commit": "13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0",
+    "changes": {
+      "vllm_fl/platform.py": "af4855b54647dba827e9a9f1688450a4ae0e49ac2349130129f1f073432be820",
+      "vllm_fl/dispatch/backends/vendor/iluvatar/impl/attention_tiles.py": "5bafdb0bf547e0567154ebf6a9d57465e677ea707b5f019832aaf63d77a4d325"
+    },
+    "is_git_checkout": false,
+    "revision": "mixed-query-gate8",
+    "original_packages_unchanged": true
+  },
+  "cutoff_epoch": 1793462100.0,
+  "short_control": "v1",
+  "official_score_pending": true,
+  "early_stop_after_complete_4k_goal_failure": true,
+  "controller_sha256": "371bbfcc60b943618f7b9ae3891bfd342ec8ae2eeeae78578de19ccaa7d53729",
+  "import_probe": {
+    "torch": "2.10.0",
+    "triton": "3.6.0",
+    "flag_gems_file": "/workspace/tokenforge-sources/FlagGems-a7620cc/src/flag_gems/__init__.py",
+    "plugin_file": "/workspace/tokenforge-sources/plugin-mixed-20261031-v2/vllm_fl/__init__.py",
+    "scope": "Import probe under exact server environment, before model startup."
+  }
+}

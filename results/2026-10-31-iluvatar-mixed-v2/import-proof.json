@@ -1,0 +1,7 @@
+{
+  "torch": "2.10.0",
+  "triton": "3.6.0",
+  "flag_gems_file": "/workspace/tokenforge-sources/FlagGems-a7620cc/src/flag_gems/__init__.py",
+  "plugin_file": "/workspace/tokenforge-sources/plugin-mixed-20261031-v2/vllm_fl/__init__.py",
+  "scope": "Import probe under exact server environment, before model startup."
+}

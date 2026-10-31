@@ -1,0 +1,11 @@
+{
+  "candidate_root": "/workspace/tokenforge-sources/plugin-mixed-20261031-v2",
+  "plugin_base_commit": "13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0",
+  "changes": {
+    "vllm_fl/platform.py": "af4855b54647dba827e9a9f1688450a4ae0e49ac2349130129f1f073432be820",
+    "vllm_fl/dispatch/backends/vendor/iluvatar/impl/attention_tiles.py": "5bafdb0bf547e0567154ebf6a9d57465e677ea707b5f019832aaf63d77a4d325"
+  },
+  "is_git_checkout": false,
+  "revision": "mixed-query-gate8",
+  "original_packages_unchanged": true
+}

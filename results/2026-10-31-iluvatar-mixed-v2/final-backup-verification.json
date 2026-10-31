@@ -1,0 +1,14 @@
+{
+  "at": "2026-10-31T23:36:24.025593+08:00",
+  "remote_archive_sha256": "df3ece44922bb99aa63f80c4bdd1eb4914be242c060d1b3ff6549dfddb6420b3",
+  "local_archive_sha256": "df3ece44922bb99aa63f80c4bdd1eb4914be242c060d1b3ff6549dfddb6420b3",
+  "sha256_match": true,
+  "entries": 128,
+  "uncompressed_bytes": 12823625,
+  "final_stage": "optimized_complete_needs_analysis",
+  "final_source_snapshot": true,
+  "backup_repaired": true,
+  "previous_last_success": "2026-10-31T22:30:45.1725363+08:00",
+  "old_partial_copy_preserved": "D:\\MyLab\\FlagOS\\lab-records\\outputs\\live_mixed_prefill_20261031_1900\\_stale_before_final_repair",
+  "archive": "D:\\MyLab\\FlagOS\\lab-records\\outputs\\mixed_prefill_20261031_1900\\final-remote-snapshot.tar.gz"
+}

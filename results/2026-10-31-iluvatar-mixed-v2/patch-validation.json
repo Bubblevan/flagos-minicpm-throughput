@@ -1,0 +1,11 @@
+{
+  "base_commit": "13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0",
+  "original_tracked_sources_unchanged": true,
+  "git_apply_check_pass": true,
+  "patch_sha256": "51528e2f570ccc1a3faba199f99a3f215bac88b6f2b88250d48509e714ba14ea",
+  "target_hashes": {
+    "vllm_fl/platform.py": "af4855b54647dba827e9a9f1688450a4ae0e49ac2349130129f1f073432be820",
+    "vllm_fl/dispatch/backends/vendor/iluvatar/impl/attention_tiles.py": "5bafdb0bf547e0567154ebf6a9d57465e677ea707b5f019832aaf63d77a4d325"
+  },
+  "applied_to_original": false
+}

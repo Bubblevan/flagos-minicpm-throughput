@@ -9,18 +9,24 @@ and ask the user for current authorized access when actually needed.
 
 ## Current verified outcome
 
-Both 2026-10-29 full sessions finished. Iluvatar query-tiling v1 produced
-4K 1909.77 total tok/s / 9616.5033 ms TTFT and 16K 1318.2233 / 399266.5033.
-Its accuracy was 102/105 with 105 stop. The 4K throughput still fails the official
-1% tolerance; overall performance does not pass. MetaX's original baseline was
-4K 4945.3633 / 3255.5733 and 16K 6979.6633 / 27379.3633, accuracy 101/105.
-MetaX has 104 stop and one max_tokens at index 83. It also fails overall due to
-4K. The Iluvatar candidate was not applied to MetaX.
+The Iluvatar mixed-query v2 run completed 2026-10-31 at 22:49. Its unchanged
+original full workloads yielded 4K 2167.5333 total tok/s / 8050.3533 ms TTFT,
+16K 1323.2367 / 398010.0933. Both pass the reference thresholds. New accuracy
+is 100/105 (95.2381%), 105 stop, no errors/missing/empty final outputs; it passes
+0.95 with a small margin. This is one validated run, not official submission
+acceptance or a claim of no accuracy loss. Do not rerun just to select a better
+score. Do not repeat the unchanged original baseline.
 
-Read the final independent-result.json in results/2026-10-29-iluvatar-v1 and
-results/2026-10-29-metax-baseline. Older progress notes and pre-test manifest flags
-are historical snapshots, not final status. The configs/versions.json baseline
-optimization flag does not negate the later candidate implementation.
+Read results/2026-10-31-iluvatar-mixed-v2/independent-result.json and report.md
+first. The complete ZIP and restoration patch are linked there. The final
+backup was repaired from a hash-verified remote snapshot after an SCP stall;
+raw evidence and the audit remain complete. The server exited with no owned
+process-group survivors. A zombie controller is not an active GPU workload.
+
+The older Iluvatar v1 and day baseline results are historical; their failing
+4K/progress notes are not the current v2 outcome. MetaX remains unchanged:
+its original 4K fails, 16K passes, accuracy 101/105, 104 stop + one max_tokens.
+V2 was not applied to MetaX. See its separate final report and use its own refs.
 
 ## Local paths and reservations
 
@@ -55,10 +61,10 @@ review records, errors, empty outputs, and finish reasons. Exit 0 is insufficien
 Never splice interrupted runs or reuse another session's accuracy as this one.
 
 Keep raw results immutable. Label short trials separately; no unmeasured gains
-or causal claims from clock ratios. Next candidate work should examine actual
-mixed prefill/decode dispatch coverage: q_rows >= num_seqs*64 can fall back for
-2048 rows/64 sequences. This is a static hypothesis, not a measured histogram;
-blindly lowering the gate can waste compute on short decode rows.
+or causal claims from clock ratios. The v1 mixed-dispatch fallback has now been observed and addressed in v2.
+Further changes require new evidence; preserve successful v2 and its raw results.
+The small-irregular-shape native mathematical-reference discrepancy remains
+unresolved; do not describe differential bitwise checks as a universal proof.
 
 Back up source/version/import/argv manifests, CSVs, logs, and the corresponding
 accuracy artifacts before provider shutdown. Verify hashes and scan credentials.

@@ -61,3 +61,20 @@ SHA256 `5bafdb0bf547e0567154ebf6a9d57465e677ea707b5f019832aaf63d77a4d325`.
 The original preflight snapshots and gate-4 input retain their original bytes;
 CRLF/LF normalization explains their different raw file hashes, not a numerical
 algorithm difference. Each measured/tested file's own SHA remains recorded.
+
+
+## Final result and restoration
+
+The complete run finished 2026-10-31 22:49: 4K2167.5333/TTFT8050.3533,
+16K1323.2367/TTFT398010.0933, accuracy100/105 with105 stop. All preset task
+thresholds passed in this run. See results/2026-10-31-iluvatar-mixed-v2/report.md
+for full evidence, small accuracy margin, and limitations.
+
+The complete plugin.patch here includes both the platform hook and exact v2
+adapter. It passed git apply --check on the unchanged frozen plugin base
+13eb9be69. Restore in a new isolated checkout of that commit, apply this patch,
+verify the adapter SHA256
+`5bafdb0bf547e0567154ebf6a9d57465e677ea707b5f019832aaf63d77a4d325`, set PYTHONPATH to that isolated plugin
+and the official-equivalent FlagGems source, and retain the fixed serve argv.
+Never apply to the original installation or assume an old reservation permits
+a new test. Private login details are outside this public Git repository.

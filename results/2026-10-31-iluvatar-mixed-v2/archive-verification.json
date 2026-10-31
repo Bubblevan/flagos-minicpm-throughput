@@ -1,0 +1,18 @@
+{
+  "archive": "FlagOS-Iluvatar-mixed-v2-20261031.zip",
+  "entries": 111,
+  "size_bytes": 1567627,
+  "sha256": "f3f4d05d61f889e56ca5afd89ba9a69a93ab3d4f89ff78751961d58dd61232e9",
+  "crc_pass": true,
+  "high_confidence_credential_matches": 0,
+  "patterns": [
+    "private_key",
+    "github_token",
+    "authorization",
+    "credential_url",
+    "cookie_header"
+  ],
+  "actual_historical_password_matches": 0,
+  "scanner_not_proof_of_no_secrets": true,
+  "remote_snapshot_sha256": "df3ece44922bb99aa63f80c4bdd1eb4914be242c060d1b3ff6549dfddb6420b3"
+}

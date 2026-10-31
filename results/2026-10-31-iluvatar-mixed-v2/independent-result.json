@@ -1,0 +1,93 @@
+{
+  "cases": [
+    {
+      "input_len": 4096,
+      "rounds": 4,
+      "successful_requests_each": 256,
+      "discard_first": true,
+      "total_tokens_per_second": 2167.5333333333333,
+      "mean_ttft_ms": 8050.3533333333335,
+      "throughput_reference": 2028.01,
+      "ttft_reference": 11573.53,
+      "throughput_pass": true,
+      "ttft_pass": true
+    },
+    {
+      "input_len": 16384,
+      "rounds": 4,
+      "successful_requests_each": 128,
+      "discard_first": true,
+      "total_tokens_per_second": 1323.2366666666667,
+      "mean_ttft_ms": 398010.0933333333,
+      "throughput_reference": 915.15,
+      "ttft_reference": 599262.03,
+      "throughput_pass": true,
+      "ttft_pass": true
+    }
+  ],
+  "accuracy": 0.9523809523809523,
+  "accuracy_reported": 0.9524,
+  "accuracy_audit": {
+    "run_dir": "D:\\MyLab\\FlagOS\\lab-records\\outputs\\live_mixed_prefill_20261031_1900\\mixed_prefill_20261031_1900\\formal-v2\\level3\\20261031_222456",
+    "prediction_rows": 105,
+    "review_rows": 105,
+    "indices_complete_unique": true,
+    "prediction_error_indices": [],
+    "empty_final_output_indices": [],
+    "finish_reasons": {
+      "stop": 105
+    },
+    "review_statuses": {
+      "success": 105
+    },
+    "correct": 100,
+    "incorrect_indices": [
+      18,
+      70,
+      87,
+      90,
+      101
+    ],
+    "score_recomputed": 0.9523809523809523,
+    "score_reported": 0.9524,
+    "execution_summary": {
+      "requested": 105,
+      "succeeded": 105,
+      "errored": 0,
+      "incomplete": false,
+      "subsets": {
+        "Level 3": {
+          "requested": 105,
+          "succeeded": 105,
+          "errored": 0
+        }
+      }
+    },
+    "integrity_pass": true,
+    "accuracy_pass": true
+  },
+  "accuracy_pass": true,
+  "performance_pass": true,
+  "source_tree": "ddf3c7566aac7d23385a1b10c7c258091ef1d3a7",
+  "source_commit_equivalent_tree": "a7620cc191a0b42e040194622c5758b22a7a25dc",
+  "source_git_head_is_not_target_commit": true,
+  "optimization_implemented": true,
+  "raw_csv": "D:\\MyLab\\FlagOS\\lab-records\\outputs\\live_mixed_prefill_20261031_1900\\mixed_prefill_20261031_1900\\formal-v2\\benchmark_results\\raw_runs_20261031_194534.csv",
+  "raw_sha256": "75ac5de4f8f073c183505a0cea6ca23481836a7eebd3262fc17de6ec18cf40ff",
+  "original_summary_csv": "D:\\MyLab\\FlagOS\\lab-records\\outputs\\live_mixed_prefill_20261031_1900\\mixed_prefill_20261031_1900\\formal-v2\\benchmark_results\\summary_20261031_194534.csv",
+  "independent_validation": true,
+  "workloads_complete": true,
+  "explanation": "Independent audit of this controller-selected run only; no model invocation or cross-session substitution.",
+  "platform": "iluvatar",
+  "candidate_manifest": {
+    "candidate_root": "/workspace/tokenforge-sources/plugin-mixed-20261031-v2",
+    "plugin_base_commit": "13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0",
+    "changes": {
+      "vllm_fl/platform.py": "af4855b54647dba827e9a9f1688450a4ae0e49ac2349130129f1f073432be820",
+      "vllm_fl/dispatch/backends/vendor/iluvatar/impl/attention_tiles.py": "5bafdb0bf547e0567154ebf6a9d57465e677ea707b5f019832aaf63d77a4d325"
+    },
+    "is_git_checkout": false,
+    "revision": "mixed-query-gate8",
+    "original_packages_unchanged": true
+  }
+}
