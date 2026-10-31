@@ -1,0 +1,14 @@
+{
+  "independent_validation": true,
+  "official_score": false,
+  "all_six_workloads_complete": true,
+  "requests_each": 128,
+  "concurrency": 64,
+  "input_tokens_each": 4096,
+  "output_tokens_each": 512,
+  "mean_v1_tps": 2412.237934570924,
+  "mean_v2_tps": 3046.61516305643,
+  "relative_gain": 0.26298285894353346,
+  "go_full_validation": true,
+  "short_scope_not_full_score": true
+}

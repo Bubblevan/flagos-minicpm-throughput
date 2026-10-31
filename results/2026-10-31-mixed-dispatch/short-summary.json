@@ -1,0 +1,77 @@
+{
+  "official_score": false,
+  "comparison_complete": true,
+  "relative_gain": 0.26298285894353346,
+  "per_seed_relative_gain": [
+    0.34503761984812265,
+    0.19383662776915278
+  ],
+  "go_full_validation": true,
+  "preregistered_go_criteria": {
+    "mean_gain_min": 0.07,
+    "each_seed_gain_min": 0.05,
+    "ttft_max_ratio": 1.01
+  },
+  "observation_scope": "Both conditions record Python dispatch equally; graph replay is not counted as a Python dispatch. Separate new caches, full-shape warmup; fixed v1 then v2 order remains a limitation.",
+  "conditions": [
+    {
+      "label": "v1",
+      "source": "/workspace/tokenforge-sources/plugin-mixed-20261031-v1_observe",
+      "mean_total_tokens_per_second": 2412.237934570924,
+      "mean_ttft_s": 16.145646667961046,
+      "rounds": [
+        {
+          "seed": 4510,
+          "elapsed_s": 359.5234642731957,
+          "total_tokens_per_second": 1640.5716416656546,
+          "mean_ttft_s": 32.55697406117906,
+          "successful_requests": 128
+        },
+        {
+          "seed": 4511,
+          "elapsed_s": 267.33660498587415,
+          "total_tokens_per_second": 2206.297188636647,
+          "mean_ttft_s": 16.306996897630597,
+          "successful_requests": 128
+        },
+        {
+          "seed": 4512,
+          "elapsed_s": 225.28026997996494,
+          "total_tokens_per_second": 2618.1786805052006,
+          "mean_ttft_s": 15.984296438291494,
+          "successful_requests": 128
+        }
+      ]
+    },
+    {
+      "label": "v2",
+      "source": "/workspace/tokenforge-sources/plugin-mixed-20261031-v2",
+      "mean_total_tokens_per_second": 3046.61516305643,
+      "mean_ttft_s": 13.757108985228115,
+      "rounds": [
+        {
+          "seed": 4510,
+          "elapsed_s": 322.2619978399016,
+          "total_tokens_per_second": 1830.262345400782,
+          "mean_ttft_s": 29.804386475963838,
+          "successful_requests": 128
+        },
+        {
+          "seed": 4511,
+          "elapsed_s": 198.75771579984576,
+          "total_tokens_per_second": 2967.5527192814407,
+          "mean_ttft_s": 13.810722595688276,
+          "successful_requests": 128
+        },
+        {
+          "seed": 4512,
+          "elapsed_s": 188.70276279002428,
+          "total_tokens_per_second": 3125.677606831419,
+          "mean_ttft_s": 13.703495374767954,
+          "successful_requests": 128
+        }
+      ]
+    }
+  ],
+  "source_code_commit": "18fc3f96a12ffe8c4279d60f8f0ff252d0f8c095"
+}
