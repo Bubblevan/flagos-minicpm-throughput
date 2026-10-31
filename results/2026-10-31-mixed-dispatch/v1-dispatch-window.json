@@ -1,0 +1,472 @@
+{
+  "start": 1793445120.4109466,
+  "end": 1793445514.4579325,
+  "scope": "Post-ready Python kernel dispatch during real workload; excludes pure decode; graph replays not counted.",
+  "total_calls": 16025,
+  "v1_fallback_calls": 10944,
+  "v2_gate_would_cover_calls": 10944,
+  "buckets": [
+    {
+      "query_rows": 2048,
+      "num_seqs": 1,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 84
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 2,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 84
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 3,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 84
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 4,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 125
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 5,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 6,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 7,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 8,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 9,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 10,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 11,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 12,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 13,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 14,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 15,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 16,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 17,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 18,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 19,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 20,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 21,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 22,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 23,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 24,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 25,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 26,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 27,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 28,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 29,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 30,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 31,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 32,
+      "optimized": true,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 33,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 34,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 35,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 36,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 37,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 38,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 39,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 40,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 41,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 42,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 43,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 44,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 45,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 46,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 252
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 47,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 48,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 49,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 50,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 51,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 52,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 53,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 54,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 55,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 56,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 57,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 58,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 59,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 60,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 61,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 62,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 3150
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 63,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 2586
+    },
+    {
+      "query_rows": 2048,
+      "num_seqs": 64,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 168
+    },
+    {
+      "query_rows": 2030,
+      "num_seqs": 64,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 42
+    },
+    {
+      "query_rows": 1909,
+      "num_seqs": 64,
+      "optimized": false,
+      "is_3d": false,
+      "calls": 42
+    }
+  ]
+}
