@@ -1,0 +1,44 @@
+{
+  "scope": "Controller summary read through Lab terminal; raw local audit pending",
+  "observed_complete": true,
+  "official_score": false,
+  "relative_gains": {
+    "16k": 0.07635889498452664,
+    "4k": 0.115209032021097
+  },
+  "ttft_ratios": {
+    "16k": 0.9097604872625075,
+    "4k": 0.829511422634271
+  },
+  "native_drift": {
+    "16k": 0.004527366656258858,
+    "4k": 0.010118922760548488
+  },
+  "per_seed_positive": true,
+  "controller_short_go": true,
+  "independent_raw_audit": false,
+  "full_official_validation": false,
+  "new_accuracy_run": false,
+  "remote_root": "/data/tokenforge-artifacts/metax_prefix_trial_20261101_0210",
+  "backup_download_complete": false,
+  "cleanup_observed": [
+    {
+      "owned_survivors": [],
+      "label": "native_a1",
+      "exit_code": 0,
+      "server_pid": 2082
+    },
+    {
+      "owned_survivors": [],
+      "label": "candidate_b",
+      "exit_code": 0,
+      "server_pid": 27386
+    },
+    {
+      "owned_survivors": [],
+      "label": "native_a2",
+      "exit_code": 0,
+      "server_pid": 52296
+    }
+  ]
+}

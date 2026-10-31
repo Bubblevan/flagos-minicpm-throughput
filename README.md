@@ -1,3 +1,5 @@
+最新进展（11/01）：[天数完整冻结源码候选](docs/iluvatar-candidate.md)已打包并核对异地哈希；[沐曦首个候选短测](results/2026-11-01-metax-prefix-short/report.md)报告4K+11.52%/16K+7.64%，新原始归档下载与本地独立审计尚待完成，未做完整官方验收。
+
 # FlagOS MiniCPM throughput project
 
 MiniCPM5-2B 在 FlagOS 天数 BI-V150 与沐曦 C500 上的基线复现和优化项目。2026-10-31天数混合批次query-tiling v2已完成原版八轮与新105题，本次性能和精度均达到预设参考门槛；沐曦仍仅有原始基线，4K未达标。

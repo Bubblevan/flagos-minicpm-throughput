@@ -82,3 +82,17 @@ and the 34-file public ZIP was downloaded again with matching SHA256. Logs, all
 eight rounds and 105 prediction/review records remain available. See
 docs/next-steps.md before any new development or rental; no new GPU time is
 authorized by this recovery check.
+
+## 11/01 C500 short trial update
+
+The user started a new C500 and explicitly requires Lab only; do not try SSH
+again or change credentials. Prefix metadata hoisting v1 has completed one
+bounded native/candidate/native short trial. Controller-reported gains are
+4K +11.52%, 16K +7.64%; original drift +1.01%/+0.45%. All three services
+exited with no owned survivors. These are short diagnostics, not official
+scores. Original raw tar downloads are blocked by the browser download tool;
+user was asked to download the two named archives to D. Read the new report
+before any claim of independent audit, full backup, or new GPU work.
+The complete Iluvatar v2 frozen source ZIP and recovery instructions are in
+artifacts/FlagOS-Iluvatar-v2-full-source.zip and docs/iluvatar-candidate.md.
+No fresh BI-V150 container end-to-end restoration has been performed.
