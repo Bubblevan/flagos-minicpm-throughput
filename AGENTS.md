@@ -73,3 +73,12 @@ keys, tokens, passwords, cookies, models, datasets, or compilation caches.
 Use normal Git credential helpers without extracting credentials. Confirm the
 actual remote commit after push. Do not send issues/comments/email or competition
 submissions without explicit user authorization.
+
+## MetaX recovery update
+
+The user reports the old C500 instance has been released. Do not use its old
+endpoint as current access. The local saved session was independently re-audited
+and the 34-file public ZIP was downloaded again with matching SHA256. Logs, all
+eight rounds and 105 prediction/review records remain available. See
+docs/next-steps.md before any new development or rental; no new GPU time is
+authorized by this recovery check.
