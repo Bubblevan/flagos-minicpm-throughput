@@ -1,12 +1,23 @@
-最新进展（11/01）：[天数完整冻结源码候选](docs/iluvatar-candidate.md)已打包并核对异地哈希；[沐曦首个候选短测](results/2026-11-01-metax-prefix-short/report.md)报告4K+11.52%/16K+7.64%，新原始归档下载与本地独立审计尚待完成，未做完整官方验收。
+最新进展（11/16已完成）：**天数v2＋FlagTree0.7.0完整八轮和本次105题整体通过**，4K2435.35tok/s、16K1890.7267tok/s，精度101/105。模型服务已停止、完整备份与远端hash匹配。[完整报告](results/2026-11-16-v2-flagtree07-complete/report.md) · [可审查提交包](artifacts/TokenForge-v2-flagtree070-20261116.zip)。尚未向比赛平台提交。
 
 # FlagOS MiniCPM throughput project
 
-11/16更新：v2仍是最近一次完整通过的候选。11/09完整v3精度98/105，整体失败，不能替代v2；[七道错题法证与正确派生判定](results/2026-11-16-accuracy-forensics/accuracy-forensics.md)已完成，其中三道有数学正确但评分/提取争议，原始分数不改。[失败v3完整归档](artifacts/FlagOS-Iluvatar-v3-failed-20261109.zip)保留原始错误overall字段。当前按[主办方编译器消息及截止复核](docs/competition-intelligence.md)隔离验证v2+FlagTree0.7.0，尚不宣称新环境验收通过。
+本次选定冻结v2代码加主办方推荐的新编译器，不采用精度失败的v3。新编译器先通过共享张量和独立CPU参考，再完成一次全新正式评测；[编译器修复证据](results/2026-11-16-compiler-repair/report.md)与完整模型成绩分开记录。编译器修复不是原创优化，全部性能变化也不能作同时A/B单因归因。[v3法证](results/2026-11-16-accuracy-forensics/accuracy-forensics.md)及其失败原始归档保留，原始分数不改。
+
+## 最新完整结果：天数v2＋FlagTree0.7.0（2026-11-16）
+
+|负载|Total tok/s|Mean TTFT ms|门槛|
+|---|---:|---:|---|
+|4K/1024 output|2435.35|5639.32|通过|
+|16K/1024 output|1890.7267|268099.60|通过|
+
+每组原版四轮，丢首轮取后三轮平均；全部256/128请求与完整tokens通过独立核验，与原版summary一致。新精度101/105=96.1905%、104stop＋1max_tokens，无执行错误/缺失/空final。整体true同时包含性能、完整性和精度，不修改评分、不拼旧会话。两道矩阵格式争议另附原始证据给赛方核实，不人工加分。当前是一轮完整本地验收，不等同于官方接收或复测通过。
+
+[独立结果](results/2026-11-16-v2-flagtree07-complete/independent-result.json) · [完整原始证据](artifacts/FlagOS-Iluvatar-v2-flagtree070-full-20261116.zip) · [复现说明](docs/submission-readme-v2-flagtree070.md)。下文为历史结果，不代表任务仍在运行。
 
 MiniCPM5-2B 在 FlagOS 天数 BI-V150 与沐曦 C500 上的基线复现和优化项目。2026-10-31天数混合批次query-tiling v2已完成原版八轮与新105题，本次性能和精度均达到预设参考门槛；沐曦仍仅有原始基线，4K未达标。
 
-## 最新完整结果：天数 v2（2026-10-31）
+## 历史完整结果：天数 v2（2026-10-31）
 
 | 负载 | 实测 total tok/s | 天数参考 | 实测 TTFT ms | 参考 TTFT ms |
 |---|---:|---:|---:|---:|

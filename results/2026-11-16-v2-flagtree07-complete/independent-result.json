@@ -1,0 +1,85 @@
+{
+  "cases": [
+    {
+      "input_len": 4096,
+      "rounds": 4,
+      "successful_requests_each": 256,
+      "discard_first": true,
+      "total_tokens_per_second": 2435.35,
+      "mean_ttft_ms": 5639.32,
+      "throughput_reference": 2028.01,
+      "ttft_reference": 11573.53,
+      "throughput_pass": true,
+      "ttft_pass": true
+    },
+    {
+      "input_len": 16384,
+      "rounds": 4,
+      "successful_requests_each": 128,
+      "discard_first": true,
+      "total_tokens_per_second": 1890.7266666666667,
+      "mean_ttft_ms": 268099.60000000003,
+      "throughput_reference": 915.15,
+      "ttft_reference": 599262.03,
+      "throughput_pass": true,
+      "ttft_pass": true
+    }
+  ],
+  "accuracy": 0.9619047619047619,
+  "accuracy_reported": 0.9619,
+  "accuracy_audit": {
+    "run_dir": "D:\\MyLab\\FlagOS\\lab-records\\outputs\\live_compiler_fix_20261116_1818\\compiler_fix_20261116_1818\\formal-v2-newcompiler\\evalscope\\20261116_205443",
+    "prediction_rows": 105,
+    "review_rows": 105,
+    "indices_complete_unique": true,
+    "prediction_error_indices": [],
+    "empty_final_output_indices": [],
+    "finish_reasons": {
+      "stop": 104,
+      "max_tokens": 1
+    },
+    "review_statuses": {
+      "success": 105
+    },
+    "correct": 101,
+    "incorrect_indices": [
+      18,
+      87,
+      101,
+      83
+    ],
+    "score_recomputed": 0.9619047619047619,
+    "score_reported": 0.9619,
+    "execution_summary": {
+      "requested": 105,
+      "succeeded": 105,
+      "errored": 0,
+      "incomplete": false,
+      "subsets": {
+        "Level 3": {
+          "requested": 105,
+          "succeeded": 105,
+          "errored": 0
+        }
+      }
+    },
+    "integrity_pass": true,
+    "accuracy_pass": true
+  },
+  "accuracy_pass": true,
+  "performance_pass": true,
+  "source_tree": "ddf3c7566aac7d23385a1b10c7c258091ef1d3a7",
+  "source_commit_equivalent_tree": "a7620cc191a0b42e040194622c5758b22a7a25dc",
+  "source_git_head_is_not_target_commit": true,
+  "optimization_implemented": true,
+  "raw_csv": "D:\\MyLab\\FlagOS\\lab-records\\outputs\\live_compiler_fix_20261116_1818\\compiler_fix_20261116_1818\\formal-v2-newcompiler\\official-benchmark\\benchmark_results\\raw_runs_20261116_185311.csv",
+  "raw_sha256": "e5cb1544a5813a60ed7fe1f15256bda142eb490be8d74c30499486f7c55d1a41",
+  "original_summary_csv": "D:\\MyLab\\FlagOS\\lab-records\\outputs\\live_compiler_fix_20261116_1818\\compiler_fix_20261116_1818\\formal-v2-newcompiler\\official-benchmark\\benchmark_results\\summary_20261116_185311.csv",
+  "independent_validation": true,
+  "workloads_complete": true,
+  "explanation": "One complete new compiler session, independently recomputed from all8raw rows, original summary and this105-question prediction/review/report. No cross-session substitution or score correction.",
+  "overall_pass": true,
+  "candidate": "frozen-v2+flagtree0.7.0",
+  "compiler": "0.7.0+iluvatar3.6",
+  "raw_controller_result_sha256": "b1b788b8ff3797c09f6a1ab80d06bfbd6c0cab36d0fa97e52ee476d33c7035f2"
+}

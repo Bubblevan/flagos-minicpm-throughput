@@ -1,0 +1,60 @@
+{
+  "import_proof": {
+    "flagtree": "0.7.0+iluvatar3.6",
+    "triton": "3.6.0",
+    "triton_file": "/workspace/tokenforge-sources/compiler_fix_20261116_1818/compiler-0.7.0/triton/__init__.py",
+    "torch": "2.10.0",
+    "plugin_file": "/workspace/tokenforge-sources/compiler_fix_20261116_1818/vllm-plugin-FL/vllm_fl/__init__.py",
+    "gems_file": "/workspace/tokenforge-sources/FlagGems-a7620cc/src/flag_gems/__init__.py"
+  },
+  "argv": [
+    "vllm",
+    "serve",
+    "/workspace/MiniCPM5-2B",
+    "--port",
+    "9031",
+    "--compilation-config",
+    "{\"cudagraph_mode\":\"FULL_DECODE_ONLY\"}",
+    "--served-model-name",
+    "minicpm",
+    "--gpu-memory-utilization",
+    "0.85",
+    "--max-model-len",
+    "131072"
+  ],
+  "environment": {
+    "PYTHONPATH": "/workspace/tokenforge-sources/compiler_fix_20261116_1818/compiler-0.7.0:/workspace/tokenforge-sources/compiler_fix_20261116_1818/vllm-plugin-FL:/workspace/tokenforge-sources/FlagGems-a7620cc/src:/workspace/tokenforge-sources/compiler-tools-20261116",
+    "VLLM_PLUGINS": "fl",
+    "TRITON_CACHE_DIR": "/workspace/tokenforge-caches/compiler_fix_20261116_1818/formal/triton",
+    "VLLM_CACHE_ROOT": "/workspace/tokenforge-caches/compiler_fix_20261116_1818/formal/vllm",
+    "TORCHINDUCTOR_CACHE_DIR": "/workspace/tokenforge-caches/compiler_fix_20261116_1818/formal/inductor",
+    "CUDA_CACHE_PATH": "/workspace/tokenforge-caches/compiler_fix_20261116_1818/formal/cuda"
+  },
+  "source_sha256": "5bafdb0bf547e0567154ebf6a9d57465e677ea707b5f019832aaf63d77a4d325",
+  "compiler_wheel": {
+    "file": "flagtree-0.7.0+iluvatar3.6-cp312-cp312-linux_x86_64.whl",
+    "sha256": "af6a7c9eddf167441fd872c3e6d673e9da572608dee79dba655b0775db740176",
+    "size": 359492273,
+    "index_sha_verified": true,
+    "source": "official FlagOS package index"
+  },
+  "numerical_gate": {
+    "complete": true,
+    "old_compiler": "0.6.2a3+iluvatar3.6",
+    "new_compiler": "0.7.0+iluvatar3.6",
+    "old_reference_pass": false,
+    "new_reference_pass": true,
+    "old_stable": true,
+    "new_stable": true,
+    "new_v2_bitwise_native": true,
+    "numerical_gate": true,
+    "formal_started": false,
+    "official_score": false,
+    "measured_fix": true
+  },
+  "fixed_serve_parameters_unchanged": true,
+  "profiler_enabled": false,
+  "hard_cutoff": 1794844500.0,
+  "target_tree": "ddf3c7566aac7d23385a1b10c7c258091ef1d3a7",
+  "target_commit": "a7620cc191a0b42e040194622c5758b22a7a25dc"
+}

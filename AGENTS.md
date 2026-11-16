@@ -117,3 +117,21 @@ New compiler testing is isolated; do not overwrite the old installation, relax
 reference tolerances, retry full accuracy to select a score, or launch a second
 GPU workload. No heartbeat has been recreated. Original uncommittedv3/MetaX/tools
 work from another chat was preserved; do not reset/clean it.
+
+## 11/16 final outcome (overrides the active-session paragraph)
+
+Full v2+isolatedFlagTree0.7.0 finished21:28:36; cleanup21:28:40. The new original
+eight rounds and new105-question run independently pass overall:4K2435.35tok/s,
+TTFT5639.32ms;16K1890.7267/268099.60;accuracy101/105,104stop+1max_tokens(index83,
+incorrect),0errors/missing/empty final. Two matrix-format disputes remain scored0.
+Do not rejudge or resample. Full evidence and remote/local hash match are in
+results/2026-11-16-v2-flagtree07-complete. No owned model processes survived;
+23:27read-only SSH found no remaining workload. Provider power state is unverified.
+Local sync was gracefully stopped after final archive verification; completion
+step and remote cutoff watchdog had already ended. No chat automation exists.
+
+Current candidate package is artifacts/TokenForge-v2-flagtree070-20261116.zip,
+with complete source,updated readme,5-page visually checked PDF and full raw evidence.
+It requires user review and has NOT been uploaded to the competition platform.
+The original v2 and failedv3 records remain immutable. Preserve other chat's
+uncommitted code. No new GPU work is needed just to obtain another score.
