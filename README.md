@@ -2,6 +2,8 @@
 
 # FlagOS MiniCPM throughput project
 
+11/16更新：v2仍是最近一次完整通过的候选。11/09完整v3精度98/105，整体失败，不能替代v2；[七道错题法证与正确派生判定](results/2026-11-16-accuracy-forensics/accuracy-forensics.md)已完成，其中三道有数学正确但评分/提取争议，原始分数不改。[失败v3完整归档](artifacts/FlagOS-Iluvatar-v3-failed-20261109.zip)保留原始错误overall字段。当前按[主办方编译器消息及截止复核](docs/competition-intelligence.md)隔离验证v2+FlagTree0.7.0，尚不宣称新环境验收通过。
+
 MiniCPM5-2B 在 FlagOS 天数 BI-V150 与沐曦 C500 上的基线复现和优化项目。2026-10-31天数混合批次query-tiling v2已完成原版八轮与新105题，本次性能和精度均达到预设参考门槛；沐曦仍仅有原始基线，4K未达标。
 
 ## 最新完整结果：天数 v2（2026-10-31）

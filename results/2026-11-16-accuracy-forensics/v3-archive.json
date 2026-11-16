@@ -1,0 +1,9 @@
+{
+  "archive": "FlagOS-Iluvatar-v3-failed-20261109.zip",
+  "sha256": "223cf98b74d334c8d982e5e9564a1508d67191c6cf07b801c351ccb2383b56bd",
+  "size": 1273891,
+  "files": 46,
+  "crc_pass": true,
+  "high_confidence_credential_scan_pass": true,
+  "overall_pass": false
+}

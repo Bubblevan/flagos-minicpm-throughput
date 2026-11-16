@@ -1,0 +1,49 @@
+{
+  "raw_result_sha256": "bfe818dd5e73a8b65a9cb27f5f481f1f640a1c1d2d42937a1d5de0f9064d80fc",
+  "raw_overall_pass": true,
+  "performance_pass": true,
+  "accuracy_audit": {
+    "run_dir": "D:\\MyLab\\FlagOS\\lab-records\\outputs\\live_iluvatar_v3_complete_20261109_0000\\remote-roots\\iluvatar_v3_complete_20261109_0000\\evalscope\\20261109_024957",
+    "prediction_rows": 105,
+    "review_rows": 105,
+    "indices_complete_unique": true,
+    "prediction_error_indices": [],
+    "empty_final_output_indices": [],
+    "finish_reasons": {
+      "stop": 104,
+      "max_tokens": 1
+    },
+    "review_statuses": {
+      "success": 105
+    },
+    "correct": 98,
+    "incorrect_indices": [
+      25,
+      18,
+      7,
+      87,
+      99,
+      90,
+      101
+    ],
+    "score_recomputed": 0.9333333333333333,
+    "score_reported": 0.9333,
+    "execution_summary": {
+      "requested": 105,
+      "succeeded": 105,
+      "errored": 0,
+      "incomplete": false,
+      "subsets": {
+        "Level 3": {
+          "requested": 105,
+          "succeeded": 105,
+          "errored": 0
+        }
+      }
+    },
+    "integrity_pass": true,
+    "accuracy_pass": false
+  },
+  "overall_pass": false,
+  "correction": "Derived only: performance AND integrity AND accuracy. Raw evidence untouched."
+}

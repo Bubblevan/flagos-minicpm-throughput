@@ -103,3 +103,17 @@ with about 36 hours of data retention. The new raw logs are remote-only, not
 GitHub-backed. The full remote archive's SHA and size are recorded in the short
 report. Do not claim a complete local backup, restart the provider without new
 authorization, attempt SSH again, or upload temporary authentication documents.
+
+## 11/16 active session
+
+Read docs/session-20261116.md and docs/competition-intelligence.md. User booked
+18:00-24:00; portal verified11/16, own GPU cutoff23:55. V3's full11/09 run is
+98/105 and fails overall despite a wrong raw overall_pass=true. Preserve the raw
+JSON and use the corrected derived result. V2 remains the candidate. User supplied
+the organizer's recommendation for FlagTree0.7.0+iluvatar3.6 and permission to
+attach judge disputes for organizer verification; this is not permission to
+change official scores or submit a competition entry automatically.
+New compiler testing is isolated; do not overwrite the old installation, relax
+reference tolerances, retry full accuracy to select a score, or launch a second
+GPU workload. No heartbeat has been recreated. Original uncommittedv3/MetaX/tools
+work from another chat was preserved; do not reset/clean it.

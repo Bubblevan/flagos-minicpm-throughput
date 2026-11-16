@@ -1,0 +1,21 @@
+{
+  "archives": [
+    {
+      "file": "FlagOS-Iluvatar-compiler-inputs-20261116.zip",
+      "sha256": "5c2b55cfbf9390056f2518fb9d367723e7cdeae0b3f023bc45f42ee0c3737b87",
+      "bytes": 66467647,
+      "crc_pass": true,
+      "files": 18
+    },
+    {
+      "file": "FlagOS-Iluvatar-compiler-outputs-20261116.zip",
+      "sha256": "92ce4dcfb3f02d0e3f8bb34201266eaa1c2de99058ac9aae27c2356cdd889fe5",
+      "bytes": 50982970,
+      "crc_pass": true,
+      "files": 59
+    }
+  ],
+  "credential_pattern_scan_pass": true,
+  "model_validation_not_included": true,
+  "split_reason": "Each public GitHub file stays below the size limit; combined full ZIP also retained on D:."
+}

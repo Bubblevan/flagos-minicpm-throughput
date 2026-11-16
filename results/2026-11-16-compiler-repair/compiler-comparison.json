@@ -1,0 +1,14 @@
+{
+  "complete": true,
+  "old_compiler": "0.6.2a3+iluvatar3.6",
+  "new_compiler": "0.7.0+iluvatar3.6",
+  "old_reference_pass": false,
+  "new_reference_pass": true,
+  "old_stable": true,
+  "new_stable": true,
+  "new_v2_bitwise_native": true,
+  "numerical_gate": true,
+  "formal_started": false,
+  "official_score": false,
+  "measured_fix": true
+}
