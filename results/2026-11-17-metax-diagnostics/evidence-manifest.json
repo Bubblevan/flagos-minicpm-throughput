@@ -31,5 +31,12 @@
     "bytes": 73582,
     "sha256": "f15bac17f4da3b02f73a93e4e61e036e77382a63dffe33736dc2ab7005635a02",
     "gate_pass": false
+  },
+  "context_full_source": {
+    "path": "artifacts/FlagOS-dual-context-candidate-source-20261117.zip",
+    "bytes": 769362,
+    "sha256": "08fb615171af9262b2554643e059bf67848a2580bde0d85d846dd2648ecc3008",
+    "files": 408,
+    "full_acceptance_pending": true
   }
 }

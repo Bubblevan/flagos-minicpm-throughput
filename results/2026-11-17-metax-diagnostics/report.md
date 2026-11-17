@@ -95,3 +95,23 @@ must remove both developer mode and the diagnostic mode-control file.
 See[evidence-manifest.json](evidence-manifest.json) for the diagnostic archive
 hashes. Full raw private records stay on D; no credentials or model weights are
 included in this public diagnostic package.
+
+The context-cost guard subsequently passed its predeclared matched gate:4K
++8.8492%,16K+0.0772%; native drift -0.4137%/-0.1822%. All measured64requests
+and1024outputtokens each are complete. New integration shadow recorded1008
+bitwise-equal filter calls and actual long-context metadata proves native fallback.
+The full408-file source was unpacked into a fresh isolated source directory and
+used for these model runs; no new container was created. Its source ZIP is in
+artifacts, with SHA25608fb615171af9262b2554643e059bf67848a2580bde0d85d846dd2648ecc3008.
+The source preserves frozen Iluvatarv2 and materializes one upstream MoE symlink
+with the exact target bytes for portable ZIP restoration. FlagGems is unchanged.
+
+At13:58on11/17, a new original eight-round performance run plus one new105-question
+acceptance was launched using exactly that source, with no profiler/developer
+route/diagnostic mode file. Its hard deadline is15:59; no pass is established yet.
+The original script, model, data, sampling settings and fixed server arguments
+are unchanged. Single-process compilation and CPU-only HTTP benchmark/accuracy
+clients avoid extra GPU runtime memory; these are operational measures, not
+original optimization credit. A completed failing4Kcase may abort a partial
+session to preserve budget; such a session must never be called eight-round
+completion or stitched into another run.

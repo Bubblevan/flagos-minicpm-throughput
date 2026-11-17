@@ -1,0 +1,14 @@
+{
+  "status": "Matched model gate passed:4K+8.8492%,16K+0.0772%; original full acceptance RUNNING",
+  "base_commit": "13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0",
+  "files": {
+    "flash_attn.py": "15fb1751acc93f32e65d1331627cb9c079505094920a233ae31f84c98eedaa3d",
+    "sampler_budget.py": "86124bbb7032f1684e76e477903235cfe4c21766aa3a6710b22e0fbdc69a33b0",
+    "shortlist_kernels.py": "2facf78ba46fe2b18621b39abbe1d2fb83eb3ec5ce068191322c1b435ab8633a",
+    "topk_topp_sampler.py": "38867aacc6c31e6f590eafccecb4fde79e7a517f2e05b615a7b83fabb243a7aa",
+    "top_p_shortlist.py": "08f0962d94f37784ca51e39ebae8cc62bc39b67ab812e6d106703328e0848b74"
+  },
+  "full_source_files": 408,
+  "full_archive_sha256": "08fb615171af9262b2554643e059bf67848a2580bde0d85d846dd2648ecc3008",
+  "flag_gems_modified": false
+}
