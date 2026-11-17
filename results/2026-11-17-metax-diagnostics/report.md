@@ -160,7 +160,7 @@ zeros across those shapes plus O-projection and smaller-M fallback shapes.
 All outputs were bitwise equal to native; selected rows passed independent
 float64 CPU references using existing tolerances. Finite checks are not a
 universal exactness proof. Candidate mm.py SHA256:
-600f5f02b03ff5a96968ca82dbafaf3e24e1203cc637579d74f808421dbe3755f.
+600f5f02b03ff5a96968ca82dbafaf3e24e1203cc637579d74f808421dbe375f.
 
 The next separate-service native/candidate/native trial uses the original
 random-text generator,64request full-output warmup and128measured requests per
