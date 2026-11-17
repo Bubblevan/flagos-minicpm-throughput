@@ -51,3 +51,25 @@ GEMM-only control, not against original stock.64 full-output warmup requests
 precede128 measured4K/1024 requests per condition,64 concurrency, original
 random-text generator and sampler. Require>=3%gain,<=3%control drift and no
 TTFT regression before considering original full acceptance. Gate pending.
+
+## Dynamic-shape correction (11/18, 00:07)
+
+The first model trial completed its A1 control, but B failed before readiness:
+vLLM's compiled graph rejected a Python `M==2048` branch that specialized its
+dynamic token dimension. This is an integration failure, not a GPU fault or a
+completed performance run. That trial is preserved and its A1 is not reused.
+
+The corrected adapter tests M inside the opaque custom op. Its traced wrapper
+keeps the token dimension symbolic; every other M calls original dispatch using
+the retained layer/weight owner. Kernel arithmetic and the two packed shapes
+are unchanged. The new complete source archive is
+`artifacts/FlagOS-dual-nn-repack-dynamic-candidate-source-20261118.zip`, SHA256
+`e4f40c1d482a85eaea070a75a4f725999a129b37722558837aafdc92b40e9f1f`.
+All5188 restored files match their manifest. Protected Tian files are unchanged.
+
+Fresh checks on the current C500 pass all30 numerical/fallback cases, fake/
+compiled execution, CUDA Graph replay, and explicit dynamic-token lengths
+2048/63/64/127/2047. See `correctness-dynamic-20261118.json`, SHA256
+`b3ba34a55d56650b51753b16832d274f8d43c832897ff7765262afd8d3dec0c4`.
+These finite tests are not a universal proof. A new matched A/B/A is running;
+there is still no NN full eight-round or new105 acceptance result.

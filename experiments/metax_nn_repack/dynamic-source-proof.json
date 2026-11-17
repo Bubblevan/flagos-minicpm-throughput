@@ -1,0 +1,9 @@
+{
+  "path": "artifacts/FlagOS-dual-nn-repack-dynamic-candidate-source-20261118.zip",
+  "bytes": 15190635,
+  "sha256": "e4f40c1d482a85eaea070a75a4f725999a129b37722558837aafdc92b40e9f1f",
+  "files": 5188,
+  "only_adapter_runtime_dispatch_changed": true,
+  "kernel_unchanged": true,
+  "full_model_acceptance_pending": true
+}

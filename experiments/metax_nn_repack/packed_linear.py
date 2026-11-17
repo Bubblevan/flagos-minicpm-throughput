@@ -5,6 +5,7 @@
 import hashlib
 import json
 import os
+import weakref
 from pathlib import Path
 
 import torch
@@ -16,12 +17,22 @@ _ORIGINAL_PROCESS = UnquantizedLinearMethod.process_weights_after_loading
 _ORIGINAL_FACTORY = layer_utils.dispatch_unquantized_gemm
 _STATS = dict(layers=0, bytes=0)
 _RECORDED = False
+_OWNERS = {}
 
 
 @torch.library.custom_op('tokenforge_metax::packed_prefill_mm', mutates_args=())
-def packed_prefill_mm(a: torch.Tensor, packed: torch.Tensor) -> torch.Tensor:
+def packed_prefill_mm(a: torch.Tensor, packed: torch.Tensor, weight: torch.Tensor) -> torch.Tensor:
     # Defer the Gems import until runtime to avoid plugin/Gems import cycles.
     from flag_gems.runtime.backend._metax.ops.packed_mm import packed_mm
+    # The token dimension is dynamic in vLLM's full compiled graph. Test it
+    # only inside this opaque runtime implementation, never in the traced
+    # Python wrapper; all other M keep the original dispatch and owner.
+    if a.shape[0] != 2048:
+        ref = _OWNERS.get((packed.device.index, packed.data_ptr()))
+        owner = ref() if ref is not None else None
+        assert owner is not None, 'Frozen packed weight owner must remain alive'
+        assert owner.weight.data_ptr() == weight.data_ptr(), 'Weights changed after packing'
+        return _ORIGINAL_FACTORY()(owner, a, weight, None)
     global _RECORDED
     if not _RECORDED:
         root = os.environ.get('FLAGOS_SESSION_ROOT')
@@ -42,7 +53,7 @@ def packed_prefill_mm(a: torch.Tensor, packed: torch.Tensor) -> torch.Tensor:
 
 
 @packed_prefill_mm.register_fake
-def _fake_packed_prefill_mm(a, packed):
+def _fake_packed_prefill_mm(a, packed, weight):
     return torch.empty((a.shape[0], packed.shape[1]), device=a.device, dtype=a.dtype)
 
 
@@ -60,6 +71,7 @@ def _process_weights(self, layer):
         # decode, unsupported shapes and the original dispatch path.
         packed = w.detach().t().contiguous()
         layer._tokenforge_nn_weight = packed
+        _OWNERS[(packed.device.index, packed.data_ptr())] = weakref.ref(layer)
         _STATS['layers'] += 1
         _STATS['bytes'] += packed.numel()*packed.element_size()
 
@@ -67,10 +79,10 @@ def _process_weights(self, layer):
 def _linear(layer, x, weight, bias):
     packed = getattr(layer, '_tokenforge_nn_weight', None)
     if (packed is not None and bias is None and x.ndim == 2
-            and x.shape[0] == 2048 and x.shape[1] == 2048
+            and x.shape[1] == 2048
             and x.dtype == torch.bfloat16 and x.is_cuda
             and x.is_contiguous() and x.device == packed.device):
-        return packed_prefill_mm(x, packed)
+        return packed_prefill_mm(x, packed, weight)
     # Retain the framework's existing backend selection and every unsupported
     # behavior. No direct vendor library, sampler or Attention replacement.
     return _ORIGINAL_FACTORY()(layer, x, weight, bias)

@@ -1,0 +1,302 @@
+{
+  "complete": true,
+  "cases": [
+    {
+      "path": "existing_NT_component",
+      "M": 2048,
+      "N": 2560,
+      "K": 2048,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 2048,
+      "N": 2560,
+      "K": 2048,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 2048,
+      "N": 2560,
+      "K": 2048,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 2048,
+      "N": 12288,
+      "K": 2048,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 2048,
+      "N": 12288,
+      "K": 2048,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 2048,
+      "N": 12288,
+      "K": 2048,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 2048,
+      "N": 2048,
+      "K": 6144,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 2048,
+      "N": 2048,
+      "K": 6144,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 2048,
+      "N": 2048,
+      "K": 6144,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 2048,
+      "N": 2048,
+      "K": 2048,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 2048,
+      "N": 2048,
+      "K": 2048,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 2048,
+      "N": 2048,
+      "K": 2048,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 127,
+      "N": 2560,
+      "K": 2048,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 127,
+      "N": 2560,
+      "K": 2048,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 127,
+      "N": 2560,
+      "K": 2048,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 64,
+      "N": 2048,
+      "K": 6144,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 64,
+      "N": 2048,
+      "K": 6144,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "existing_NT_component",
+      "M": 64,
+      "N": 2048,
+      "K": 6144,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "packed_public_wrapper",
+      "M": 2048,
+      "N": 2560,
+      "K": 2048,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "packed_public_wrapper",
+      "M": 2048,
+      "N": 2560,
+      "K": 2048,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "packed_public_wrapper",
+      "M": 2048,
+      "N": 2560,
+      "K": 2048,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "packed_public_wrapper",
+      "M": 2048,
+      "N": 12288,
+      "K": 2048,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "packed_public_wrapper",
+      "M": 2048,
+      "N": 12288,
+      "K": 2048,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "packed_public_wrapper",
+      "M": 2048,
+      "N": 12288,
+      "K": 2048,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "path": "original_dispatch_fallback",
+      "M": 64,
+      "N": 2560,
+      "K": 2048,
+      "dtype": "torch.bfloat16",
+      "bias": false,
+      "bitwise_equal": true,
+      "cpu_reference_pass": null,
+      "reference_is_original_dispatch": true
+    },
+    {
+      "path": "original_dispatch_fallback",
+      "M": 127,
+      "N": 12288,
+      "K": 2048,
+      "dtype": "torch.bfloat16",
+      "bias": false,
+      "bitwise_equal": true,
+      "cpu_reference_pass": null,
+      "reference_is_original_dispatch": true
+    },
+    {
+      "path": "original_dispatch_fallback",
+      "M": 2048,
+      "N": 2048,
+      "K": 2048,
+      "dtype": "torch.bfloat16",
+      "bias": false,
+      "bitwise_equal": true,
+      "cpu_reference_pass": null,
+      "reference_is_original_dispatch": true
+    },
+    {
+      "path": "original_dispatch_fallback",
+      "M": 2048,
+      "N": 2048,
+      "K": 6144,
+      "dtype": "torch.bfloat16",
+      "bias": false,
+      "bitwise_equal": true,
+      "cpu_reference_pass": null,
+      "reference_is_original_dispatch": true
+    },
+    {
+      "path": "original_dispatch_fallback",
+      "M": 64,
+      "N": 2560,
+      "K": 2048,
+      "dtype": "torch.float32",
+      "bias": false,
+      "bitwise_equal": true,
+      "cpu_reference_pass": null,
+      "reference_is_original_dispatch": true
+    },
+    {
+      "path": "original_dispatch_fallback",
+      "M": 64,
+      "N": 2560,
+      "K": 2048,
+      "dtype": "torch.bfloat16",
+      "bias": true,
+      "bitwise_equal": true,
+      "cpu_reference_pass": null,
+      "reference_is_original_dispatch": true
+    }
+  ],
+  "fake_and_compile_pass": true,
+  "cudagraph_pass": true,
+  "dynamic_token_dimension_pass": true,
+  "dynamic_sizes": [
+    2048,
+    63,
+    64,
+    127,
+    2047
+  ],
+  "actual_mm": "/data/tokenforge-sources/nn_repack_dynamic_20261118_0000/TokenForge/FlagGems/src/flag_gems/runtime/backend/_metax/ops/mm.py",
+  "packed_source": "/data/tokenforge-sources/nn_repack_dynamic_20261118_0000/TokenForge/FlagGems/src/flag_gems/runtime/backend/_metax/ops/packed_mm.py",
+  "packed_sha256": "88b85cd4cee03ca515a08233e608bab111a312092ecbc673f3b5e6d8aa6a5e68",
+  "finite_tests_not_universal_proof": true,
+  "official_score": false
+}

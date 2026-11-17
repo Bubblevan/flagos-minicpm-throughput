@@ -104,15 +104,27 @@ for M,N,K,dtype,bias_present in [(64,2560,2048,torch.bfloat16,False),
 a=torch.randn((2048,2048),device='cuda:0',dtype=torch.bfloat16)
 w=torch.randn((2560,2048),device='cuda:0',dtype=torch.bfloat16)
 packed=w.t().contiguous()
-expected=adapter.packed_prefill_mm(a,packed)
+expected=adapter.packed_prefill_mm(a,packed,w)
 compiled=torch.compile(adapter.packed_prefill_mm,backend='eager',fullgraph=True)
-actual=compiled(a,packed);torch.cuda.synchronize(0)
+actual=compiled(a,packed,w);torch.cuda.synchronize(0)
 assert torch.equal(actual,expected)
 graph=torch.cuda.CUDAGraph()
-with torch.cuda.graph(graph):captured=adapter.packed_prefill_mm(a,packed)
+with torch.cuda.graph(graph):captured=adapter.packed_prefill_mm(a,packed,w)
 graph.replay();torch.cuda.synchronize(0)
 assert torch.equal(captured,expected)
+layer=torch.nn.Module();layer.weight=torch.nn.Parameter(w,requires_grad=False)
+method.process_weights_after_loading(layer)
+torch._dynamo.mark_dynamic(a,0,min=1,max=2048)
+dynamic=torch.compile(lambda x:adapter._linear(layer,x,layer.weight,None),
+                      backend='eager',fullgraph=True,dynamic=True)
+assert torch.equal(dynamic(a),expected)
+for M in [63,64,127,2047]:
+    x=torch.randn((M,2048),device='cuda:0',dtype=torch.bfloat16)
+    native_result=adapter._ORIGINAL_FACTORY()(layer,x,w,None)
+    assert torch.equal(dynamic(x),native_result),('dynamic',M)
+torch.cuda.synchronize(0)
 save(complete=True,fake_and_compile_pass=True,cudagraph_pass=True,
+     dynamic_token_dimension_pass=True,dynamic_sizes=[2048,63,64,127,2047],
      actual_mm=candidate.__file__,packed_source=str(SOURCE/'FlagGems/src/flag_gems/runtime/backend/_metax/ops/packed_mm.py'),
      packed_sha256=hashlib.sha256((SOURCE/'FlagGems/src/flag_gems/runtime/backend/_metax/ops/packed_mm.py').read_bytes()).hexdigest(),
      finite_tests_not_universal_proof=True,official_score=False)

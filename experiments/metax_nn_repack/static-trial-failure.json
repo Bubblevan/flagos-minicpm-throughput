@@ -1,0 +1,11 @@
+{
+  "complete_acceptance": false,
+  "trial_failed_before_B_readiness": true,
+  "A1_not_reused": true,
+  "root_cause": "Traced Python token-length branch specialized dynamic size to2048; ConstraintViolationError",
+  "archive": "FlagOS-MetaX-NN-static-shape-startup-failed-20261117.zip",
+  "bytes": 301933,
+  "files": 20,
+  "sha256": "c9bd53d820529d05143dd1a1136a2aa5fcb4c4c2c908ec17a3aa699f1388eed0",
+  "corrected_dynamic_proof_sha256": "b3ba34a55d56650b51753b16832d274f8d43c832897ff7765262afd8d3dec0c4"
+}

@@ -17,6 +17,8 @@ def run(root,source_zip,performance_only=False):
     assert all(c['cpu_reference_pass'] for c in proof['cases'] if c['path']!='original_dispatch_fallback')
     assert all(c['reference_is_original_dispatch'] for c in proof['cases'] if c['path']=='original_dispatch_fallback')
     assert proof['fake_and_compile_pass'] and proof['cudagraph_pass']
+    assert proof['dynamic_token_dimension_pass']
+    assert proof['dynamic_sizes']==[2048,63,64,127,2047]
     key='FlagGems/src/flag_gems/runtime/backend/_metax/ops/packed_mm.py'
     assert proof['packed_sha256']==full['files'][key]
     records=list(root.glob('nn-repack-runtime-worker-*.json'))
