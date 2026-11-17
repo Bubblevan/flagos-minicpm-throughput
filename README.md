@@ -2,7 +2,7 @@
 
 11/17沐曦进展（20:00）：GEMM＋prefix与恢复原生Attention的GEMM-only候选，完整四轮4K均未通过，分别4504.03/3892.63tok/s；两套原始记录与完整源码已保存，不拼接16K或旧精度。新增[公开方案核验及显式预取实验](experiments/metax_decode_prefetch/research.md)，借鉴有实测记录的Apache-2.0小批量GEMM双缓冲思路，保留原采样与Attention。**尚无新的沐曦完整通过结论**，天数已通过包仍独立保护。
 
-23:45更新：显式prefetch在当前原生小矩阵路径上更慢，已否决；[两投影NN权重重排候选](experiments/metax_nn_repack/README.md)通过新机器30项数值/回退检查及fake/Dynamo/CUDA Graph检查。同机匹配A/B/A正在运行，完整八轮与新105题尚未开始。NN布局思路明确归属外部参赛者，不将其成绩算作我方收益；完整5188文件候选源码和已通过的天数源文件均已保存。
+11/18 00:31更新：显式prefetch微测已否决；[两投影NN重排](experiments/metax_nn_repack/README.md)虽通过数值及动态形状检查，同机完整A/B/A吞吐仍下降7.12%，基线漂移仅−0.39%，已否决并停止模型，未启动完整八轮或新105题。原始记录经独立解析和远端逐文件hash核验保存。接下来仅预研排序边界分桶精修，尚无新收益或沐曦整体通过结论；天数已通过包保持冻结。
 
 # FlagOS MiniCPM throughput project
 

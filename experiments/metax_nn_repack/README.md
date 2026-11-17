@@ -1,6 +1,6 @@
 # Two-shape prepacked-NN candidate
 
-**Work in progress; no model pass.** The basic-pipeline operator probe found
+**Rejected at matched model gate; no model pass.** The basic-pipeline operator probe found
 M2048 QKV and Gate/Up shapes faster and bitwise equal to native. O projection
 has negligible gain; Down has a bitwise difference and is not repacked.
 The earlier explicit-prefetch decode candidate was slower and rejected.
@@ -73,3 +73,25 @@ compiled execution, CUDA Graph replay, and explicit dynamic-token lengths
 `b3ba34a55d56650b51753b16832d274f8d43c832897ff7765262afd8d3dec0c4`.
 These finite tests are not a universal proof. A new matched A/B/A is running;
 there is still no NN full eight-round or new105 acceptance result.
+
+The first actual worker record reports84 packed projection modules (two per
+Transformer layer, not84 Transformer layers),2,554,331,136 extra bytes. Startup
+reports1,146,704 KV tokens versus1,206,080 in control. This record establishes
+the first fast-path attempt and resident-layout cost, not all-call coverage.
+
+## Completed model rejection (11/18 00:31)
+
+The fresh A/B/A completed with exact request/token totals and no owned survivors:
+control4405.60, NN4084.21, control4388.55tok/s. Against the two-control mean,
+throughput regresses7.1153%, with control drift only-0.3870%. TTFT ratio is
+0.931248 (improves6.8752%). The predeclared gate rejects; no original eight
+rounds or new105 were launched. Faster isolated operators did not yield faster
+model throughput. Extra resident memory or changed execution layout is not
+claimed as a proved cause without a matched trace.
+
+Independent parsing of original logs matches all saved metrics; all36 stopped
+files match their remote SHA256. See `dynamic-model-rejection.json` and immutable
+`artifacts/FlagOS-MetaX-NN-dynamic-ABA-rejected-20261118.zip`, SHA256
+`22a7df0e0c25dcd470b51c4a0039fc591a33d4f00e80c3b8e2af73078d020d71`.
+The source archives are experimental recovery checkpoints, not a passing or
+recommended MetaX submission. Protected Tian candidate remains unchanged.
