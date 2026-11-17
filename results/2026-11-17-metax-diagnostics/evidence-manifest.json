@@ -38,5 +38,26 @@
     "sha256": "08fb615171af9262b2554643e059bf67848a2580bde0d85d846dd2648ecc3008",
     "files": 408,
     "full_acceptance_pending": true
+  },
+  "failed_context_four_rounds": {
+    "path": "artifacts/FlagOS-MetaX-context-four-round-failed-20261117.zip",
+    "bytes": 89708,
+    "sha256": "94f168d1ffcdcde0c1b131e34cb0a37887f1e70147666e8d730a7ca69b02f4f0",
+    "full_eight_rounds": false,
+    "accuracy_started": false,
+    "performance_pass": false
+  },
+  "prefill_mm_numerical": {
+    "path": "artifacts/FlagOS-MetaX-prefill-mm-numerical-20261117.zip",
+    "bytes": 2331645,
+    "sha256": "60a9206fa60027ac94dbdc5e4c944d9fd74fb965830cc98bc4c679ce1529a81c",
+    "files": 59
+  },
+  "mm_full_source": {
+    "path": "artifacts/FlagOS-MetaX-mm-candidate-full-source-20261117.zip",
+    "bytes": 15238607,
+    "sha256": "14226edb2bceb66fea0ebb4a3a9bcb0f694c4e71d49f816a00b2fc3101fb70cd",
+    "files": 5185,
+    "acceptance_pending": true
   }
 }

@@ -1,0 +1,93 @@
+--- a/src/flag_gems/runtime/backend/_metax/ops/mm.py
++++ b/src/flag_gems/runtime/backend/_metax/ops/mm.py
+@@ -1009,7 +1009,90 @@
+     return c
+ 
+ 
++
++# Verified dense BF16 NT prefill shapes only. Unsupported shapes/layouts/dtypes
++# retain the original tuner and launch. The native arithmetic body is unchanged.
++_TOKENFORGE_NT_TILES = {(2560, 2048): (256, 128, 32),
++                        (12288, 2048): (128, 256, 32),
++                        (2048, 6144): (128, 128, 64)}
++
++@triton.jit
++def _tokenforge_mm_nt(
++    A,
++    B,
++    C,
++    M,
++    N,
++    K,
++    BLOCK_M: tl.constexpr,
++    BLOCK_N: tl.constexpr,
++    BLOCK_K: tl.constexpr,
++    GROUP_M: tl.constexpr,
++    EVEN_M: tl.constexpr,
++    EVEN_N: tl.constexpr,
++    EVEN_K: tl.constexpr,
++):
++    pid = tl.program_id(0)
++    grid_m = tl.cdiv(M, BLOCK_M)
++    grid_n = tl.cdiv(N, BLOCK_N)
++
++    width = GROUP_M * grid_n
++    group_id = pid // width
++    group_size = min(grid_m - group_id * GROUP_M, GROUP_M)
++    pid_m = group_id * GROUP_M + pid % group_size
++    pid_n = pid % width // group_size
++
++    rm = pid_m * BLOCK_M + tl.arange(0, BLOCK_M)
++    rn = pid_n * BLOCK_N + tl.arange(0, BLOCK_N)
++    if EVEN_M:
++        ram = tl.max_contiguous(tl.multiple_of(rm, BLOCK_M), BLOCK_M)
++    else:
++        ram = tl.max_contiguous(tl.multiple_of(rm % M, BLOCK_M), BLOCK_M)
++    if EVEN_N:
++        rbn = tl.max_contiguous(tl.multiple_of(rn, BLOCK_N), BLOCK_N)
++    else:
++        rbn = tl.max_contiguous(tl.multiple_of(rn % N, BLOCK_N), BLOCK_N)
++
++    rk = tl.arange(0, BLOCK_K)
++    a_ptrs = A + ram[:, None] * K + rk[None, :]
++    b_ptrs = B + rk[:, None] + rbn[None, :] * K
++    acc = tl.zeros((BLOCK_M, BLOCK_N), dtype=tl.float32)
++
++    for k in range(0, tl.cdiv(K, BLOCK_K)):
++        if EVEN_K:
++            a = tl.load(a_ptrs)
++            b = tl.load(b_ptrs)
++        else:
++            k_remaining = K - k * BLOCK_K
++            a = tl.load(a_ptrs, mask=rk[None, :] < k_remaining, other=0.0)
++            b = tl.load(b_ptrs, mask=rk[:, None] < k_remaining, other=0.0)
++        if a.dtype != b.dtype:
++            a = a.to(C.dtype.element_ty)
++            b = b.to(C.dtype.element_ty)
++        acc = tl.dot(a, b, acc, out_dtype=tl.float32, allow_tf32=False)
++        a_ptrs += BLOCK_K
++        b_ptrs += BLOCK_K
++
++    c_ptrs = C + rm[:, None] * N + rn[None, :]
++    result = acc.to(C.dtype.element_ty)
++    if EVEN_M and EVEN_N:
++        tl.store(c_ptrs, result)
++    else:
++        tl.store(c_ptrs, result, mask=(rm < M)[:, None] & (rn < N)[None, :])
++
+ def general_mm_nt(a, b, c, M, N, K):
++    tile = _TOKENFORGE_NT_TILES.get((N, K)) if M == 2048 else None
++    if (tile is not None and a.dtype == b.dtype == c.dtype == torch.bfloat16
++            and a.ndim == b.ndim == c.ndim == 2 and a.is_contiguous()
++            and b.stride(0) == 1 and b.stride(1) == K and c.is_contiguous()
++            and a.shape == (M, K) and b.shape == (K, N) and c.shape == (M, N)):
++        bm, bn, bk = tile
++        with torch_device_fn.device(a.device):
++            _tokenforge_mm_nt[(triton.cdiv(M, bm) * triton.cdiv(N, bn),)](
++                a, b, c, M, N, K, BLOCK_M=bm, BLOCK_N=bn, BLOCK_K=bk,
++                GROUP_M=8, EVEN_M=True, EVEN_N=True, EVEN_K=True,
++                num_warps=8, num_stages=2, pipeline="basic")
++        return c
+     grid = lambda META: (
+         triton.cdiv(M, META["BLOCK_M"]) * triton.cdiv(N, META["BLOCK_N"]),
+     )

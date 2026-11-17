@@ -1,0 +1,152 @@
+{
+  "complete": true,
+  "cases": [
+    {
+      "M": 2048,
+      "N": 2560,
+      "K": 2048,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 2048,
+      "N": 2560,
+      "K": 2048,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 2048,
+      "N": 2560,
+      "K": 2048,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 2048,
+      "N": 12288,
+      "K": 2048,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 2048,
+      "N": 12288,
+      "K": 2048,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 2048,
+      "N": 12288,
+      "K": 2048,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 2048,
+      "N": 2048,
+      "K": 6144,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 2048,
+      "N": 2048,
+      "K": 6144,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 2048,
+      "N": 2048,
+      "K": 6144,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 2048,
+      "N": 2048,
+      "K": 2048,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 2048,
+      "N": 2048,
+      "K": 2048,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 2048,
+      "N": 2048,
+      "K": 2048,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 127,
+      "N": 2560,
+      "K": 2048,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 127,
+      "N": 2560,
+      "K": 2048,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 127,
+      "N": 2560,
+      "K": 2048,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 64,
+      "N": 2048,
+      "K": 6144,
+      "kind": "random",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 64,
+      "N": 2048,
+      "K": 6144,
+      "kind": "cancellation",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    },
+    {
+      "M": 64,
+      "N": 2048,
+      "K": 6144,
+      "kind": "zeros",
+      "bitwise_equal": true,
+      "cpu_reference_pass": true
+    }
+  ],
+  "actual_import": "/data/tokenforge-sources/TokenForge-metax-mm-20261117/FlagGems/src/flag_gems/runtime/backend/_metax/ops/mm.py",
+  "sha256": "600f5f02b03ff5a96968ca82dbafaf3e24e1203cc637579d74f808421dbe375f",
+  "finite_tests_not_universal_proof": true
+}

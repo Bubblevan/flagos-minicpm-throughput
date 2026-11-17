@@ -115,3 +115,57 @@ clients avoid extra GPU runtime memory; these are operational measures, not
 original optimization credit. A completed failing4Kcase may abort a partial
 session to preserve budget; such a session must never be called eight-round
 completion or stitched into another run.
+
+The context candidate's full4Kcase failed at14:21:four rounds complete,
+last-three mean4807.27tok/s and3471.4467ms TTFT. It fails both reference tolerances.
+Per the registered stop policy the partial session ended before16K/new105, with
+no owned survivors. It is NOT an eight-round or accuracy completion. The raw
+four-round record is archived and must not be reused in another session.
+
+A diagnostic-design limitation was also made explicit: earlier custom trials
+submitted token-ID arrays, while the original benchmark generates random text
+and continuously replenishes64requests. Thus the observed+8.85% was not a
+full-workload prediction. The next bounded test uses the original vllm bench
+random generator and128continuous requests. A separate fused-threshold/CDF
+candidate passed35actual-vocabulary differential/stream cases; operator-only
+concentrated-distribution filtering improved from~28.9ms native to10.8/6.0ms.
+Model gains and a new full pass are still unestablished. No scoring settings,
+model, data or original benchmark code were changed.
+
+
+## 15:25: warmed sampler rejected; isolated prefill GEMM candidate
+
+The full-shape-warmed original-generator A/B/A found candidate5021.59tok/s,
+gain -0.0454%, native drift -0.1023%, and TTFT ratio1.00905. Its gate is false.
+The earlier +14.6% versus a cold first baseline was invalidated by14.92% drift.
+No fused-sampler full pass exists.
+
+The separate actual8-step prefill trace attributes73.2852% of GPU-kernel time
+to1344 native mm_kernel_nt calls; sort kernels account for2.5824% in that window.
+This is a different window from the earlier decode sort hotspot and is not an
+end-to-end time fraction. Four real GEMM shapes atM2048 were observed. Installed
+MetaX mm.py matches clean official a762 bytes, SHA256:
+2d4f80658012c1442be3fc8beee0fd1aae6f0e3f65092160fe9a4db369d77cec.
+
+A complete isolated FlagGems source changes only three BF16 contiguous NT
+prefill launch geometries. The native arithmetic AST is identical; unsupported
+shapes/layouts/dtypes, decode and the unimproved O projection retain the native
+path. Selected (N,K)->(BM,BN,BK), all8warps/2stages/basic:
+(2560,2048)->(256,128,32);(12288,2048)->(128,256,32);
+(2048,6144)->(128,128,64). A bounded8-geometry probe selected these configurations.
+Graph-timed weighted native-MM time reduction is9.54%, not an end-to-end gain.
+
+The actual isolated public function passed18 cases: random, cancellation and
+zeros across those shapes plus O-projection and smaller-M fallback shapes.
+All outputs were bitwise equal to native; selected rows passed independent
+float64 CPU references using existing tolerances. Finite checks are not a
+universal exactness proof. Candidate mm.py SHA256:
+600f5f02b03ff5a96968ca82dbafaf3e24e1203cc637579d74f808421dbe3755f.
+
+The next separate-service native/candidate/native trial uses the original
+random-text generator,64request full-output warmup and128measured requests per
+condition. Only the FlagGems source changes; native sampling and the existing
+prefix metadata patch are common. Its predeclared gate requires>=3%gain,
+<=3%native drift and no TTFT regression. Hard cutoff remains15:59; an asked
+extension is not assumed. No new official eight-round/105-question pass exists.
+If accepted, this candidate must ship complete FlagGems as well as the plugin.
