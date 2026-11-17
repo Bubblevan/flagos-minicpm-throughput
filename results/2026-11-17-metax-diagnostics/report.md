@@ -1,3 +1,5 @@
+> 最新状态（11/17 19:05）：GEMM候选18项数值及A/B/A门禁通过；前一正式尝试容器中断、故障卡原生队列超时。当前新64GiB C500上完整集成5186文件已恢复并复核，新原版八轮于19:04开始，随后串行新105题。截止20:44；整体通过仍未建立。下文保留历史失败与阶段证据。
+
 # C500 decode bottleneck and guarded nucleus candidate
 
 This is diagnostic evidence, not a passing competition result. The successful
@@ -169,3 +171,44 @@ prefix metadata patch are common. Its predeclared gate requires>=3%gain,
 <=3%native drift and no TTFT regression. Hard cutoff remains15:59; an asked
 extension is not assumed. No new official eight-round/105-question pass exists.
 If accepted, this candidate must ship complete FlagGems as well as the plugin.
+
+
+The separate-service GEMM A/B/A completed15:46 with all tokens and requests:
+native5021.24 / candidate5177.19 / native4994.61tok/s. The candidate improves3.3799%
+against the native mean, TTFT ratio0.9143438 (-8.5656%), native drift-0.5303%.
+The fixed short gate passes; all three services exited and final remote/local
+backup hashes match. This is128request diagnostics, not the official256request
+four-round average. Three new generated kernel configurations and actual isolated
+imports are recorded. Candidate source remained frozen across the trial.
+
+The user explicitly extended compute to16:59. At15:47 a new original eight-round
+plus new105-question acceptance was started from a freshly restored complete
+5185-file source archive (both plugin and modified FlagGems). No profiler,
+developer route, diagnostic mode selector, sampling/model/data change or hardware
+tuning is present. The same operational single compiler thread and CPU-only HTTP
+client prevent extra runtime memory. This is a source restoration in the current
+container, not a claim of a fresh container. Overall acceptance remains PENDING.
+
+
+### Evening recovery: keep model diagnostics separate from device faults
+
+The15:47formal attempt stopped producing evidence at15:52:34and the container
+was later rebuilt. Recovered15files have matching remote/local SHA256; no raw
+CSV or new105report exists. Last sampled host memory was49,366,605,824bytes,
+with no OOM event up to that sample; the termination cause after the sample is
+unknown. The new cgroup's zero counters do not exclude an earlier OOM.
+
+At18:19the rebuilt container used a different GPU atPCI0f. Native Torch, without
+vLLM/FlagGems/our candidate, repeatedly logged ioctl create queue block timeout
+and could not complete a one-element allocation/synchronization probe. A user
+power-cycle still assignedPCI0fand reproduced the failure; the bounded probes
+were stopped. The candidate has no new precision/performance conclusion from
+those failures. An intermediate48GiBhost-memory resource also did not complete
+its initial native synchronization; its cause remains separate and unconfirmed.
+
+The user then supplied a new64GiBresource: driver3.8.30, C500PCI12, original frozen
+plugin/Gems image. Explicit logical-device0selection, allocation, synchronization
+and scalar readback completed. All5186integrated source files were restored;
+the exact protected Iluvatarv2files and MetaX/Gems changes are retained. Numerical
+revalidation and CPU-only client smoke precede a fresh isolated acceptance ROOT.
+New compute cutoff20:44, backup cutoff20:49. No old rounds or accuracy are reused.

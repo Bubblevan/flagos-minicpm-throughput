@@ -59,5 +59,36 @@
     "sha256": "14226edb2bceb66fea0ebb4a3a9bcb0f694c4e71d49f816a00b2fc3101fb70cd",
     "files": 5185,
     "acceptance_pending": true
+  },
+  "mm_model_ABA": {
+    "path": "artifacts/FlagOS-MetaX-mm-model-ABA-20261117.zip",
+    "bytes": 282618,
+    "sha256": "0e3dea38e657b460dce150aab535fe97a94310cab6580368cfb54e47938d097f",
+    "files": 35,
+    "remote_final_hash_match": true
+  },
+  "interruption_and_device_queue": {
+    "path": "artifacts/FlagOS-MetaX-interruption-and-device-queue-20261117.zip",
+    "bytes": 268656,
+    "sha256": "4129fa01f52749c6b7521f9f9c409f1f9dc278a3819a62315b88d8381322377b",
+    "files": 20
+  },
+  "dual_integrated_source": {
+    "path": "artifacts/FlagOS-dual-mm-integrated-candidate-source-20261117.zip",
+    "bytes": 15241127,
+    "sha256": "d802cd7102ba69364242802d4a3a1e7f6614e0da957d10d27d592980b20b6d68",
+    "files": 5186,
+    "modified_from_tested_C500": [
+      {
+        "path": "vllm_fl/platform.py",
+        "sha256": "af4855b54647dba827e9a9f1688450a4ae0e49ac2349130129f1f073432be820"
+      },
+      {
+        "path": "vllm_fl/dispatch/backends/vendor/iluvatar/impl/attention_tiles.py",
+        "sha256": "5bafdb0bf547e0567154ebf6a9d57465e677ea707b5f019832aaf63d77a4d325"
+      }
+    ],
+    "metax_vendor_guard_false": true,
+    "combined_runtime_acceptance_pending": true
   }
 }

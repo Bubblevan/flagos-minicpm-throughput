@@ -62,7 +62,7 @@ def main():
     flow.append(p('TokenForge\n面向异构GPU的MiniCPM5-2B吞吐优化', title))
     state = '双平台本地完整验收已通过，待用户审阅' if passed else '审阅草稿：沐曦完整验收尚未通过或仍待完成'
     flow.append(p(state, head))
-    add('设计路线：天数采用混合批次Query Tiling，沐曦采用带概率质量认证与回退的Nucleus Shortlist。两个平台沿各自实际热点优化，保留原Attention Backend、模型权重、BF16精度、采样规则与固定服务参数。')
+    add('设计路线：天数采用混合批次Query Tiling，沐曦采用受保护的原生NT矩阵乘Launch Geometry。两个平台沿各自实际热点优化，保留原Attention Backend、模型权重、BF16精度、采样规则与固定服务参数。')
     rows = [['平台 / 结果类型', '4K total tok/s', '16K total tok/s', '本次精度']]
     rows.append(['天数v2 / 11月16日完整验收', '2435.35', '1890.7267', '101/105'])
     if metax:
@@ -71,7 +71,7 @@ def main():
         rows.append(['沐曦 / 本次完整验收', '待审计', '待审计', '待审计'])
     table(rows, [190, 102, 105, 110])
     add('完整验收要求：每组原版四轮，丢首轮平均后三轮；吞吐不低于本平台参考99%，Mean TTFT不高于参考101%，新105题完整无执行错误、缺失或空final，精度不低于95%。本报告不混用两卡参考，不拼接会话或借用历史精度。')
-    add('贡献归属：受保护的计算分块、全词表排序工作量缩减、成本门禁和可追溯恢复流程属于本作品；主办方FlagTree修复、编译并发限制和HTTP客户端内存修复单独记录，不包装成原创算法收益。')
+    add('贡献归属：受保护的混合Query分块、形状感知矩阵乘分块和可追溯恢复流程属于本作品；主办方FlagTree修复、编译并发限制和HTTP客户端内存修复单独记录，不包装成原创算法收益。')
     flow.append(p('2026-11-17 | 公开作品候选技术报告 | 尚未自动提交比赛平台', small))
 
     page('1. 天数：混合批次的Query Tiling')
@@ -84,40 +84,35 @@ def main():
     flow.append(p('图1：原版完整负载的后三轮均值。旧v2与新编译器来自独立会话；编译器修复和环境差异不能全部归因于原创分块代码。', small))
     add('11月16日v2+隔离FlagTree0.7.0完整验收：4K 2435.35tok/s、TTFT5639.32ms；16K 1890.7267tok/s、TTFT268099.60ms；精度101/105，104stop和1max_tokens。旧v2与失败v3原始记录保持不变。')
 
-    page('2. 沐曦：先定位真实执行成本')
-    add('C500实际环境：torch2.8.0+metax3.7.0.7、vLLM0.24.0+empty、插件冻结13eb9be69、FlagGems5.3.5、Triton3.0.0+metax3.7.0.7、EvalScope1.11.1。实际词表宽度130560。不把天数厂商补丁直接搬到沐曦。')
-    add('12组BF16/GQA decode算子对照未发现通用batch下KV split或头打包的稳定收益；输出缓冲区方案触发原生布局检查，未进入模型。随后在真实模型64请求decode中采样8步，把热点连接到冻结插件实际全词表排序路径。')
-    d = Drawing(500, 190)
-    for i, (label, val, color) in enumerate([('Sort sweep + histogram', 55.54, TEAL), ('FA2 split KV + combine', 19.58, NAVY), ('Matrix multiplication', 14.39, GREY), ('Other kernels', 10.49, colors.HexColor('#b7c5cf'))]):
-        y = 154-i*38
-        d.add(String(0, y+6, label, fontName='Helvetica', fontSize=10, fillColor=NAVY))
-        d.add(Rect(190, y, val*4.6, 21, fillColor=color, strokeColor=None))
-        d.add(String(195+val*4.6, y+6, f'{val:.2f}%', fontName='Helvetica', fontSize=10, fillColor=NAVY))
+    page('2. 沐曦：不同执行窗口有不同热点')
+    add('C500环境：torch2.8.0+metax3.7.0.7、vLLM0.24.0+empty、冻结插件13eb9be69、FlagGems5.3.5/a762、Triton3.0.0+metax3.7.0.7、EvalScope1.11.1。不能把天数厂商补丁直接套到沐曦。')
+    add('先检查实际MacaFlashAttention路径，KV split与头打包没有稳定收益。随后decode窗口指向全词表排序；但新的真实prefill窗口显示NT矩阵乘占73.29%。两个窗口不矛盾，不能把局部占比当作整个端到端耗时。')
+    d = Drawing(500, 180)
+    palette=[TEAL,NAVY,GREY,colors.HexColor('#b7c5cf')]
+    for y,label,vals in [(112,'Decode: 8 steps',[14.39,55.54,19.58,10.49]),(48,'Prefill: 8 steps',[73.2852,2.5824,15.1019,9.0305])]:
+        d.add(String(0,y+28,label,fontName='Helvetica',fontSize=10,fillColor=NAVY))
+        x=0
+        for v,c in zip(vals,palette):
+            d.add(Rect(x,y,v*5,21,fillColor=c,strokeColor=None));x+=v*5
+    for i,(name,c) in enumerate(zip(['NT GEMM','Sort','Attention','Other'],palette)):
+        d.add(Rect(i*122,9,11,11,fillColor=c,strokeColor=None));d.add(String(i*122+16,10,name,fontName='Helvetica',fontSize=9,fillColor=NAVY))
     flow.append(d)
-    flow.append(p('图2：366406.84微秒GPU kernel时长的分类。没有把父Graph/operator时长叠加到子kernel；这是有限decode窗口，不是端到端时间占比或Amdahl收益承诺。', small))
-    add('运行问题另记：系统内存64GiB、CPU配额12核但可见128核，默认32个编译进程曾达到62.47GiB后OOM。单编译进程使启动稳定；HTTP benchmark与精度客户端不加载GPU插件，避免重复GPU运行时内存。这些属于环境修复，不算原创优化。')
+    flow.append(p('图2：GPU子kernel时长分类，未叠加父Graph/operator。Decode窗口366406.84us；prefill窗口872568.832us，1344次NT GEMM=8步*42层*4矩阵乘。不是全程剖析或收益上界承诺。',small))
+    add('运行修复单独归属：64GiB系统内存、12核配额却可见128核，原32个编译进程曾导致OOM。改为单编译进程，HTTP测试客户端不加载GPU插件以避免重复运行时。11/17傍晚的新容器另出现原生Torch设备队列超时；这不是分块优化收益或精度结论。')
 
-    page('3. 沐曦：缩减排序范围，保留采样策略')
-    add('对top-p-only请求，候选先计算原logits概率与最大值，用单调阈值统计数量/质量。仅当容量4096的集合覆盖nucleus、边界与相等值检查安全时，压紧并排序集合；其他行继续原全排序。保留的logits原值不变，后续RNG实现不变。')
-    add('数学依据：集合外较小概率的总质量构成原升序CDF前缀。若集合足够覆盖top-p，只需在集合内定位截断。有限精度中，质量误差、截断边界接近阈值、跨边界相等值均触发保守回退；有限差分不是普遍浮点证明。')
-    d = Drawing(500, 178)
-    boxes = [(0, 112, '已有CPU调度元数据', 'max_seq_len / batch'), (170, 112, '成本与支持门禁', '未知/长上下文回原生'), (340, 112, '质量认证集合', '最多4096项'), (170, 25, '原全词表过滤', '策略与RNG不变'), (340, 25, '集合排序与边界检查', '不确定则回退')]
-    for x, y, a, b in boxes:
-        d.add(Rect(x, y, 153, 47, rx=4, ry=4, fillColor=PALE, strokeColor=GREY))
-        d.add(String(x+76, y+29, a, fontName='Song', fontSize=9.2, textAnchor='middle'))
-        d.add(String(x+76, y+12, b, fontName='Song', fontSize=8.6, textAnchor='middle'))
-    for x1, y1, x2, y2 in [(153, 136, 170, 136), (323, 136, 340, 136), (246, 112, 246, 72), (416, 112, 416, 72), (340, 49, 323, 49)]:
-        d.add(Line(x1, y1, x2, y2, strokeColor=TEAL, strokeWidth=1.3))
-    flow.append(d)
-    flow.append(p('图3：现有scheduler max_seq_len更新CPU成本提示，包含Graph replay轮次；不新增读取GPU张量的同步。未知上下文、长度超过8192或batch<64走原过滤。', small))
-    add('8192是两个已测成本区间之间的经验保护边界，不是所有中间形状的最优性能证明。门禁只选择两个已检查的过滤实现，不识别benchmark名称、轮次、题目、评分或提示内容，不修改温度/top-p/top-k/输出上限。')
+    page('3. 沐曦：保留原计算，选择可验证分块')
+    add('实际prefill块M=2048，BF16连续A、转置连续权重B、连续输出C。候选复用原生mm_kernel_nt的完整计算AST，只对三类经过测量的(N,K)选择Launch Geometry；O投影无稳定收益，保留原路径。')
+    table([['用途 / (N,K)','候选(BM,BN,BK)','微测耗时(ms)'],['QKV / (2560,2048)','(256,128,32)','0.24407 -> 0.21127'],['Gate+Up / (12288,2048)','(128,256,32)','0.91506 -> 0.86650'],['Down / (2048,6144)','(128,128,64)','0.57396 -> 0.47295'],['O / (2048,2048)','保留原生','差异不具实际意义']], [190,150,167])
+    add('三种候选均使用8warps、2stages、basic pipeline；GROUP_M仍为8，float32累加、allow_tf32=False、BF16输出。相同计算AST不等于所有浮点归约结果普遍相同，尤其改变K分块时仍须数值验证。')
+    add('保护条件只依赖张量形状、dtype与layout：M必须2048，且只支持上表三组N/K。其他M、decode、不支持的dtype/layout、O投影均保留原tuner与launch。没有识别benchmark、轮次、提示或评分，也未改服务超参、模型权重和采样规则。')
+    add('8组分块穷举微测中，仅从逐位原生一致且独立CPU参考通过的候选里选配置。四类矩阵乘加权GPU耗时减少9.54%，只是算子诊断，不等于端到端吞吐提升。核心insight是按实际矩阵形状改善原生计算的分块，而不是更换backend或稀疏近似。')
 
-    page('4. 正确性和负结果决定候选取舍')
-    table([['诊断版本', '4K吞吐变化', '16K吞吐变化', '结论'], ['静态shortlist', '+8.90%', '-2.11%', '长上下文拒绝'], ['覆盖率EMA成本门禁', '-11.17%', '-1.90%', '拒绝部署'], ['scheduler上下文成本门禁', '+8.85%', '+0.08%', '进入完整验收']], [186, 105, 108, 108])
-    flow.append(p('表1：64请求/64并发、1024输出的匹配A/B/A诊断，相对前后原生均值。静态长上下文与后两版本均有形状预热。短测不是原版256/128请求四轮成绩。早先16请求长上下文有67%漂移，其表观收益已废弃。', small))
-    add('最终上下文候选的native漂移：4K -0.4137%，16K -0.1822%；TTFT比值1.00329/0.99887；每测量段64请求及65536输出tokens完整。两卡或不同会话的精度从不拼接。')
-    add('算子证据：实际词表130560、worker同样FlagGems注册下30组差分，覆盖均匀/稀疏/量化ties/不同top-p/边界；还检查默认与非默认stream。静态首版1040次真实模型shadow逐位相同；上下文集成后1008次逐位相同。Shadow返回原输出，不消耗额外采样随机数，也不作为提速数据。')
-    add('本地独立审计必须同时核对源码/完整压缩包hash、实际import、原始CSV及原版summary、预测与review唯一索引0..104、执行错误/空答案、分数与finish reason。exit0、单轮最好成绩或原文件错误overall_pass标记均不能替代审计。')
+    page('4. 数值、真实负载与反例约束')
+    add('隔离完整FlagGems树的实际public函数通过18项测试：6种形状*随机/抵消/零输入，含不优化的O投影与M127/64回退。全部输出与原生逐位一致；选取行另以CPU float64矩阵乘核对，未放宽已有容差。这是有限证据，不是普遍数值证明。')
+    table([['实验','结果','决策'],['静态/自适应shortlist','长上下文或两组回退','拒绝'],['上下文shortlist完整4K','4807.27tok/s / 3471.45ms','失败；无16K/新105'],['融合shortlist充分预热','-0.0454%端到端收益','拒绝'],['NT GEMM 原生A1','5021.24tok/s / 5549.11ms','匹配诊断'],['NT GEMM 候选B','5177.19tok/s / 5127.27ms','吞吐+3.38%；TTFT-8.57%'],['NT GEMM 原生A2','4994.61tok/s / 5666.08ms','原生漂移-0.53%']], [165,225,117])
+    flow.append(p('表2：GEMM三段分别重启服务，每段64请求预热、128请求测量，4096输入/1024输出、并发64、原随机文本生成器。请求和token完整。不能直接与官方256请求TTFT或四轮均值混比。',small))
+    add('预注册门禁为吞吐>=3%提升、原生漂移<=3%、TTFT不回退，本次诊断通过。原生采样与prefix元数据补丁在三段中保持相同，仅替换FlagGems隔离源码。三个生成kernel与实际import路径、源文件hash均有记录。')
+    add('冷首段对比的采样+14.6%已因14.92%原生漂移作废；不以此挑分或挑最好一轮。15:52容器中断的首次GEMM正式尝试没有原始CSV，也未进入新105题，不能算完整评测。原始证据保留，不跨中断拼接。')
 
     page('5. 原版完整验收与本次结果')
     add('固定测试：4K输入/1024输出、并发64、256请求；16K输入/1024输出、并发64、128请求。各四轮，丢首轮平均后三轮。模型、数据、脚本与官方服务参数不变；正式过程没有profiler、developer模式或诊断控制文件。')
@@ -135,12 +130,13 @@ def main():
     add('退出与备份：控制器/独立watchdog仅停止自身进程组；截止后停止模型不等于供应商实例关机。完整ROOT、原始CSV、report/预测/review、环境和源文件持续备份到D盘，完成后对照远端hash并扫描凭证，再正常Git推送核对远端提交。')
 
     page('6. 完整源码、复现架构与贡献边界')
-    add('完整源码含408文件，保留各vendor、LICENSE、setup.py、pyproject.toml和csrc构建脚本。插件基点13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0；FlagGems为a7620cc官方tree，未修改其源码。Iluvatar v2文件hash与已通过候选相同；MetaX文件与本次实际加载源逐个核验。')
-    add('官方镜像已有冻结fl入口，使用PYTHONPATH指向包内完整源码，打印vllm_fl/flag_gems/Triton实际路径后启动。天数专用FlagTree0.7.0仅用于天数，不能安装到沐曦。setup.py可选C++构建仅支持CUDA；本作品MetaX/Iluvatar计算路径采用Python/Triton与镜像自带扩展，不伪造缺失的root CMakeLists。')
-    add('跨系统恢复修复：冻结仓库一处NVIDIA MoE JSON符号链接在普通ZIP中成为62字节目标路径文本。当前完整包物化为目标原始3242字节并记录hash。MiniCPM不使用这项MoE配置；这是工程修复，不是性能改动。旧原始档案保留。')
-    add('原创贡献：基于真实执行证据的混合批次query分块；保留概率策略的认证式缩小排序范围；受保护的厂商分派和成本回退。它们不是全新Attention数学公式或稀疏近似算法。已有技术思想与本平台实现的创新程度由专家评审，不能保证名次或获奖。')
-    add('限制：有限数值/shape/stream检查不是普遍证明；上下文门禁性能仅覆盖实测区间；随机采样会影响精度与执行形态；两个平台成绩来自各自独立会话。编译器和运行环境修复不归为原创收益。正式作品只在用户审阅后上传，当前没有自动提交。')
-    flow.append(p('证据索引：results/2026-11-16-v2-flagtree07-complete；results/2026-11-17-metax-diagnostics；experiments/metax_nucleus_context。最终包同时提供readme.md、report.pdf、完整vllm-plugin-FL/及逐文件hash；FlagGems未改，无需伪报Gems优化。', small))
+    add('提交候选同时提供完整vllm-plugin-FL与修改后的FlagGems源码、LICENSE和编译/安装脚本。插件基点13eb9be69，Gems基点a7620cc；Gems仅修改MetaX NT GEMM。双平台集成源码5186文件，逐文件manifest和ZIP SHA256均可独立核验。')
+    add('保护天数：platform.py与attention_tiles.py精确取自已通过v2完整源码；相较C500测试树，共同platform仅新增vendor_name==iluvatar分支，MetaX条件为false，其他MetaX及Gems字节不变。静态集成证据不冒充双平台新运行；仍须核对最终加载树与验收会话。')
+    add('镜像已有冻结fl入口，PYTHONPATH指向包内完整插件及FlagGems/src；打印实际import、包版本、硬件与启动argv。天数FlagTree0.7.0仅用于天数。C500单编译进程和CPU-only HTTP客户端均单独标注为运行修复，不能当作原创算子收益。')
+    add('完整包物化上游NVIDIA MoE JSON链接为目标原始3242字节，保留hash；MiniCPM不走MoE，这只是ZIP恢复修复。源码/cache置于证据ROOT外，持续备份原CSV、report、预测、review、源码manifest与日志；最终核对远端hash再推送。')
+    add('原创贡献聚焦真实执行热点驱动的混合Query分块、受保护的MetaX形状感知NT GEMM配置以及完整恢复和独立审计流程。不是新Attention数学公式，不声称稀疏算法或普遍无损；排名和创新程度由评审判断，不能保证获奖。')
+    add('限制：有限shape/数值测试不等于普遍证明；局部profile不等于全程；随机采样与跨会话环境变化可能影响分数。设备故障、主办方编译器修复不包装成原创优化。正式作品须经用户审阅，当前未自动上传比赛平台。')
+    flow.append(p('证据索引：results/2026-11-16-v2-flagtree07-complete；results/2026-11-17-metax-diagnostics；experiments/metax_prefill_mm。最终结构必须含readme.md、report.pdf、vllm-plugin-FL/、FlagGems/；不含凭证、模型权重、数据集或编译缓存。',small))
 
     def footer(canvas, doc):
         canvas.setFont('Song', 8)
