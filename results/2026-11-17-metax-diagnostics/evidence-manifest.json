@@ -18,5 +18,12 @@
   "archive": "artifacts/FlagOS-MetaX-decode-diagnostics-20261117.zip",
   "sha256": "643595470614ee1dd5033e6b7b1af5316837d5487e48191a44232afe9a084415",
   "official_score": false,
-  "model_performance_pass_established": false
+  "model_performance_pass_established": false,
+  "first_matched_model_trials": {
+    "path": "artifacts/FlagOS-MetaX-sampler-first-ABA-20261117.zip",
+    "bytes": 82320,
+    "sha256": "39580e4537008ba08b614507f227c12389d34688c7d9528e6ac66326c4362f67",
+    "official_score": false,
+    "gate_pass": false
+  }
 }

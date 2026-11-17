@@ -71,8 +71,21 @@ Real-model shadow subsequently completed1040sampling steps with bitwise-identica
 filtered logits, covering65551sampling rows;38255rows used the shortlist and the
 rest used native fallback. These counters describe filter invocations, not a
 distinct generated-token count. Shadow returns original outputs, so it is a
-correctness experiment, not a timed improvement or new MATH score. Matched
-long-output A/B/A is still running; no official MetaX pass is established.
+correctness experiment, not a timed improvement or new MATH score. Matched long-output A/B/A subsequently completed. The 64-request 4K/1024
+candidate improved 8.9028% against the mean of native A1/A2; native drift was
+0.9935%. The initial 16-request long-context diagnostic bypassed this candidate
+and had 67.16% native drift, so its apparent gain is rejected. A new shape-warmed
+64-concurrency 16K/1024 A/B/A found native 7019.6228/7025.1484 versus candidate
+6874.1354 total tok/s: -2.1111%, with only 0.0787% native drift. The candidate
+therefore fails its long-context gate. These are matched diagnostics, not official
+four-round scores. No official MetaX pass is established.
+
+A separate immutable candidate now tests a coverage-based cost hint: low recent
+certified-row coverage skips seven costly shortlist attempts, then probes again.
+Every bypass calls the original filter; no request length, benchmark identity,
+round number, sampling setting or RNG rule is used. Its new 30-case differential
+passed, but its model A/B/A and full acceptance remain pending. The previous
+negative result is retained; this is not a retrospective change to its gate.
 
 The first short-test wrapper stopped on a missing cache-reset developer route
 before comparisons. Its failed setup and clean service exit are preserved.
