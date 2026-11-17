@@ -90,5 +90,20 @@
     ],
     "metax_vendor_guard_false": true,
     "combined_runtime_acceptance_pending": true
+  },
+  "gemm_prefix_complete_4k_failed": {
+    "path": "artifacts/FlagOS-MetaX-gemm-prefix-four-round-failed-20261117.zip",
+    "bytes": 295720,
+    "sha256": "ba8a66d8b09e2e7467895b72e1000364db6a319f52341fe66a7cec15b64a6494",
+    "files": 21,
+    "final_remote_hash_match": true
+  },
+  "dual_gemm_only_source": {
+    "path": "artifacts/FlagOS-dual-gemm-only-candidate-source-20261117.zip",
+    "bytes": 15240953,
+    "sha256": "c3d8ad41789bbbf64f30e47ad291cf6ffdc5c207d7d0e52b873659e1d3895146",
+    "files": 5186,
+    "native_metax_attention_restored": true,
+    "full_acceptance_pending": true
   }
 }

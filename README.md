@@ -1,6 +1,6 @@
 最新进展（11/16已完成）：**天数v2＋FlagTree0.7.0完整八轮和本次105题整体通过**，4K2435.35tok/s、16K1890.7267tok/s，精度101/105。模型服务已停止、完整备份与远端hash匹配。[完整报告](results/2026-11-16-v2-flagtree07-complete/report.md) · [可审查提交包](artifacts/TokenForge-v2-flagtree070-20261116.zip)。尚未向比赛平台提交。
 
-11/17沐曦进展：采样候选在充分预热后无稳定收益，已保留失败反例。真实Prefill热点推动了新的[矩阵乘分块候选](experiments/metax_prefill_mm/README.md)：18项数值检查通过，匹配模型A/B/A吞吐+3.38%、TTFT−8.57%、原生漂移−0.53%。原版八轮＋本次105题正在验收，**尚无新的沐曦完整通过结论**。完整插件与FlagGems源码、原始证据已保存；不替换天数已通过包。
+11/17沐曦进展（19:40）：[矩阵乘分块候选](experiments/metax_prefill_mm/README.md)的18项数值检查及历史匹配A/B/A通过，但GEMM＋prefix组合的完整四轮4K仅4504.03tok/s、TTFT3288.36ms，失败，未继续16K或新105题。现恢复冻结原生MetaX Attention，仅保留GEMM改动，在新ROOT进行独立完整验收；这是隔离变量，尚未证明prefix导致回退。**尚无新的沐曦完整通过结论**。完整插件与FlagGems源码、失败原始证据已保存；不替换天数已通过包。
 
 # FlagOS MiniCPM throughput project
 

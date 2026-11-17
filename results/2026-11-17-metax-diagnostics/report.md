@@ -212,3 +212,29 @@ and scalar readback completed. All5186integrated source files were restored;
 the exact protected Iluvatarv2files and MetaX/Gems changes are retained. Numerical
 revalidation and CPU-only client smoke precede a fresh isolated acceptance ROOT.
 New compute cutoff20:44, backup cutoff20:49. No old rounds or accuracy are reused.
+
+### 19:40: complete4K rejection and native-attention isolation
+
+The new64GiB machine passed all18 numerical checks. The GEMM+prefix full4K
+attempt completed four256-request rounds with exact input/output totals:
+3263.50/16470.70,3907.30/3718.88,4822.68/3028.14,4782.12/3118.05
+(total tok/s / mean TTFT ms). Original discard-first averaging yields4504.0333
+tok/s and3288.3567ms: both fail. It stopped cleanly19:27:29, without complete
+16K or new105. All21 stopped ROOT files have matching remote/local hashes.
+See gemm-prefix-four-round-audit.json and its immutable failed-session archive.
+
+The next source restores frozen native MetaX Attention exactly and changes only
+the guarded GEMM on this platform; protected Tianv2 files remain byte-identical.
+Its complete5186-file archive SHA256 is
+c3d8ad41789bbbf64f30e47ad291cf6ffdc5c207d7d0e52b873659e1d3895146.
+Original acceptance began19:34:25 in metax_gemm_only_formal_20261117_1930,
+with the same20:44 hard cutoff. Prior warm caches are copied, declared as an
+operational condition. No result or accuracy is spliced. The prefix regression
+hypothesis is unproven; removing an unvalidated full-workload variable narrows
+the experiment. Prior A/B/A on another C500 had prefix common to all conditions.
+
+Read-only comparison found2607 installed Python/YAML/JSON Gems files identical
+to the clean official checkout, with no differences or missing files among them.
+Thus unexpected changes to those installed files are not supported as a cause.
+The prior full4K sampled no OOM; no persistent JIT activity or CPU quota cause
+has been established. GPU clock observations are not normalized into scores.

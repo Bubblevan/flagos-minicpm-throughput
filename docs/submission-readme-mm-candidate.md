@@ -8,8 +8,8 @@
 
 - 插件冻结基点：`13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0`。
 - FlagGems 基点：`a7620cc191a0b42e040194622c5758b22a7a25dc`。
-- 集成源码共 5,186 文件。MetaX 修改原生 NT GEMM 的受保护分块；插件保留 prefix metadata hoist 与天数 v2 的两个精确源文件。
-- 集成源码 ZIP：`artifacts/FlagOS-dual-mm-integrated-candidate-source-20261117.zip`，SHA256 `d802cd7102ba69364242802d4a3a1e7f6614e0da957d10d27d592980b20b6d68`。
+- 集成源码共 5,186 文件。MetaX 仅修改原生 NT GEMM 的受保护分块；MetaX Attention 恢复冻结原版，插件保留天数 v2 的两个精确源文件。
+- 当前集成源码 ZIP：`artifacts/FlagOS-dual-gemm-only-candidate-source-20261117.zip`，SHA256 `c3d8ad41789bbbf64f30e47ad291cf6ffdc5c207d7d0e52b873659e1d3895146`。上一GEMM＋prefix组合四轮4K失败；本次GEMM-only尚待完整验收，不宣称prefix已被证明是原因。
 - 基点提交、源码快照和已安装 distribution 版本是不同概念；完整快照没有伪造新的 Git HEAD。
 
 ## 2. 指定运行环境

@@ -113,6 +113,7 @@ def main():
     flow.append(p('表2：GEMM三段分别重启服务，每段64请求预热、128请求测量，4096输入/1024输出、并发64、原随机文本生成器。请求和token完整。不能直接与官方256请求TTFT或四轮均值混比。',small))
     add('预注册门禁为吞吐>=3%提升、原生漂移<=3%、TTFT不回退，本次诊断通过。原生采样与prefix元数据补丁在三段中保持相同，仅替换FlagGems隔离源码。三个生成kernel与实际import路径、源文件hash均有记录。')
     add('冷首段对比的采样+14.6%已因14.92%原生漂移作废；不以此挑分或挑最好一轮。15:52容器中断的首次GEMM正式尝试没有原始CSV，也未进入新105题，不能算完整评测。原始证据保留，不跨中断拼接。')
+    add('新64GiB机器18项数值复核通过后，GEMM＋prefix组合四轮4K为4504.03tok/s、TTFT3288.36ms，两项失败。现恢复冻结原生MetaX Attention，仅保留GEMM候选进行独立完整验收；这是隔离变量，未证明prefix导致回退。历史A/B/A不能冒充本次GEMM-only端到端收益。')
 
     page('5. 原版完整验收与本次结果')
     add('固定测试：4K输入/1024输出、并发64、256请求；16K输入/1024输出、并发64、128请求。各四轮，丢首轮平均后三轮。模型、数据、脚本与官方服务参数不变；正式过程没有profiler、developer模式或诊断控制文件。')
@@ -131,6 +132,7 @@ def main():
 
     page('6. 完整源码、复现架构与贡献边界')
     add('提交候选同时提供完整vllm-plugin-FL与修改后的FlagGems源码、LICENSE和编译/安装脚本。插件基点13eb9be69，Gems基点a7620cc；Gems仅修改MetaX NT GEMM。双平台集成源码5186文件，逐文件manifest和ZIP SHA256均可独立核验。')
+    add('当前GEMM-only源码已将MetaX Attention恢复冻结原版，原生sampler不变。完整源码ZIP哈希c3d8ad41789bbbf64f30e47ad291cf6ffdc5c207d7d0e52b873659e1d3895146。上一组合失败源码与完整四轮反例另行保留，不作为提交有效成绩。')
     add('保护天数：platform.py与attention_tiles.py精确取自已通过v2完整源码；相较C500测试树，共同platform仅新增vendor_name==iluvatar分支，MetaX条件为false，其他MetaX及Gems字节不变。静态集成证据不冒充双平台新运行；仍须核对最终加载树与验收会话。')
     add('镜像已有冻结fl入口，PYTHONPATH指向包内完整插件及FlagGems/src；打印实际import、包版本、硬件与启动argv。天数FlagTree0.7.0仅用于天数。C500单编译进程和CPU-only HTTP客户端均单独标注为运行修复，不能当作原创算子收益。')
     add('完整包物化上游NVIDIA MoE JSON链接为目标原始3242字节，保留hash；MiniCPM不走MoE，这只是ZIP恢复修复。源码/cache置于证据ROOT外，持续备份原CSV、report、预测、review、源码manifest与日志；最终核对远端hash再推送。')

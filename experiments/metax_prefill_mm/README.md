@@ -28,3 +28,27 @@ existing prefix metadata patch and original sampler remain common to both.
 
 Revert by removing the isolated FlagGems src from PYTHONPATH. No installed package,
 model,benchmark,data,sampling setting or hardware frequency/power is changed.
+
+## 19:40 recovery and isolation update
+
+On the new64GiB C500 (driver3.8.30, PCI12), the18 numerical cases were rerun
+and passed. GEMM plus the historical prefix metadata patch then completed four
+original4K rounds:3263.50,3907.30,4822.68,4782.12tok/s. Discarding the first gives
+4504.0333tok/s and3288.3567ms TTFT: both gates fail. There are no completed16K
+rounds or new105-question report in that session. The complete21-file stopped
+ROOT has matching remote/local hashes; its failed record is not discarded.
+
+A new source archive restores MetaX flash_attn.py exactly to frozen13eb bytes,
+retaining only the guarded GEMM optimization on C500 and the protected Tianv2
+files. The5186-file ZIP is FlagOS-dual-gemm-only-candidate-source-20261117.zip,
+SHA256 c3d8ad41789bbbf64f30e47ad291cf6ffdc5c207d7d0e52b873659e1d3895146.
+Its independent full acceptance began19:34:25 under the unchanged20:44 cutoff.
+This is isolation, not proof of a prefix bug. The prior short A/B/A had prefix
+common to all conditions and ran on another C500; it is not a new GEMM-only
+end-to-end gain measurement. Warm caches were copied as an operational measure,
+not as a fresh-cold-container reproduction or an optimization contribution.
+
+Read-only package comparison found2607 installed Python/YAML/JSON files match
+the clean official Gems checkout, with no differing or missing files in that
+comparison. No OOM event was recorded during the complete failed4K session.
+These checks narrow hypotheses; they do not establish the performance cause.

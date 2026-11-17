@@ -1,0 +1,11 @@
+{
+  "file": "TokenForge-gemm-only-integrated-source-20261117.zip",
+  "bytes": 15240953,
+  "sha256": "c3d8ad41789bbbf64f30e47ad291cf6ffdc5c207d7d0e52b873659e1d3895146",
+  "files": 5186,
+  "only_changed_from_prior_integrated_source": "TokenForge/vllm-plugin-FL/vllm_fl/dispatch/backends/vendor/metax/impl/attention/flash_attn.py",
+  "previous_prefix_sha256": "cda1bce8d7cce50563cf2646bb203df22c677631fa83f065f4fab50f786cb34a",
+  "native_attention_sha256": "f81fa552667b3ed98d1cf141d2dee33ba10476cda9a997744495bdbc36289ef2",
+  "unchanged_GEMM_numerical_proof": true,
+  "not_a_passing_score": true
+}
