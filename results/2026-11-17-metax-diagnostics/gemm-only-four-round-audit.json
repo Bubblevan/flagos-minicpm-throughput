@@ -1,0 +1,31 @@
+{
+  "four_4k_rounds_complete": true,
+  "eight_rounds_complete": false,
+  "new_accuracy_complete": false,
+  "overall_pass_established": false,
+  "discard_first": true,
+  "total_tokens_per_second": 3892.626666666667,
+  "mean_ttft_ms": 5121.946666666667,
+  "raw_sha256": "1b9dd9390ca01416cfefecb5c6deb3794985de5dcd03d2344e6f1ab37bd9a7bb",
+  "rounds": [
+    {
+      "tps": 4299.5,
+      "ttft": 6174.5
+    },
+    {
+      "tps": 3656.02,
+      "ttft": 5326.84
+    },
+    {
+      "tps": 4129.31,
+      "ttft": 4991.34
+    },
+    {
+      "tps": 3892.55,
+      "ttft": 5047.66
+    }
+  ],
+  "performance_4k_pass": false,
+  "final_remote_hash_match": true,
+  "owned_survivors": []
+}

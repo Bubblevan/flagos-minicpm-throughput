@@ -1,6 +1,8 @@
 最新进展（11/16已完成）：**天数v2＋FlagTree0.7.0完整八轮和本次105题整体通过**，4K2435.35tok/s、16K1890.7267tok/s，精度101/105。模型服务已停止、完整备份与远端hash匹配。[完整报告](results/2026-11-16-v2-flagtree07-complete/report.md) · [可审查提交包](artifacts/TokenForge-v2-flagtree070-20261116.zip)。尚未向比赛平台提交。
 
-11/17沐曦进展（19:40）：[矩阵乘分块候选](experiments/metax_prefill_mm/README.md)的18项数值检查及历史匹配A/B/A通过，但GEMM＋prefix组合的完整四轮4K仅4504.03tok/s、TTFT3288.36ms，失败，未继续16K或新105题。现恢复冻结原生MetaX Attention，仅保留GEMM改动，在新ROOT进行独立完整验收；这是隔离变量，尚未证明prefix导致回退。**尚无新的沐曦完整通过结论**。完整插件与FlagGems源码、失败原始证据已保存；不替换天数已通过包。
+11/17沐曦进展（20:00）：GEMM＋prefix与恢复原生Attention的GEMM-only候选，完整四轮4K均未通过，分别4504.03/3892.63tok/s；两套原始记录与完整源码已保存，不拼接16K或旧精度。新增[公开方案核验及显式预取实验](experiments/metax_decode_prefetch/research.md)，借鉴有实测记录的Apache-2.0小批量GEMM双缓冲思路，保留原采样与Attention。**尚无新的沐曦完整通过结论**，天数已通过包仍独立保护。
+
+23:45更新：显式prefetch在当前原生小矩阵路径上更慢，已否决；[两投影NN权重重排候选](experiments/metax_nn_repack/README.md)通过新机器30项数值/回退检查及fake/Dynamo/CUDA Graph检查。同机匹配A/B/A正在运行，完整八轮与新105题尚未开始。NN布局思路明确归属外部参赛者，不将其成绩算作我方收益；完整5188文件候选源码和已通过的天数源文件均已保存。
 
 # FlagOS MiniCPM throughput project
 

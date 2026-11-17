@@ -1,0 +1,9 @@
+{
+  "path": "artifacts/FlagOS-dual-nn-repack-candidate-source-20261117.zip",
+  "bytes": 15190316,
+  "sha256": "42231f2e471cc73c9f8c511238a5a1567b35320874644abf5ef8bd1ad46f87ed",
+  "files": 5188,
+  "kernel_math_AST_identical": true,
+  "protected_tian_files_unchanged": true,
+  "full_model_acceptance_pending": true
+}

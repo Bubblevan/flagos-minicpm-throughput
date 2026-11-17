@@ -1,0 +1,329 @@
+{
+  "complete": true,
+  "official_score": false,
+  "shapes": [
+    {
+      "M": 64,
+      "N": 2560,
+      "K": 2048,
+      "native_before_ms": 0.02391040086746216,
+      "configs": [
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 32,
+            "BLOCK_K": 32,
+            "num_warps": 4
+          },
+          "ms": 0.05967872142791748,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 64,
+            "BLOCK_K": 32,
+            "num_warps": 4
+          },
+          "ms": 0.07460864067077637,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 64,
+            "BLOCK_K": 64,
+            "num_warps": 4
+          },
+          "ms": 0.06277120113372803,
+          "bitwise_native_equal": false,
+          "max_native_abs": 0.5,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 64,
+            "BLOCK_K": 128,
+            "num_warps": 4
+          },
+          "ms": 0.04795904159545898,
+          "bitwise_native_equal": false,
+          "max_native_abs": 0.5,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 32,
+            "BLOCK_K": 128,
+            "num_warps": 8
+          },
+          "ms": 0.04157440185546875,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        }
+      ],
+      "native_after_ms": 0.02387455940246582,
+      "best_bitwise": {
+        "config": {
+          "BLOCK_M": 64,
+          "BLOCK_N": 32,
+          "BLOCK_K": 128,
+          "num_warps": 8
+        },
+        "ms": 0.04157440185546875,
+        "bitwise_native_equal": true,
+        "max_native_abs": 0.0,
+        "cpu_reference_pass": true
+      }
+    },
+    {
+      "M": 64,
+      "N": 2048,
+      "K": 2048,
+      "native_before_ms": 0.021785600185394285,
+      "configs": [
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 32,
+            "BLOCK_K": 32,
+            "num_warps": 4
+          },
+          "ms": 0.05852672100067138,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 64,
+            "BLOCK_K": 32,
+            "num_warps": 4
+          },
+          "ms": 0.07151616096496582,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 64,
+            "BLOCK_K": 64,
+            "num_warps": 4
+          },
+          "ms": 0.06119935989379883,
+          "bitwise_native_equal": false,
+          "max_native_abs": 0.5,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 64,
+            "BLOCK_K": 128,
+            "num_warps": 4
+          },
+          "ms": 0.04641791820526123,
+          "bitwise_native_equal": false,
+          "max_native_abs": 0.5,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 32,
+            "BLOCK_K": 128,
+            "num_warps": 8
+          },
+          "ms": 0.04013055801391602,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        }
+      ],
+      "native_after_ms": 0.021811199188232423,
+      "best_bitwise": {
+        "config": {
+          "BLOCK_M": 64,
+          "BLOCK_N": 32,
+          "BLOCK_K": 128,
+          "num_warps": 8
+        },
+        "ms": 0.04013055801391602,
+        "bitwise_native_equal": true,
+        "max_native_abs": 0.0,
+        "cpu_reference_pass": true
+      }
+    },
+    {
+      "M": 64,
+      "N": 12288,
+      "K": 2048,
+      "native_before_ms": 0.056488962173461915,
+      "configs": [
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 32,
+            "BLOCK_K": 32,
+            "num_warps": 4
+          },
+          "ms": 0.10744832038879394,
+          "bitwise_native_equal": false,
+          "max_native_abs": 0.5,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 64,
+            "BLOCK_K": 32,
+            "num_warps": 4
+          },
+          "ms": 0.08459775924682617,
+          "bitwise_native_equal": false,
+          "max_native_abs": 0.5,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 64,
+            "BLOCK_K": 64,
+            "num_warps": 4
+          },
+          "ms": 0.07493120193481445,
+          "bitwise_native_equal": false,
+          "max_native_abs": 0.25,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 64,
+            "BLOCK_K": 128,
+            "num_warps": 4
+          },
+          "ms": 0.09827327728271484,
+          "bitwise_native_equal": false,
+          "max_native_abs": 0.25,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 32,
+            "BLOCK_K": 128,
+            "num_warps": 8
+          },
+          "ms": 0.153057279586792,
+          "bitwise_native_equal": false,
+          "max_native_abs": 0.5,
+          "cpu_reference_pass": true
+        }
+      ],
+      "native_after_ms": 0.05670400142669678,
+      "best_bitwise": null
+    },
+    {
+      "M": 64,
+      "N": 2048,
+      "K": 6144,
+      "native_before_ms": 0.061214718818664554,
+      "configs": [
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 32,
+            "BLOCK_K": 32,
+            "num_warps": 4
+          },
+          "ms": 0.1692723274230957,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 64,
+            "BLOCK_K": 32,
+            "num_warps": 4
+          },
+          "ms": 0.2149888038635254,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 64,
+            "BLOCK_K": 64,
+            "num_warps": 4
+          },
+          "ms": 0.17708032608032226,
+          "bitwise_native_equal": false,
+          "max_native_abs": 1.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 64,
+            "BLOCK_K": 128,
+            "num_warps": 4
+          },
+          "ms": 0.1306112003326416,
+          "bitwise_native_equal": false,
+          "max_native_abs": 1.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 64,
+            "BLOCK_N": 32,
+            "BLOCK_K": 128,
+            "num_warps": 8
+          },
+          "ms": 0.11255807876586914,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        }
+      ],
+      "native_after_ms": 0.061086721420288086,
+      "best_bitwise": {
+        "config": {
+          "BLOCK_M": 64,
+          "BLOCK_N": 32,
+          "BLOCK_K": 128,
+          "num_warps": 8
+        },
+        "ms": 0.11255807876586914,
+        "bitwise_native_equal": true,
+        "max_native_abs": 0.0,
+        "cpu_reference_pass": true
+      }
+    }
+  ],
+  "started": 1794916742.433504,
+  "gpu_before": "mx-smi  version: 2.3.1\n\n=================== MetaX System Management Interface Log ===================\nTimestamp                                         : Tue Nov 17 19:59:02 2026\n\nAttached GPUs                                     : 1\n+---------------------------------------------------------------------------------+\n| MX-SMI 2.3.1                       Kernel Mode Driver Version: 3.8.30           |\n| MACA Version: 3.7.0.38             BIOS Version: 1.33.5.0                       |\n|------------------+-----------------+---------------------+----------------------|\n| Board       Name | GPU   Persist-M | Bus-id              | GPU-Util      sGPU-M |\n| Pwr:Usage/Cap    | Temp       Perf | Memory-Usage        | GPU-State            |\n|==================+=================+=====================+======================|\n| 0     MetaX C500 | 0           Off | 0000:12:00.0        | 0%          Disabled |\n| 49W / 350W       | 34C          P0 | 858/65536 MiB       | Available            |\n+------------------+-----------------+---------------------+----------------------+\n\n+---------------------------------------------------------------------------------+\n| Process:                                                                        |\n|  GPU                    PID         Process Name                 GPU Memory     |\n|                                                                  Usage(MiB)     |\n|=================================================================================|\n|  no process found                                                               |\n+---------------------------------------------------------------------------------+\n\nEnd of Log\n",
+  "native_source": "/opt/conda/lib/python3.12/site-packages/flag_gems/runtime/backend/_metax/ops/mm.py",
+  "native_sha256": "2d4f80658012c1442be3fc8beee0fd1aae6f0e3f65092160fe9a4db369d77cec",
+  "candidate_sha256": "22596c9c3d60b6f297a6eebf78f4026436a7344898d59322174e9790233d0b44",
+  "finished": 1794916782.3021004,
+  "weighted_native_ms": 0.163438081741333,
+  "weighted_candidate_ms": null,
+  "micro_go": false,
+  "boundary_and_model_validation_still_required": true
+}

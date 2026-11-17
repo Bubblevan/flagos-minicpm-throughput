@@ -1,0 +1,372 @@
+{
+  "complete": true,
+  "source": "/opt/conda/lib/python3.12/site-packages/flag_gems/runtime/backend/_metax/ops/mm.py",
+  "source_sha256": "2d4f80658012c1442be3fc8beee0fd1aae6f0e3f65092160fe9a4db369d77cec",
+  "native_NN_kernel_body_unchanged": true,
+  "weight_repack_in_timing": false,
+  "one_time_storage_layout_change": true,
+  "shapes": [
+    {
+      "M": 2048,
+      "N": 2560,
+      "K": 2048,
+      "native_before_ms": 0.2404300880432129,
+      "configs": [
+        {
+          "config": {
+            "BLOCK_M": 128,
+            "BLOCK_N": 128,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "basic"
+          },
+          "ms": 0.2769305610656738,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 128,
+            "BLOCK_N": 256,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 0.4231884765625,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 256,
+            "BLOCK_N": 256,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 0.32687103271484375,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 256,
+            "BLOCK_N": 128,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 0.4157952117919922,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 128,
+            "BLOCK_N": 128,
+            "BLOCK_K": 64,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 0.47739391326904296,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        }
+      ],
+      "native_after_ms": 0.23989759445190428,
+      "best_bitwise": {
+        "config": {
+          "BLOCK_M": 128,
+          "BLOCK_N": 128,
+          "BLOCK_K": 32,
+          "num_warps": 8,
+          "num_stages": 2,
+          "pipeline": "basic"
+        },
+        "ms": 0.2769305610656738,
+        "bitwise_native_equal": true,
+        "max_native_abs": 0.0,
+        "cpu_reference_pass": true
+      }
+    },
+    {
+      "M": 2048,
+      "N": 2048,
+      "K": 2048,
+      "native_before_ms": 0.1808076858520508,
+      "configs": [
+        {
+          "config": {
+            "BLOCK_M": 128,
+            "BLOCK_N": 128,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "basic"
+          },
+          "ms": 0.21299711227416993,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 128,
+            "BLOCK_N": 256,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 0.41973247528076174,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 256,
+            "BLOCK_N": 256,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 0.32155136108398436,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 256,
+            "BLOCK_N": 128,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 0.41261566162109375,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 128,
+            "BLOCK_N": 128,
+            "BLOCK_K": 64,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 0.3539046478271484,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        }
+      ],
+      "native_after_ms": 0.18091007232666015,
+      "best_bitwise": {
+        "config": {
+          "BLOCK_M": 128,
+          "BLOCK_N": 128,
+          "BLOCK_K": 32,
+          "num_warps": 8,
+          "num_stages": 2,
+          "pipeline": "basic"
+        },
+        "ms": 0.21299711227416993,
+        "bitwise_native_equal": true,
+        "max_native_abs": 0.0,
+        "cpu_reference_pass": true
+      }
+    },
+    {
+      "M": 2048,
+      "N": 12288,
+      "K": 2048,
+      "native_before_ms": 0.8877056121826172,
+      "configs": [
+        {
+          "config": {
+            "BLOCK_M": 128,
+            "BLOCK_N": 128,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "basic"
+          },
+          "ms": 0.9989939117431641,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 128,
+            "BLOCK_N": 256,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 1.6888986206054688,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 256,
+            "BLOCK_N": 256,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 1.3120562744140625,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 256,
+            "BLOCK_N": 128,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 1.6743014526367188,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 128,
+            "BLOCK_N": 128,
+            "BLOCK_K": 64,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 1.7836697387695313,
+          "bitwise_native_equal": true,
+          "max_native_abs": 0.0,
+          "cpu_reference_pass": true
+        }
+      ],
+      "native_after_ms": 0.8879872131347656,
+      "best_bitwise": {
+        "config": {
+          "BLOCK_M": 128,
+          "BLOCK_N": 128,
+          "BLOCK_K": 32,
+          "num_warps": 8,
+          "num_stages": 2,
+          "pipeline": "basic"
+        },
+        "ms": 0.9989939117431641,
+        "bitwise_native_equal": true,
+        "max_native_abs": 0.0,
+        "cpu_reference_pass": true
+      }
+    },
+    {
+      "M": 2048,
+      "N": 2048,
+      "K": 6144,
+      "native_before_ms": 0.5685043334960938,
+      "configs": [
+        {
+          "config": {
+            "BLOCK_M": 128,
+            "BLOCK_N": 128,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "basic"
+          },
+          "ms": 0.6035558319091797,
+          "bitwise_native_equal": false,
+          "max_native_abs": 1.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 128,
+            "BLOCK_N": 256,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 1.2098406219482423,
+          "bitwise_native_equal": false,
+          "max_native_abs": 1.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 256,
+            "BLOCK_N": 256,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 0.9202227020263671,
+          "bitwise_native_equal": false,
+          "max_native_abs": 1.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 256,
+            "BLOCK_N": 128,
+            "BLOCK_K": 32,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 1.1966464233398437,
+          "bitwise_native_equal": false,
+          "max_native_abs": 1.0,
+          "cpu_reference_pass": true
+        },
+        {
+          "config": {
+            "BLOCK_M": 128,
+            "BLOCK_N": 128,
+            "BLOCK_K": 64,
+            "num_warps": 8,
+            "num_stages": 2,
+            "pipeline": "cpasync"
+          },
+          "ms": 1.0133964538574218,
+          "bitwise_native_equal": false,
+          "max_native_abs": 1.0,
+          "cpu_reference_pass": true
+        }
+      ],
+      "native_after_ms": 0.5683046340942383,
+      "best_bitwise": null
+    }
+  ],
+  "started": 1794917026.9537914,
+  "official_score": false,
+  "finished": 1794917044.9548526
+}

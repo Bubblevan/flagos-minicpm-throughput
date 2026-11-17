@@ -1,0 +1,48 @@
+{
+  "source_repository": "xy200303/minicpm-flagserve",
+  "reference_commit": "58bd3714275b5b2539a7e924a1d38580ae6d7c26",
+  "audit_saved_at": "2026-11-17T19:51:16+08:00",
+  "source_results_are_not_TokenForge_results": true,
+  "official_acceptance_not_verified": true,
+  "groups": [
+    {
+      "prefill": 4096,
+      "total_tokens_per_second": 12399.313333333334,
+      "mean_ttft_ms": 1719.176666666667,
+      "summary_matches": true,
+      "all_requests_and_tokens_complete": true
+    },
+    {
+      "prefill": 16384,
+      "total_tokens_per_second": 11046.19,
+      "mean_ttft_ms": 18141.47333333333,
+      "summary_matches": true,
+      "all_requests_and_tokens_complete": true
+    }
+  ],
+  "accuracy": {
+    "reported_score": 0.981,
+    "reported_num": 105,
+    "execution_summary": {
+      "requested": 105,
+      "succeeded": 105,
+      "errored": 0,
+      "incomplete": false,
+      "subsets": {
+        "Level 3": {
+          "requested": 105,
+          "succeeded": 105,
+          "errored": 0
+        }
+      }
+    },
+    "individual_prediction_review_not_independently_audited": true
+  },
+  "candidate_plugin_commit": "0207b7e10f93dfa6e912b00c372f268d618b4c2c",
+  "candidate_gems_commit": "aff68555e266582f68c6554898f4c795c869578d",
+  "adopted_idea": "Explicit next-tile prefetch for skinny NT GEMM, attributed Apache-2.0 derivative; not whole package",
+  "not_adopted": [
+    "Approximate histogram top-p",
+    "Direct vendor GEMM switching"
+  ]
+}

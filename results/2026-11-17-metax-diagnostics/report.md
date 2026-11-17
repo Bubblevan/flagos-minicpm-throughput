@@ -238,3 +238,20 @@ to the clean official checkout, with no differences or missing files among them.
 Thus unexpected changes to those installed files are not supported as a cause.
 The prior full4K sampled no OOM; no persistent JIT activity or CPU quota cause
 has been established. GPU clock observations are not normalized into scores.
+
+### 20:00: GEMM-only rejects; investigate a cited structural rewrite
+
+The four native-attention/GEMM-only rounds completed4299.50,3656.02,4129.31,
+3892.55tok/s; original discard-first mean3892.6267tok/s and5121.9467ms fails
+both gates. All request/token totals are intact. Cleanup19:58:25 has no owned
+survivors; all20 stopped files match remote hashes. No complete16K/new105 is
+claimed. See gemm-only-four-round-audit.json and the immutable failed ZIP.
+
+Public research found XLANG2026's matching-model C500 eight-row CSV and summary.
+Independent arithmetic confirms its reported12399.3133/11046.19tok/s means;
+its aggregate accuracy report says105 successes and0.981. This is external
+evidence, not our score, official acceptance or a full per-question audit here.
+Its approximate sampling/direct vendor routing are not imported. A separately
+attributed Apache-2.0 explicit-prefetch NT kernel is prepared for an idle-GPU
+bounded test; see experiments/metax_decode_prefetch/research.md. Numerical,
+matched model and full official gates remain mandatory. Deadline stays20:44.

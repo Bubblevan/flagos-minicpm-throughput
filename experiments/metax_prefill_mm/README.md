@@ -52,3 +52,11 @@ Read-only package comparison found2607 installed Python/YAML/JSON files match
 the clean official Gems checkout, with no differing or missing files in that
 comparison. No OOM event was recorded during the complete failed4K session.
 These checks narrow hypotheses; they do not establish the performance cause.
+
+At19:58:25 the independent GEMM-only four4K rounds also failed:4299.50,
+3656.02,4129.31,3892.55tok/s; discard-first mean3892.6267tok/s and5121.9467ms.
+All requests/tokens complete, no owned model survivors,20-file final backup
+hashes match. No complete16K or new105 exists. This does not prove a causal
+prefix effect: timings vary and no matched same-machine prefix A/B/A was run.
+Next investigation is experiments/metax_decode_prefetch, with external ideas
+explicitly attributed and numerical/model validation still required.

@@ -105,5 +105,26 @@
     "files": 5186,
     "native_metax_attention_restored": true,
     "full_acceptance_pending": true
+  },
+  "gemm_only_complete_4k_failed": {
+    "path": "artifacts/FlagOS-MetaX-gemm-only-four-round-failed-20261117.zip",
+    "bytes": 289358,
+    "sha256": "612069df9947ffe309d582b627673661862d5120b962c2304fb9a58ad66786fd",
+    "files": 20,
+    "final_remote_hash_match": true
+  },
+  "dual_nn_repack_source": {
+    "path": "artifacts/FlagOS-dual-nn-repack-candidate-source-20261117.zip",
+    "bytes": 15190316,
+    "sha256": "42231f2e471cc73c9f8c511238a5a1567b35320874644abf5ef8bd1ad46f87ed",
+    "files": 5188,
+    "full_model_acceptance_pending": true
+  },
+  "nn_numerical_new_device": {
+    "path": "experiments/metax_nn_repack/correctness-20261117-new-device.json",
+    "sha256": "454b1f4579d98a893fbb9f760c7fda11d539578bd48cf29ea086fe934f4826d3",
+    "cases": 30,
+    "fake_and_compile_pass": true,
+    "cudagraph_pass": true
   }
 }
