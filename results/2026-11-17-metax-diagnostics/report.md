@@ -84,8 +84,7 @@ A separate immutable candidate now tests a coverage-based cost hint: low recent
 certified-row coverage skips seven costly shortlist attempts, then probes again.
 Every bypass calls the original filter; no request length, benchmark identity,
 round number, sampling setting or RNG rule is used. Its new 30-case differential
-passed, but its model A/B/A and full acceptance remain pending. The previous
-negative result is retained; this is not a retrospective change to its gate.
+passed, but its model A/B/A regressed 11.1721% at4K and1.9028% at16K, with native drift below1%. Its gate is false and the implementation is rejected. No full run was launched. All negative results are retained; gates were not retrospectively changed. A separate scheduler-context cost guard is now under bounded validation; it has no full-pass claim.
 
 The first short-test wrapper stopped on a missing cache-reset developer route
 before comparisons. Its failed setup and clean service exit are preserved.

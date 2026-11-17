@@ -1,0 +1,11 @@
+{
+  "status": "REJECTED: model4K -11.1721%,16K -1.9028%; no full acceptance",
+  "files": {
+    "shortlist_kernels.py": "2facf78ba46fe2b18621b39abbe1d2fb83eb3ec5ce068191322c1b435ab8633a",
+    "topk_topp_sampler.py": "520f26fc64041f4409419a93ac01d245840b3dc12a304960f7279522b6d0875b",
+    "top_p_shortlist.py": "3c86f06d01260ad57e89fe5daa907ef5be5bf1ba56b6cadc6622f6bb780e0cbc"
+  },
+  "base_commit": "13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0",
+  "prefix_attention_sha256": "cda1bce8d7cce50563cf2646bb203df22c677631fa83f065f4fab50f786cb34a",
+  "policy_parameters_unchanged": true
+}
