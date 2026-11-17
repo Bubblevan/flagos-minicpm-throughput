@@ -1,5 +1,7 @@
 最新进展（11/16已完成）：**天数v2＋FlagTree0.7.0完整八轮和本次105题整体通过**，4K2435.35tok/s、16K1890.7267tok/s，精度101/105。模型服务已停止、完整备份与远端hash匹配。[完整报告](results/2026-11-16-v2-flagtree07-complete/report.md) · [可审查提交包](artifacts/TokenForge-v2-flagtree070-20261116.zip)。尚未向比赛平台提交。
 
+11/17沐曦进展：真实decode采样定位到完整词表排序热点，新增[带概率质量与边界回退的采样候选](results/2026-11-17-metax-diagnostics/report.md)。最终算子对照通过，真实模型短测仍待核验；**尚无新的沐曦整体通过结果**，不替换上面的天数已验收包。
+
 # FlagOS MiniCPM throughput project
 
 本次选定冻结v2代码加主办方推荐的新编译器，不采用精度失败的v3。新编译器先通过共享张量和独立CPU参考，再完成一次全新正式评测；[编译器修复证据](results/2026-11-16-compiler-repair/report.md)与完整模型成绩分开记录。编译器修复不是原创优化，全部性能变化也不能作同时A/B单因归因。[v3法证](results/2026-11-16-accuracy-forensics/accuracy-forensics.md)及其失败原始归档保留，原始分数不改。

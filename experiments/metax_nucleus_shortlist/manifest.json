@@ -1,0 +1,22 @@
+{
+  "base_plugin_commit": "13eb9be69ecc5b5ca4f79c44e9ee40081eaa1bf0",
+  "platform": "metax",
+  "files": {
+    "shortlist_kernels.py": "2facf78ba46fe2b18621b39abbe1d2fb83eb3ec5ce068191322c1b435ab8633a",
+    "topk_topp_sampler.py": "520f26fc64041f4409419a93ac01d245840b3dc12a304960f7279522b6d0875b",
+    "top_p_shortlist.py": "08f0962d94f37784ca51e39ebae8cc62bc39b67ab812e6d106703328e0848b74"
+  },
+  "feature_flag": "FLAGOS_METAX_TOPP_MODE=candidate",
+  "default_mode": "native",
+  "top_k_fallback": true,
+  "capacity": 4096,
+  "boundary_margin": 1e-05,
+  "official_validation_complete": false,
+  "implementation": "monotone-pivot mass certification, bounded compaction, small sort, original fallback",
+  "same_worker_Gems_policy_micro_pass": true,
+  "real_model_shadow_pass": true,
+  "minimum_batch": 64,
+  "actual_vocab_test": 130560,
+  "scratch_initialization_fused": true,
+  "real_model_shadow_equal_calls": 1040
+}
