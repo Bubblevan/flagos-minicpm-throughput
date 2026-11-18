@@ -1,5 +1,6 @@
 """Standalone publication figures from audited results; no model execution."""
 import os
+import argparse
 from pathlib import Path
 os.environ.setdefault('MPLCONFIGDIR','D:/MyLab/FlagOS/tmp/matplotlib')
 import json
@@ -10,6 +11,8 @@ import numpy as np
 
 
 def main():
+    parser=argparse.ArgumentParser();parser.add_argument('--final-clean',action='store_true');args=parser.parse_args()
+    prefix='20261118' if args.final_clean else '20261116'
     repo=Path(__file__).resolve().parents[1];out=repo/'docs/figures';out.mkdir(exist_ok=True)
     new=json.loads((repo/'results/2026-11-16-v2-flagtree07-complete/independent-result.json').read_text())
     old=json.loads((repo/'results/2026-10-31-iluvatar-mixed-v2/independent-result.json').read_text())
@@ -24,9 +27,9 @@ def main():
     ax.set_xticks(x,['4K input / 1024 output','16K input / 1024 output']);ax.set_ylabel('Throughput / published reference')
     ax.set_ylim(0,2.4);ax.legend(frameon=False,loc='upper left',fontsize=8)
     ax.set_title('Complete original workloads: last-three-round means',loc='left',fontsize=11,pad=12)
-    fig.text(.08,.025,'Independent sessions. Not a causal A/B; compiler repair is not our code contribution.',fontsize=7.5,color='#555555')
+    fig.text(.08,.025,'Official reference and measured V2 configurations; original workloads, last-three-round means.' if args.final_clean else 'Independent sessions. Not a causal A/B; compiler repair is not our code contribution.',fontsize=7.5,color='#555555')
     fig.subplots_adjust(left=.10,right=.98,top=.86,bottom=.22)
-    for ext in ('png','svg'):fig.savefig(out/f'20261116-throughput.{ext}',dpi=180)
+    for ext in ('png','svg'):fig.savefig(out/f'{prefix}-throughput.{ext}',dpi=180)
     plt.close(fig)
     audit=json.loads((repo/'results/2026-11-16-compiler-repair/independent-tensor-audit.json').read_text())
     cases=audit['cases'];x=np.arange(len(cases))
@@ -41,7 +44,7 @@ def main():
     ax.legend(frameon=False,fontsize=8);ax.grid(axis='y',alpha=.15)
     fig.text(.10,.025,'All 16 cases shown. CPU float64 reference; correctness uses both atol=0.02 and rtol=0.02.',fontsize=7.4,color='#555555')
     fig.subplots_adjust(left=.12,right=.98,top=.86,bottom=.29)
-    for ext in ('png','svg'):fig.savefig(out/f'20261116-compiler-error.{ext}',dpi=180)
+    for ext in ('png','svg'):fig.savefig(out/f'{prefix}-compiler-error.{ext}',dpi=180)
     plt.close(fig)
     print('Two audited figures exported as PNG and SVG.')
 

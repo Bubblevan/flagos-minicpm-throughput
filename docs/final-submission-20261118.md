@@ -1,10 +1,10 @@
 # TokenForge 最终提交候选（2026-11-18）
 
-按用户决定结束沐曦探索，以冻结天数v2+主办方FlagTree0.7.0环境的完整通过结果交付。没有启动新GPU试验，没有上传比赛作品。
+报告已按用户要求改为直接的技术陈述，正文与图注的防御性措辞已清理。按用户决定结束沐曦探索，以冻结天数v2+主办方FlagTree0.7.0环境的完整通过结果交付。没有启动新GPU试验，没有上传比赛作品。
 
-作品：[TokenForge-final-20261118.zip](../artifacts/TokenForge-final-20261118.zip)。下载后**命名为TokenForge.zip**再上传；ZIP内唯一顶层为TokenForge/。大小5,517,684字节，小于300MB。
+作品：[TokenForge-final-20261118.zip](../artifacts/TokenForge-final-20261118.zip)。下载后**命名为TokenForge.zip**再上传；ZIP内唯一顶层为TokenForge/。大小5,494,578字节，小于300MB。
 
-SHA256：`7421bd9c933d68a023d7d676fe7749eb213dece8428f0909b8495b775c6ddedb`。
+SHA256：`2ff28be70feab961b09aa96e7f8618585daa245d41d95a86e39e44068b357aaa`。
 
 包内包含完整vllm-plugin-FL（405文件，保留LICENSE、构建脚本、全部平台路径）、readme.md、五页report.pdf、源码/交付hash清单、标准库离线审计脚本和完整天数验收证据。未修改Gems算子，不附实验版FlagGems；恢复说明锁定官方Gems提交并给出缺失时的独立恢复命令。模型、数据集、GPU编译缓存和凭证不分发。历史原始证据ZIP保持不可变，内有少量当时控制器Python字节码，不属于生效源码或GPU缓存。
 

@@ -1,0 +1,42 @@
+{
+  "archive": "D:\\MyLab\\FlagOS\\releases\\TokenForge-final-20261118-r3\\TokenForge.zip",
+  "sha256": "2ff28be70feab961b09aa96e7f8618585daa245d41d95a86e39e44068b357aaa",
+  "size_bytes": 5494578,
+  "zip_crc_pass": true,
+  "nested_scan": {
+    "archives": 5,
+    "files": 693,
+    "bytes_uncompressed": 33656876,
+    "historical_pyc_files": 10
+  },
+  "high_confidence_credential_findings": 0,
+  "source_files": 405,
+  "only_plugin_changes": [
+    "vllm_fl/platform.py",
+    "vllm_fl/dispatch/backends/vendor/iluvatar/impl/attention_tiles.py"
+  ],
+  "numerical_code_changed_since_validated_run": false,
+  "report_pdf_pages": 5,
+  "all_pages_visually_checked": true,
+  "required_layout_pass": true,
+  "metax_optimization_passed": false,
+  "competition_submitted": false,
+  "submission_page_checked": "2026-11-18",
+  "submission_deadline": "2026-11-19T23:59:59+08:00",
+  "report_revision": "direct-technical-prose",
+  "report_defensive_phrase_matches": [],
+  "unchanged_source_evidence_tools_readme": true,
+  "changed_files": [
+    "TokenForge/REVIEW_MANIFEST.json",
+    "TokenForge/figures/20261116-compiler-error.png",
+    "TokenForge/figures/20261116-compiler-error.svg",
+    "TokenForge/figures/20261116-throughput.png",
+    "TokenForge/figures/20261116-throughput.svg",
+    "TokenForge/figures/20261118-compiler-error.png",
+    "TokenForge/figures/20261118-compiler-error.svg",
+    "TokenForge/figures/20261118-throughput.png",
+    "TokenForge/figures/20261118-throughput.svg",
+    "TokenForge/report-source.md",
+    "TokenForge/report.pdf"
+  ]
+}
