@@ -1,3 +1,5 @@
+最终收尾（2026-11-18）：**用户决定结束沐曦探索，只申报天数已验证成果**。[最终作品及上传说明](docs/final-submission-20261118.md) · [最终ZIP](artifacts/TokenForge-final-20261118.zip)。天数完整八轮和本次105题通过；沐曦未通过，失败代码未合入。交付文件已经离线重审及PDF逐页检查，**尚未上传赛事平台**。以下均保留为历史记录，不是继续试验授权。
+
 最新进展（11/16已完成）：**天数v2＋FlagTree0.7.0完整八轮和本次105题整体通过**，4K2435.35tok/s、16K1890.7267tok/s，精度101/105。模型服务已停止、完整备份与远端hash匹配。[完整报告](results/2026-11-16-v2-flagtree07-complete/report.md) · [可审查提交包](artifacts/TokenForge-v2-flagtree070-20261116.zip)。尚未向比赛平台提交。
 
 11/17沐曦进展（20:00）：GEMM＋prefix与恢复原生Attention的GEMM-only候选，完整四轮4K均未通过，分别4504.03/3892.63tok/s；两套原始记录与完整源码已保存，不拼接16K或旧精度。新增[公开方案核验及显式预取实验](experiments/metax_decode_prefetch/research.md)，借鉴有实测记录的Apache-2.0小批量GEMM双缓冲思路，保留原采样与Attention。**尚无新的沐曦完整通过结论**，天数已通过包仍独立保护。

@@ -1,0 +1,26 @@
+{
+  "archive": "D:\\MyLab\\FlagOS\\releases\\TokenForge-final-20261118\\TokenForge.zip",
+  "sha256": "7421bd9c933d68a023d7d676fe7749eb213dece8428f0909b8495b775c6ddedb",
+  "size_bytes": 5517684,
+  "zip_crc_pass": true,
+  "nested_scan": {
+    "archives": 5,
+    "files": 693,
+    "bytes_uncompressed": 33682077,
+    "historical_pyc_files": 10
+  },
+  "high_confidence_credential_findings": 0,
+  "source_files": 405,
+  "only_plugin_changes": [
+    "vllm_fl/platform.py",
+    "vllm_fl/dispatch/backends/vendor/iluvatar/impl/attention_tiles.py"
+  ],
+  "numerical_code_changed_since_validated_run": false,
+  "report_pdf_pages": 5,
+  "all_pages_visually_checked": true,
+  "required_layout_pass": true,
+  "metax_optimization_passed": false,
+  "competition_submitted": false,
+  "submission_page_checked": "2026-11-18",
+  "submission_deadline": "2026-11-19T23:59:59+08:00"
+}

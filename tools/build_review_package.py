@@ -17,12 +17,15 @@ from reportlab.lib.pagesizes import A4
 
 
 def main():
-    parser=argparse.ArgumentParser();parser.add_argument('--validated',action='store_true');parser.add_argument('--out',type=Path);args=parser.parse_args()
+    parser=argparse.ArgumentParser();parser.add_argument('--validated',action='store_true');parser.add_argument('--final',action='store_true');parser.add_argument('--out',type=Path);args=parser.parse_args()
+    if args.final: args.validated=True
     repo=Path(__file__).resolve().parents[1]
     out=args.out or repo.parent/('releases/TokenForge-v2-flagtree070-20261116' if args.validated else 'releases/TokenForge-v2-review-20261116-r3')
     team=out/'TokenForge';team.mkdir(parents=True,exist_ok=False)
     with zipfile.ZipFile(repo/'artifacts/FlagOS-Iluvatar-v2-full-source.zip') as archive:
         assert archive.testzip() is None
+        if args.final:
+            (team/'SOURCE_MANIFEST.json').write_bytes(archive.read('SOURCE_MANIFEST.json'))
         for name in archive.namelist():
             if name.startswith('vllm-plugin-FL/'):
                 archive.extract(name,team)
@@ -31,8 +34,8 @@ def main():
     shutil.copy2(repo/'artifacts/FlagOS-Iluvatar-mixed-v2-20261031.zip',evidence)
     shutil.copy2(repo/'results/2026-10-31-iluvatar-mixed-v2/independent-result.json',evidence/'v2-independent-result.json')
     shutil.copy2(repo/'docs/competition-intelligence.md',evidence)
-    report_name='submission-report-v2-flagtree070.md' if args.validated else 'submission-report-v2.md'
-    readme_name='submission-readme-v2-flagtree070.md' if args.validated else 'submission-readme-v2.md'
+    report_name='submission-report-final-20261118.md' if args.final else ('submission-report-v2-flagtree070.md' if args.validated else 'submission-report-v2.md')
+    readme_name='submission-readme-final-20261118.md' if args.final else ('submission-readme-v2-flagtree070.md' if args.validated else 'submission-readme-v2.md')
     shutil.copy2(repo/'docs'/report_name,team/'report-source.md')
     readme=(repo/'docs'/readme_name).read_text(encoding='utf-8')
     prefix='''# TokenForge - 可审查草稿，尚未正式提交
@@ -50,6 +53,13 @@ report.pdf为当前技术报告草稿，evidence中包含原始v2完整记录和
     (team/'readme.md').write_text(readme,encoding='utf-8')
     (team/'tools').mkdir()
     shutil.copy2(repo/'tools/validate_accuracy_artifacts.py',team/'tools')
+    if args.final:
+        for name in ['audit_submission.py','finalize_saved_result.py','build_iluvatar_candidate.py']:
+            shutil.copy2(repo/'tools'/name,team/'tools'/name)
+        shutil.copy2(repo/'docs/metax-closeout-20261118.md',evidence/'metax-closeout.md')
+        shutil.copy2(repo/'artifacts/FlagOS-MetaX-baseline-20261029.zip',evidence)
+        shutil.copy2(repo/'artifacts/FlagOS-MetaX-NN-dynamic-ABA-rejected-20261118.zip',evidence)
+        shutil.copytree(repo/'results/2026-10-29-metax-baseline',evidence/'metax-baseline')
     shutil.copytree(repo/'results/2026-11-16-compiler-repair',evidence/'compiler-repair',ignore=shutil.ignore_patterns('*.zip'))
     if args.validated:
         completed=repo/'results/2026-11-16-v2-flagtree07-complete'
@@ -94,16 +104,18 @@ report.pdf为当前技术报告草稿，evidence中包含原始v2完整记录和
         flow.append(Image(str(repo/'docs/figures/20261116-compiler-error.png'),width=500,height=243))
         flow.append(Paragraph('图3：全16组相同输入上所选行的CPU参考最大绝对误差。新旧源码、Q/K/V和分页表不变；新版本全部通过既定atol/rtol，未放宽标准。标量fsum另证CPU参考一致。它是编译器修复的证据，不证明完整模型所有logits或随机采样因果。',body))
         flow.append(Paragraph('可归属本作品的贡献：面向BF16/GQA混合批次的受保护query分块、原生路径保留及逐级门禁验证。主办方提供的FlagTree更新不能计为我们的原创；评分器法证和完整归档是工程可信度，不等同新算法。创新分最终由专家判断。',body))
-        flow.append(Paragraph('当前最大缺口是沐曦：原始4K未达标，prefix元数据跨层复用仅有短测观察，没有本轮完整官方验收，因此本包不宣称沐曦优化通过。官网总分包含两卡性能与创新分，且公开榜单尚无成绩；无法承诺获奖或排名。单平台未过基础门槛的最终有效性应由赛方确认。',body))
+        metax_text=('11/18按用户决定结束沐曦探索：原始4K未达标；GEMM/prefix完整4K与NN重排A/B/A负收益均否决，分桶候选在新卡数值门禁失败，均未合入提交源码。MetaX全部保留冻结原生路径，无达标优化申报。附原始基线及否决记录索引。官网总分包含两卡性能与创新分；本包只申报天数已验证成果，单平台缺口的计分和参赛有效性由赛方认定，不能保证获奖。' if args.final else '当前最大缺口是沐曦：原始4K未达标，prefix元数据跨层复用仅有短测观察，没有本轮完整官方验收，因此本包不宣称沐曦优化通过。官网总分包含两卡性能与创新分，且公开榜单尚无成绩；无法承诺获奖或排名。单平台未过基础门槛的最终有效性应由赛方确认。')
+        flow.append(Paragraph(metax_text,body))
     def page(canvas,doc):
         canvas.setFont('Song',8);canvas.setFillColor(colors.HexColor('#6a7b8b'))
-        canvas.drawString(46,25,'TokenForge | V2 '+('LOCAL VALIDATION PASSED' if args.validated else 'REVIEW DRAFT')+' | 2026-11-16')
+        canvas.drawString(46,25,'TokenForge | V2 '+('ILUVATAR LOCAL VALIDATION PASSED' if args.final else ('LOCAL VALIDATION PASSED' if args.validated else 'REVIEW DRAFT'))+(' | 2026-11-18' if args.final else ' | 2026-11-16'))
         canvas.drawRightString(A4[0]-46,25,str(doc.page))
     SimpleDocTemplate(str(team/'report.pdf'),pagesize=A4,rightMargin=46,leftMargin=46,topMargin=44,bottomMargin=44,
-        title='TokenForge MiniCPM5-2B query tiling v2 - review draft',author='TokenForge').build(flow,onFirstPage=page,onLaterPages=page)
+        title='TokenForge MiniCPM5-2B query tiling v2'+(' - final candidate' if args.final else ' - review draft'),author='TokenForge').build(flow,onFirstPage=page,onLaterPages=page)
     files={str(p.relative_to(team)).replace('\\','/'):hashlib.sha256(p.read_bytes()).hexdigest() for p in team.rglob('*') if p.is_file()}
     assert not any('/private/' in n or n.startswith('AGENTS.md') for n in files)
     manifest=dict(user_review_required=True,competition_submitted=False,compiler_validation_pending=not args.validated,local_validation_passed=args.validated,files=files)
+    if args.final: manifest.update(declared_optimized_platforms=['iluvatar'],metax_optimization_passed=False,release_date='2026-11-18',source_unchanged_from_validated_v2=True)
     (team/'REVIEW_MANIFEST.json').write_text(json.dumps(manifest,indent=2),encoding='utf-8')
     archive=out/('TokenForge.zip' if args.validated else 'TokenForge-review.zip')
     with zipfile.ZipFile(archive,'w',zipfile.ZIP_DEFLATED) as z:

@@ -1,5 +1,14 @@
 # FlagOS project instructions (public, credential-free)
 
+## 11/18 final decision (overrides all old active plans)
+
+The user ended MetaX exploration. Do not rent, restart or launch new GPU trials,
+or recreate heartbeat automation. Final candidate is the unchanged Iluvatar v2
+with the organizer's FlagTree0.7.0 environment. Read docs/final-submission-20261118.md.
+MetaX has NOT passed overall; no experimental MetaX code is in this package.
+Keep all raw failures and other chat's uncommitted files. Official competition
+upload still requires the user's authorization; Git push is only off-site backup.
+
 For this user's migrated local checkout, first read `D:/MyLab/FlagOS/AGENTS.md`
 if it exists. That parent file is the complete private handoff with login and
 web-operation procedures. **Never copy its contents into this public repository,

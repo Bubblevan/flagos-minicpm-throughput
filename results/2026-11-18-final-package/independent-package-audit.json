@@ -1,0 +1,49 @@
+{
+  "package_integrity_pass": true,
+  "source_files": 405,
+  "python_syntax_files": 287,
+  "contract_smoke": {
+    "cases": 20,
+    "pass": true,
+    "scope": "CPU launch/fallback contract only; not a GPU or mathematical test"
+  },
+  "platform": "iluvatar",
+  "metax_optimization_passed": false,
+  "cases": [
+    {
+      "input_len": 4096,
+      "rounds": 4,
+      "successful_requests_each": 256,
+      "discard_first": true,
+      "total_tokens_per_second": 2435.35,
+      "mean_ttft_ms": 5639.32,
+      "throughput_reference": 2028.01,
+      "ttft_reference": 11573.53,
+      "throughput_pass": true,
+      "ttft_pass": true
+    },
+    {
+      "input_len": 16384,
+      "rounds": 4,
+      "successful_requests_each": 128,
+      "discard_first": true,
+      "total_tokens_per_second": 1890.7266666666667,
+      "mean_ttft_ms": 268099.60000000003,
+      "throughput_reference": 915.15,
+      "ttft_reference": 599262.03,
+      "throughput_pass": true,
+      "ttft_pass": true
+    }
+  ],
+  "accuracy": 0.9619047619047619,
+  "correct": 101,
+  "total": 105,
+  "finish_reasons": {
+    "stop": 104,
+    "max_tokens": 1
+  },
+  "overall_pass": true,
+  "source_scope": "Frozen v2 only; no MetaX experimental source",
+  "official_acceptance_verified": false,
+  "competition_submitted": false
+}
